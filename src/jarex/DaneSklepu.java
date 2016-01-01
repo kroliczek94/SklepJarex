@@ -5,6 +5,7 @@
  */
 package jarex;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.util.HashMap;
 
@@ -41,5 +42,10 @@ public class DaneSklepu {
         
         strony.put("MenuStartowe", menu);
         strony.put("GetClient", client);
+        
+        
+        for (Component c : strony.values()){
+            c.setBackground(new Color(4, 56, 145));
+        }
     }
 }

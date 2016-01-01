@@ -9,12 +9,12 @@ package jarex;
  *
  * @author Łukasz Królik
  */
-public class GetTowarTrans extends javax.swing.JPanel {
+public class Transakcja extends javax.swing.JPanel {
 
     /**
-     * Creates new form GetTowarTrans
+     * Creates new form Transakcja
      */
-    public GetTowarTrans() {
+    public Transakcja() {
         initComponents();
     }
 

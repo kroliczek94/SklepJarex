@@ -44,7 +44,7 @@ public class PasekGorny extends javax.swing.JPanel {
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
-        setBackground(new java.awt.Color(255, 255, 255));
+        setBackground(new java.awt.Color(1, 32, 84));
 
         jButton5.setText("Transakcja");
         add(jButton5);

@@ -5,24 +5,17 @@
  */
 package jarex;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-
 /**
  *
  * @author Łukasz Królik
  */
-public class MainWindow extends javax.swing.JPanel {
+public class PanelTransakcji extends javax.swing.JPanel {
 
-    Component current = null;
-    Component previous = null;
     /**
-     * Creates new form MainWindow
+     * Creates new form PanelTransakcji
      */
-    public MainWindow() {
+    public PanelTransakcji() {
         initComponents();
-        setLayout(new java.awt.BorderLayout());
-        //this.dodajNaglowek();
     }
 
     /**
@@ -46,22 +39,7 @@ public class MainWindow extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    public void dodajNaglowek() {
-        PasekGorny pasek = new PasekGorny();
-        this.add(pasek, BorderLayout.NORTH);
 
-        validate();
-        repaint();
-    }
-
-    public void dodajElement(Component comp) {
-        if (current != null)    this.remove(current);
-        this.add(comp, BorderLayout.CENTER);
-        previous = current;
-        current = comp;
-        validate();
-        repaint();
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }
