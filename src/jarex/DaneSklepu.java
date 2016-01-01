@@ -39,9 +39,14 @@ public class DaneSklepu {
         
         MenuStartowe menu = new MenuStartowe();
         GetClient client = new GetClient();
+        PanelTransakcji panel = new PanelTransakcji();
+        Transakcja transact = new Transakcja();
         
         strony.put("MenuStartowe", menu);
         strony.put("GetClient", client);
+        strony.put("PanelTransakcji", panel);
+        strony.put("Transakcja", transact);
+        
         
         
         for (Component c : strony.values()){

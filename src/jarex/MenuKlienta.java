@@ -5,22 +5,17 @@
  */
 package jarex;
 
-import javax.swing.JComponent;
-
 /**
  *
  * @author Łukasz Królik
  */
-public class PanelTransakcji extends javax.swing.JPanel {
+public class MenuKlienta extends javax.swing.JPanel {
 
     /**
-     * Creates new form PanelTransakcji
+     * Creates new form MenuKlienta
      */
-    public PanelTransakcji() {
-        
-        
+    public MenuKlienta() {
         initComponents();
-        jTabbedPane1.addTab("dupa", new Transakcja());
     }
 
     /**
@@ -32,19 +27,19 @@ public class PanelTransakcji extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jButton1 = new javax.swing.JButton();
-
-        setLayout(new java.awt.BorderLayout());
-        add(jTabbedPane1, java.awt.BorderLayout.CENTER);
-
-        jButton1.setText("Wciśnij Ctrl + '+' by utworzyć kolejna transakcje");
-        add(jButton1, java.awt.BorderLayout.PAGE_START);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
 }

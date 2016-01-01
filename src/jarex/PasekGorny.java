@@ -22,6 +22,7 @@ public class PasekGorny extends javax.swing.JPanel {
         GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
         Rectangle maximumWindowBounds = graphicsEnvironment.getMaximumWindowBounds();
         setLayout(new java.awt.FlowLayout(200));
+       
         
         setBounds(0, 0, (int) maximumWindowBounds.getX(), 30);
         
@@ -45,6 +46,9 @@ public class PasekGorny extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(1, 32, 84));
+        setToolTipText("");
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setFont(new java.awt.Font("Times New Roman", 1, 11)); // NOI18N
 
         jButton5.setText("Transakcja");
         add(jButton5);
@@ -55,7 +59,7 @@ public class PasekGorny extends javax.swing.JPanel {
         jButton3.setText("Klienci");
         add(jButton3);
 
-        jButton2.setText("jButton2");
+        jButton2.setText("Historia");
         add(jButton2);
 
         jButton1.setText("Exit");
