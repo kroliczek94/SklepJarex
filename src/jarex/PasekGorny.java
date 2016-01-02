@@ -10,6 +10,7 @@ import java.awt.Rectangle;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -63,6 +64,7 @@ public class PasekGorny extends javax.swing.JPanel {
         jButton5 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         TrybLabel = new javax.swing.JLabel();
@@ -90,6 +92,9 @@ public class PasekGorny extends javax.swing.JPanel {
 
         jButton3.setText("Klienci");
         add(jButton3);
+
+        jButton8.setText("Dostawy");
+        add(jButton8);
 
         jButton2.setText("Historia");
         add(jButton2);
@@ -131,7 +136,14 @@ public class PasekGorny extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        Jarex.przejdz((String) DaneSklepu.getStos().poll());
+        
+        if (DaneSklepu.getStos().size() > 0){
+            DaneSklepu.setWsteczButton(true);
+        Jarex.przejdz((String) DaneSklepu.getStos().pollLast());
+        }
+        else
+            JOptionPane.showMessageDialog(this, "Nie robiłeś nic wcześniej", "Błąd", 0);
+        
 //String s = 
 // TODO add your handling code here:
     }//GEN-LAST:event_jButton7ActionPerformed
@@ -147,5 +159,6 @@ public class PasekGorny extends javax.swing.JPanel {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     // End of variables declaration//GEN-END:variables
 }

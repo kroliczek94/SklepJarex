@@ -84,8 +84,11 @@
     </Component>
     <Component class="javax.swing.JButton" name="TransakcjeButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Transakcje"/>
+        <Property name="text" type="java.lang.String" value="Dostawy"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TransakcjeButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButton7">
       <Properties>

@@ -55,7 +55,12 @@ public class MenuStartowe extends javax.swing.JPanel {
 
         KlienciButton.setText("Klienci");
 
-        TransakcjeButton.setText("Transakcje");
+        TransakcjeButton.setText("Dostawy");
+        TransakcjeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TransakcjeButtonActionPerformed(evt);
+            }
+        });
 
         jButton7.setText("Wyjście");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
@@ -110,7 +115,7 @@ public class MenuStartowe extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        System.out.println("DUPa");  
+        
         Jarex.setDoPokazania("MenuPowitalne");
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton7ActionPerformed
@@ -123,7 +128,11 @@ public class MenuStartowe extends javax.swing.JPanel {
        Jarex.przejdz("SekcjaStatystyczna"); // TODO add your handling code here:
     }//GEN-LAST:event_StatystykiButtonActionPerformed
 
+    private void TransakcjeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransakcjeButtonActionPerformed
+        Jarex.przejdz("");        // TODO add your handling code here:
+    }//GEN-LAST:event_TransakcjeButtonActionPerformed
 
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton KlienciButton;
     private javax.swing.JButton PanelTransakcjiButton;

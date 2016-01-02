@@ -94,7 +94,7 @@ public class Jarex {
     public static void przejdz(String str) {
         Jarex.setDoPokazania(str);
         Jarex.setAkcja(true);
-        //DaneSklepu.getStos().add(str);
+        
     }
 
     /**

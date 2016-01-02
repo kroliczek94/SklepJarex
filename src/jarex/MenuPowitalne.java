@@ -71,6 +71,7 @@ public class MenuPowitalne extends javax.swing.JPanel {
     private void ManagerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ManagerButtonActionPerformed
 
         Jarex.przejdz("MenuStartowe");
+        DaneSklepu.setManagerMode(true);
        // TODO add your handling code here:
     }//GEN-LAST:event_ManagerButtonActionPerformed
 

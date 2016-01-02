@@ -16,6 +16,7 @@ public class MainWindow extends javax.swing.JPanel {
 
     String current = null;
     String previous = null;
+
     /**
      * Creates new form MainWindow
      */
@@ -56,10 +57,15 @@ public class MainWindow extends javax.swing.JPanel {
 
     public void dodajElement(String str) {
         //String str = DaneSklepu.getStrony().
-        if (current != null)    this.remove(DaneSklepu.getStrony().get(current));
+        if (current != null) {
+            this.remove(DaneSklepu.getStrony().get(current));
+        }
         this.add(DaneSklepu.getStrony().get(str), BorderLayout.CENTER);
         previous = current;
-        if (previous != null) DaneSklepu.getStos().add(previous);
+        if (previous != null && !DaneSklepu.isWsteczButton()) {
+            DaneSklepu.getStos().add(previous);
+            DaneSklepu.setWsteczButton(false);
+        }
         current = str;
         validate();
         repaint();
