@@ -15,7 +15,21 @@ import java.util.HashMap;
  */
 public class DaneSklepu {
     private static HashMap<String, Component> strony = new HashMap<>();
+    private static boolean managerMode = false;
 
+    /**
+     * @return the managerMode
+     */
+    public static boolean isManagerMode() {
+        return managerMode;
+    }
+
+    /**
+     * @param aManagerMode the managerMode to set
+     */
+    public static void setManagerMode(boolean aManagerMode) {
+        managerMode = aManagerMode;
+    }
     
     public DaneSklepu() {
         dodajStrony();
@@ -42,14 +56,14 @@ public class DaneSklepu {
         PanelTransakcji panel = new PanelTransakcji();
         Transakcja transact = new Transakcja();
         
-        strony.put("MenuStartowe", menu);
-        strony.put("GetClient", client);
-        strony.put("PanelTransakcji", panel);
-        strony.put("Transakcja", transact);
+        getStrony().put("MenuStartowe", menu);
+        getStrony().put("GetClient", client);
+        getStrony().put("PanelTransakcji", panel);
+        getStrony().put("Transakcja", transact);
         
         
         
-        for (Component c : strony.values()){
+        for (Component c : getStrony().values()){
             c.setBackground(new Color(4, 56, 145));
         }
     }
