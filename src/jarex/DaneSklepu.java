@@ -7,6 +7,7 @@ package jarex;
 
 import Klienci.*;
 import Transakcje.*;
+import Towary.*;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -80,7 +81,9 @@ public class DaneSklepu {
 
         MenuPowitalne mstartowe = new MenuPowitalne();
         MenuKlienta mklienta = new MenuKlienta();
-
+        MenuDostaw mdostaw = new MenuDostaw();
+        MenuTransakcji mtransakcji = new MenuTransakcji();
+        MenuTowarow mtowarow = new MenuTowarow();
         SekcjaStatystyczna stats = new SekcjaStatystyczna();
 
         getStrony().put("MenuStartowe", menu);
@@ -89,6 +92,10 @@ public class DaneSklepu {
         getStrony().put("MenuPowitalne", mstartowe);
         getStrony().put("SekcjaStatystyczna", stats);
         getStrony().put("MenuKlienta", mklienta);
+        strony.put("MenuTransakcji", mtransakcji);
+        strony.put("MenuDostaw", mdostaw);
+        strony.put("MenuTowarow", mtowarow);
+        strony.put("MenuKlienta", mklienta);
 
         for (Component c : getStrony().values()) {
             c.setBackground(new Color(4, 56, 145));

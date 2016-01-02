@@ -52,8 +52,18 @@ public class MenuStartowe extends javax.swing.JPanel {
         });
 
         TowaryButton.setText("Towary");
+        TowaryButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TowaryButtonActionPerformed(evt);
+            }
+        });
 
         KlienciButton.setText("Klienci");
+        KlienciButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                KlienciButtonActionPerformed(evt);
+            }
+        });
 
         TransakcjeButton.setText("Dostawy");
         TransakcjeButton.addActionListener(new java.awt.event.ActionListener() {
@@ -98,17 +108,15 @@ public class MenuStartowe extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(PanelTransakcjiButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(150, 150, 150)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(KlienciButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(StatystykiButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(152, 152, 152)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(StatystykiButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(KlienciButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(TowaryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(TransakcjeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(200, 200, 200)
+                .addGap(193, 193, 193)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(19, Short.MAX_VALUE))
         );
@@ -129,8 +137,17 @@ public class MenuStartowe extends javax.swing.JPanel {
     }//GEN-LAST:event_StatystykiButtonActionPerformed
 
     private void TransakcjeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransakcjeButtonActionPerformed
-        Jarex.przejdz("");        // TODO add your handling code here:
+        Jarex.przejdz("MenuDostaw");        // TODO add your handling code here:
     }//GEN-LAST:event_TransakcjeButtonActionPerformed
+
+    private void TowaryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TowaryButtonActionPerformed
+        Jarex.przejdz("MenuTowarow");// TODO add your handling code here:
+    }//GEN-LAST:event_TowaryButtonActionPerformed
+
+    private void KlienciButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KlienciButtonActionPerformed
+        Jarex.przejdz("MenuKlienta");
+// TODO add your handling code here:
+    }//GEN-LAST:event_KlienciButtonActionPerformed
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

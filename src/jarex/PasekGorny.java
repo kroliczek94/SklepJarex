@@ -10,6 +10,7 @@ import java.awt.Rectangle;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.ImageIcon;
+import javax.swing.JApplet;
 import javax.swing.JOptionPane;
 
 /**
@@ -60,52 +61,87 @@ public class PasekGorny extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton7 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        WsteczButton = new javax.swing.JButton();
+        SprzedazButton = new javax.swing.JButton();
+        TowaryButton = new javax.swing.JButton();
+        KlienciButton = new javax.swing.JButton();
+        DostawyButton = new javax.swing.JButton();
+        TransakcjaButton = new javax.swing.JButton();
+        HistoriaButton = new javax.swing.JButton();
+        PowitalnyButton = new javax.swing.JButton();
         TrybLabel = new javax.swing.JLabel();
         DataLabel = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        ExitButton = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(1, 32, 84));
         setToolTipText("");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setFont(new java.awt.Font("Times New Roman", 1, 11)); // NOI18N
 
-        jButton7.setText("Wstecz");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        WsteczButton.setText("Wstecz");
+        WsteczButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                WsteczButtonActionPerformed(evt);
             }
         });
-        add(jButton7);
+        add(WsteczButton);
 
-        jButton5.setText("Transakcja");
-        add(jButton5);
-
-        jButton4.setText("Towary");
-        add(jButton4);
-
-        jButton3.setText("Klienci");
-        add(jButton3);
-
-        jButton8.setText("Dostawy");
-        add(jButton8);
-
-        jButton2.setText("Historia");
-        add(jButton2);
-
-        jButton6.setText("Wybór trybu");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        SprzedazButton.setText("Sprzedaż");
+        SprzedazButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                SprzedazButtonActionPerformed(evt);
             }
         });
-        add(jButton6);
+        add(SprzedazButton);
+
+        TowaryButton.setText("Towary");
+        TowaryButton.setMaximumSize(new java.awt.Dimension(69, 25));
+        TowaryButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TowaryButtonActionPerformed(evt);
+            }
+        });
+        add(TowaryButton);
+
+        KlienciButton.setText("Klienci");
+        KlienciButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                KlienciButtonActionPerformed(evt);
+            }
+        });
+        add(KlienciButton);
+
+        DostawyButton.setText("Dostawy");
+        DostawyButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DostawyButtonActionPerformed(evt);
+            }
+        });
+        add(DostawyButton);
+
+        TransakcjaButton.setText("Transakcje");
+        TransakcjaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TransakcjaButtonActionPerformed(evt);
+            }
+        });
+        add(TransakcjaButton);
+
+        HistoriaButton.setText("Historia");
+        HistoriaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HistoriaButtonActionPerformed(evt);
+            }
+        });
+        add(HistoriaButton);
+
+        PowitalnyButton.setText("Wybór trybu");
+        PowitalnyButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PowitalnyButtonActionPerformed(evt);
+            }
+        });
+        add(PowitalnyButton);
 
         TrybLabel.setForeground(new java.awt.Color(255, 255, 255));
         TrybLabel.setText("Tryb : ");
@@ -115,27 +151,27 @@ public class PasekGorny extends javax.swing.JPanel {
         DataLabel.setText("Data : ");
         add(DataLabel);
 
-        jButton1.setText("Wyjście");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        ExitButton.setText("Wyjście");
+        ExitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                ExitButtonActionPerformed(evt);
             }
         });
-        add(jButton1);
+        add(ExitButton);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void ExitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitButtonActionPerformed
         System.exit(0);
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_ExitButtonActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void PowitalnyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PowitalnyButtonActionPerformed
         
         Jarex.przejdz("MenuPowitalne");
 // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }//GEN-LAST:event_PowitalnyButtonActionPerformed
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+    private void WsteczButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WsteczButtonActionPerformed
         
         if (DaneSklepu.getStos().size() > 0){
             DaneSklepu.setWsteczButton(true);
@@ -146,19 +182,44 @@ public class PasekGorny extends javax.swing.JPanel {
         
 //String s = 
 // TODO add your handling code here:
-    }//GEN-LAST:event_jButton7ActionPerformed
+    }//GEN-LAST:event_WsteczButtonActionPerformed
+
+    private void TransakcjaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransakcjaButtonActionPerformed
+        Jarex.przejdz("MenuTransakcji");        // TODO add your handling code here:
+    }//GEN-LAST:event_TransakcjaButtonActionPerformed
+
+    private void TowaryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TowaryButtonActionPerformed
+        Jarex.przejdz("MenuTowarow");// TODO add your handling code here:
+    }//GEN-LAST:event_TowaryButtonActionPerformed
+
+    private void KlienciButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KlienciButtonActionPerformed
+        Jarex.przejdz("MenuKlienta");// TODO add your handling code here:
+    }//GEN-LAST:event_KlienciButtonActionPerformed
+
+    private void DostawyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DostawyButtonActionPerformed
+        Jarex.przejdz("MenuDostaw");// TODO add your handling code here:
+    }//GEN-LAST:event_DostawyButtonActionPerformed
+
+    private void HistoriaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HistoriaButtonActionPerformed
+        Jarex.przejdz("SekcjaStatystyczna");// TODO add your handling code here:
+    }//GEN-LAST:event_HistoriaButtonActionPerformed
+
+    private void SprzedazButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SprzedazButtonActionPerformed
+        Jarex.przejdz("PanelTransakcji");// TODO add your handling code here:
+    }//GEN-LAST:event_SprzedazButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel DataLabel;
+    private javax.swing.JButton DostawyButton;
+    private javax.swing.JButton ExitButton;
+    private javax.swing.JButton HistoriaButton;
+    private javax.swing.JButton KlienciButton;
+    private javax.swing.JButton PowitalnyButton;
+    private javax.swing.JButton SprzedazButton;
+    private javax.swing.JButton TowaryButton;
+    private javax.swing.JButton TransakcjaButton;
     private javax.swing.JLabel TrybLabel;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
+    private javax.swing.JButton WsteczButton;
     // End of variables declaration//GEN-END:variables
 }
