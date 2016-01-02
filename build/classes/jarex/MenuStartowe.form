@@ -88,6 +88,12 @@
     <Component class="javax.swing.JButton" name="TransakcjeButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Dostawy"/>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+            <TitledBorder/>
+          </Border>
+        </Property>
+        <Property name="focusable" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TransakcjeButtonActionPerformed"/>

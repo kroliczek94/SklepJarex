@@ -22,7 +22,7 @@ public class MenuStartowe extends javax.swing.JPanel {
      */
     public MenuStartowe() {
         initComponents();
-
+        
 
     }
 
@@ -66,6 +66,8 @@ public class MenuStartowe extends javax.swing.JPanel {
         });
 
         TransakcjeButton.setText("Dostawy");
+        TransakcjeButton.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        TransakcjeButton.setFocusable(false);
         TransakcjeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TransakcjeButtonActionPerformed(evt);
