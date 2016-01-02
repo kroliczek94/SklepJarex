@@ -59,7 +59,7 @@ public class DaneSklepu {
         MenuStartowe menu = new MenuStartowe();
         GetClient client = new GetClient();
         PanelTransakcji panel = new PanelTransakcji();
-        //Transakcja transact = new Transakcja();
+        
         MenuPowitalne mstartowe = new MenuPowitalne();
         MenuKlienta mklienta = new MenuKlienta();
         
@@ -69,7 +69,7 @@ public class DaneSklepu {
         getStrony().put("MenuStartowe", menu);
         getStrony().put("GetClient", client);
         getStrony().put("PanelTransakcji", panel);
-        //getStrony().put("Transakcja", transact);
+        
         getStrony().put("MenuPowitalne", mstartowe);
         getStrony().put("SekcjaStatystyczna", stats);
         strony.put("MenuKlienta", mklienta);

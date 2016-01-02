@@ -65,6 +65,11 @@ public class MenuStartowe extends javax.swing.JPanel {
         });
 
         StatystykiButton.setText("Statystyki");
+        StatystykiButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                StatystykiButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -113,6 +118,10 @@ public class MenuStartowe extends javax.swing.JPanel {
     private void PanelTransakcjiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PanelTransakcjiButtonActionPerformed
         Jarex.przejdz("PanelTransakcji");        // TODO add your handling code here:
     }//GEN-LAST:event_PanelTransakcjiButtonActionPerformed
+
+    private void StatystykiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StatystykiButtonActionPerformed
+       Jarex.przejdz("SekcjaStatystyczna"); // TODO add your handling code here:
+    }//GEN-LAST:event_StatystykiButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
