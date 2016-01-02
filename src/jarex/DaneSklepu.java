@@ -11,6 +11,8 @@ import Transakcje.*;
 import java.awt.Color;
 import java.awt.Component;
 import java.util.HashMap;
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  *
@@ -18,8 +20,8 @@ import java.util.HashMap;
  */
 public class DaneSklepu {
     private static HashMap<String, Component> strony = new HashMap<>();
-    private static boolean managerMode = false;
-
+    private static boolean managerMode = true;
+    private static ConcurrentLinkedQueue<String> stos = new ConcurrentLinkedQueue<>();
     /**
      * @return the managerMode
      */
@@ -57,19 +59,38 @@ public class DaneSklepu {
         MenuStartowe menu = new MenuStartowe();
         GetClient client = new GetClient();
         PanelTransakcji panel = new PanelTransakcji();
-        Transakcja transact = new Transakcja();
+        //Transakcja transact = new Transakcja();
         MenuPowitalne mstartowe = new MenuPowitalne();
+        MenuKlienta mklienta = new MenuKlienta();
+        
+        SekcjaStatystyczna stats = new SekcjaStatystyczna();
+        
         
         getStrony().put("MenuStartowe", menu);
         getStrony().put("GetClient", client);
         getStrony().put("PanelTransakcji", panel);
-        getStrony().put("Transakcja", transact);
+        //getStrony().put("Transakcja", transact);
         getStrony().put("MenuPowitalne", mstartowe);
-        
+        getStrony().put("SekcjaStatystyczna", stats);
+        strony.put("MenuKlienta", mklienta);
         
         
         for (Component c : getStrony().values()){
             c.setBackground(new Color(4, 56, 145));
         }
+    }
+
+    /**
+     * @return the stos
+     */
+    public static ConcurrentLinkedQueue getStos() {
+        return stos;
+    }
+
+    /**
+     * @param stos the stos to set
+     */
+    public static void setStos(ConcurrentLinkedQueue stos) {
+        DaneSklepu.stos = stos;
     }
 }

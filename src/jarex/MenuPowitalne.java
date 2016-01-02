@@ -29,12 +29,22 @@ public class MenuPowitalne extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        ManagerButton = new javax.swing.JButton();
+        SprzedawcaButton = new javax.swing.JButton();
 
-        jButton1.setText("Manager");
+        ManagerButton.setText("Manager");
+        ManagerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ManagerButtonActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Sprzedawca");
+        SprzedawcaButton.setText("Sprzedawca");
+        SprzedawcaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SprzedawcaButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -42,9 +52,9 @@ public class MenuPowitalne extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(97, 97, 97)
-                .addComponent(jButton2)
+                .addComponent(SprzedawcaButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 221, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(ManagerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(106, 106, 106))
         );
         layout.setVerticalGroup(
@@ -52,15 +62,27 @@ public class MenuPowitalne extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(216, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1))
+                    .addComponent(SprzedawcaButton)
+                    .addComponent(ManagerButton))
                 .addGap(129, 129, 129))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void ManagerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ManagerButtonActionPerformed
+
+        Jarex.przejdz("MenuStartowe");
+       // TODO add your handling code here:
+    }//GEN-LAST:event_ManagerButtonActionPerformed
+
+    private void SprzedawcaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SprzedawcaButtonActionPerformed
+        Jarex.przejdz("MenuStartowe");
+         DaneSklepu.setManagerMode(false);
+// TODO add your handling code here:
+    }//GEN-LAST:event_SprzedawcaButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton ManagerButton;
+    private javax.swing.JButton SprzedawcaButton;
     // End of variables declaration//GEN-END:variables
 }

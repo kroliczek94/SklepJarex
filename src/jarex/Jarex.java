@@ -56,10 +56,12 @@ public class Jarex {
 
         DaneSklepu s = new DaneSklepu();
         MainWindow okno = new MainWindow();
-
+        
+        PasekGorny p = new PasekGorny();
         window.add(okno);
-        okno.dodajNaglowek();
-        okno.dodajElement(s.getStrony().get("MenuPowitalne"));
+        okno.dodajNaglowek(p);
+        //okno.dodajElement(s.getStrony().get("MenuPowitalne"));
+        przejdz("MenuPowitalne");
         window.setVisible(true);
 
         while (true) {
@@ -69,9 +71,12 @@ public class Jarex {
             } catch (InterruptedException ex) {
                 Logger.getLogger(Jarex.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
             okno.repaint();
+            p.setTime();
+            p.setMode();
             if (akcja) {
-                okno.dodajElement(s.getStrony().get(doPokazania));
+                okno.dodajElement(doPokazania);
             }
             akcja = false;
         }
@@ -89,6 +94,7 @@ public class Jarex {
     public static void przejdz(String str) {
         Jarex.setDoPokazania(str);
         Jarex.setAkcja(true);
+        //DaneSklepu.getStos().add(str);
     }
 
     /**

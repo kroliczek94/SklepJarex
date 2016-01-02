@@ -14,8 +14,8 @@ import java.awt.Component;
  */
 public class MainWindow extends javax.swing.JPanel {
 
-    Component current = null;
-    Component previous = null;
+    String current = null;
+    String previous = null;
     /**
      * Creates new form MainWindow
      */
@@ -46,19 +46,21 @@ public class MainWindow extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    public void dodajNaglowek() {
-        PasekGorny pasek = new PasekGorny();
+    public void dodajNaglowek(PasekGorny pasek) {
+        //PasekGorny pasek = new PasekGorny();
         this.add(pasek, BorderLayout.NORTH);
 
         validate();
         repaint();
     }
 
-    public void dodajElement(Component comp) {
-        if (current != null)    this.remove(current);
-        this.add(comp, BorderLayout.CENTER);
+    public void dodajElement(String str) {
+        //String str = DaneSklepu.getStrony().
+        if (current != null)    this.remove(DaneSklepu.getStrony().get(current));
+        this.add(DaneSklepu.getStrony().get(str), BorderLayout.CENTER);
         previous = current;
-        current = comp;
+        if (previous != null) DaneSklepu.getStos().add(previous);
+        current = str;
         validate();
         repaint();
     }
