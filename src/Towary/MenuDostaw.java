@@ -45,9 +45,11 @@ public class MenuDostaw extends javax.swing.JPanel {
             }
         ));
         jTable1.setRowHeight(25);
+        jTable1.setShowVerticalLines(false);
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setText("Dodaj nową dostawę");
+        jButton1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         jButton2.setText("Edytuj dostawę");
 

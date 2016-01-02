@@ -5,6 +5,14 @@
  */
 package Towary;
 
+import jarex.DaneSklepu;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Łukasz Królik
@@ -16,6 +24,8 @@ public class MenuTowarow extends javax.swing.JPanel {
      */
     public MenuTowarow() {
         initComponents();
+        wypelnijTabele();
+
     }
 
     /**
@@ -31,7 +41,7 @@ public class MenuTowarow extends javax.swing.JPanel {
         jButton3 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        TablicaTowar = new javax.swing.JTable();
         jButton4 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
 
@@ -41,19 +51,27 @@ public class MenuTowarow extends javax.swing.JPanel {
 
         jButton5.setText("Dodaj nowy towar");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        TablicaTowar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Kod", "Nazwa", "Cena ", "Cena w dostawie", "Ilość w magazynie", "Do zamówienia", "Rabat"
             }
         ));
-        jTable1.setRowHeight(25);
-        jScrollPane1.setViewportView(jTable1);
+        TablicaTowar.setCellSelectionEnabled(true);
+        TablicaTowar.setRowHeight(25);
+        jScrollPane1.setViewportView(TablicaTowar);
+        TablicaTowar.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        if (TablicaTowar.getColumnModel().getColumnCount() > 0) {
+            TablicaTowar.getColumnModel().getColumn(0).setMinWidth(40);
+            TablicaTowar.getColumnModel().getColumn(0).setMaxWidth(40);
+            TablicaTowar.getColumnModel().getColumn(2).setMinWidth(50);
+            TablicaTowar.getColumnModel().getColumn(2).setMaxWidth(50);
+        }
 
         jButton4.setText("Edytuj towar");
 
@@ -95,14 +113,31 @@ public class MenuTowarow extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void wypelnijTabele() {
+        try {
+            DefaultTableModel model = (DefaultTableModel) TablicaTowar.getModel();
+            
+            Statement stmt;
+            stmt = DaneSklepu.getConn().createStatement();
 
+            ResultSet rs;
+            rs = stmt.executeQuery("select kod, nazwa, cena_zakup, cena_zamow, ilosc_w_magazynie, "
+                    + "do_zamowienia, rabat from towary");
+            
+            while (rs.next()) {
+                model.addRow(new Object[]{String.valueOf(rs.getInt(1)),"Column 2", "Column 3"});
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable TablicaTowar;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

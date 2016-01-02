@@ -16,6 +16,7 @@ public class MenuKlienta extends javax.swing.JPanel {
      */
     public MenuKlienta() {
         initComponents();
+        
     }
 
     /**
@@ -29,14 +30,14 @@ public class MenuKlienta extends javax.swing.JPanel {
 
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        TablicaKlient = new javax.swing.JTable();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
         jButton2.setText("Przyjmij zwrot długu");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        TablicaKlient.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -47,8 +48,9 @@ public class MenuKlienta extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jTable1.setRowHeight(25);
-        jScrollPane1.setViewportView(jTable1);
+        TablicaKlient.setRowHeight(25);
+        TablicaKlient.setShowVerticalLines(false);
+        jScrollPane1.setViewportView(TablicaKlient);
 
         jButton3.setText("Dodaj klienta");
 
@@ -91,11 +93,11 @@ public class MenuKlienta extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable TablicaKlient;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

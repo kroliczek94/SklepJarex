@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -24,24 +24,7 @@ public class Jarex {
     private static String doPokazania;
     private static boolean akcja = false;
 
-    private static DaneSklepu s = new DaneSklepu();
-    private static MainWindow okno = new MainWindow();
 
-    public static void polacz(Connection conn) {
-        Properties connectionProps = new Properties();
-        connectionProps.put("user", "inf117242");
-        connectionProps.put("password", "dupadupa");
-        try {
-            conn = DriverManager.getConnection(
-                    "jdbc:oracle:thin:@//admlab2-main.cs.put.poznan.pl:1521/dblab01.cs.put.poznan.pl", connectionProps);
-            System.out.println("Połączono z bazą danych");
-        } catch (SQLException ex) {
-            Logger.getLogger(Jarex.class.getName()).log(Level.SEVERE,
-                    "nie udało się połączyć z bazą danych", ex);
-            System.exit(-1);
-        }
-
-    }
 
     /**
      * @param args the command line arguments

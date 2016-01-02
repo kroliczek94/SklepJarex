@@ -11,9 +11,14 @@ import Towary.*;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -26,7 +31,25 @@ public class DaneSklepu {
     private static boolean managerMode = true;
     private static ConcurrentLinkedDeque<String> stos = new ConcurrentLinkedDeque<>();
     private static boolean wsteczButton = false;
+    
+    private static Connection conn = null;
+    
+    public static void polacz() {
+        Properties connectionProps = new Properties();
+        connectionProps.put("user", "inf117242");
+        connectionProps.put("password", "dupadupa");
+        try {
+            conn = DriverManager.getConnection(
+                    "jdbc:oracle:thin:@//admlab2-main.cs.put.poznan.pl:1521/dblab01.cs.put.poznan.pl", connectionProps);
+            System.out.println("Połączono z bazą danych");
+        } catch (SQLException ex) {
+            Logger.getLogger(Jarex.class.getName()).log(Level.SEVERE,
+                    "nie udało się połączyć z bazą danych", ex);
+            System.exit(-1);
+        }
 
+    }
+    
     /**
      * @return the managerMode
      */
@@ -55,8 +78,26 @@ public class DaneSklepu {
         wsteczButton = aWsteczButton;
     }
 
+    /**
+     * @return the conn
+     */
+    public static Connection getConn() {
+        return conn;
+    }
+
+    /**
+     * @param aConn the conn to set
+     */
+    public static void setConn(Connection aConn) {
+        conn = aConn;
+    }
+
     public DaneSklepu() {
+        DaneSklepu.polacz();
         dodajStrony();
+        
+        
+        
     }
 
     /**
@@ -92,10 +133,10 @@ public class DaneSklepu {
         getStrony().put("MenuPowitalne", mstartowe);
         getStrony().put("SekcjaStatystyczna", stats);
         getStrony().put("MenuKlienta", mklienta);
-        strony.put("MenuTransakcji", mtransakcji);
-        strony.put("MenuDostaw", mdostaw);
-        strony.put("MenuTowarow", mtowarow);
-        strony.put("MenuKlienta", mklienta);
+        getStrony().put("MenuTransakcji", mtransakcji);
+        getStrony().put("MenuDostaw", mdostaw);
+        getStrony().put("MenuTowarow", mtowarow);
+        getStrony().put("MenuKlienta", mklienta);
 
         for (Component c : getStrony().values()) {
             c.setBackground(new Color(4, 56, 145));

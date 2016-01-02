@@ -54,6 +54,7 @@ public class Transakcja extends javax.swing.JPanel {
             }
         ));
         jTable1.setRowHeight(25);
+        jTable1.setShowVerticalLines(false);
         jScrollPane1.setViewportView(jTable1);
 
         jButton3.setText("Anuluj transakcję");
