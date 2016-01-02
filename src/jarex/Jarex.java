@@ -24,6 +24,9 @@ public class Jarex {
     private static String doPokazania;
     private static boolean akcja = false;
 
+    private static DaneSklepu s = new DaneSklepu();
+    private static MainWindow okno = new MainWindow();
+
     public static void polacz(Connection conn) {
         Properties connectionProps = new Properties();
         connectionProps.put("user", "inf117242");
@@ -56,10 +59,9 @@ public class Jarex {
 
         window.add(okno);
         okno.dodajNaglowek();
-        okno.dodajElement(s.getStrony().get("MenuStartowe"));
+        okno.dodajElement(s.getStrony().get("MenuPowitalne"));
         window.setVisible(true);
 
-        
         while (true) {
             try {
                 Thread.sleep(40);
@@ -82,6 +84,11 @@ public class Jarex {
         GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
         Rectangle maximumWindowBounds = graphicsEnvironment.getMaximumWindowBounds();
         window.setBounds(maximumWindowBounds);
+    }
+
+    public static void przejdz(String str) {
+        Jarex.setDoPokazania(str);
+        Jarex.setAkcja(true);
     }
 
     /**

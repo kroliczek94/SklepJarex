@@ -5,6 +5,9 @@
  */
 package jarex;
 
+import Klienci.*;
+import Transakcje.*;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.util.HashMap;
@@ -55,11 +58,13 @@ public class DaneSklepu {
         GetClient client = new GetClient();
         PanelTransakcji panel = new PanelTransakcji();
         Transakcja transact = new Transakcja();
+        MenuPowitalne mstartowe = new MenuPowitalne();
         
         getStrony().put("MenuStartowe", menu);
         getStrony().put("GetClient", client);
         getStrony().put("PanelTransakcji", panel);
         getStrony().put("Transakcja", transact);
+        getStrony().put("MenuPowitalne", mstartowe);
         
         
         
