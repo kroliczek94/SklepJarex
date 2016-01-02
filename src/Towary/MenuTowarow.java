@@ -53,10 +53,7 @@ public class MenuTowarow extends javax.swing.JPanel {
 
         TablicaTowar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "Kod", "Nazwa", "Cena ", "Cena w dostawie", "Ilość w magazynie", "Do zamówienia", "Rabat"
@@ -64,6 +61,7 @@ public class MenuTowarow extends javax.swing.JPanel {
         ));
         TablicaTowar.setCellSelectionEnabled(true);
         TablicaTowar.setRowHeight(25);
+        TablicaTowar.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         jScrollPane1.setViewportView(TablicaTowar);
         TablicaTowar.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         if (TablicaTowar.getColumnModel().getColumnCount() > 0) {
@@ -122,10 +120,11 @@ public class MenuTowarow extends javax.swing.JPanel {
 
             ResultSet rs;
             rs = stmt.executeQuery("select kod, nazwa, cena_zakup, cena_zamow, ilosc_w_magazynie, "
-                    + "do_zamowienia, rabat from towary");
+                    + "do_zamowienia, rabat from towary order by kod");
             
             while (rs.next()) {
-                model.addRow(new Object[]{String.valueOf(rs.getInt(1)),"Column 2", "Column 3"});
+                model.addRow(new Object[]{String.valueOf(rs.getInt(1)),rs.getString(2), String.valueOf(rs.getDouble(3)), String.valueOf(rs.getDouble(4)),
+                                            String.valueOf(rs.getInt(5)), rs.getString(6), String.valueOf(rs.getInt(7))});
             }
         } catch (SQLException ex) {
             Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);
