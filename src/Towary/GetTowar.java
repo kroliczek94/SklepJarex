@@ -19,7 +19,7 @@ public class GetTowar extends MyJPanel{
      */
     public GetTowar() {
         initComponents();
-        DaneSklepu.getStrony().get("PanelTransakcji").wypelnijTabele();
+        //DaneSklepu.getStrony().get("PanelTransakcji").wypelnijTabele();
         //super();
         
         

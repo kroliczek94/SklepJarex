@@ -53,6 +53,7 @@ public class MenuTowarow extends MyJPanel {
 
         jButton5.setText("Dodaj nowy towar");
 
+        TablicaTowar.setAutoCreateRowSorter(true);
         TablicaTowar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -121,25 +122,25 @@ public class MenuTowarow extends MyJPanel {
                 // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    public void wypelnijTabele() {
-        try {
-            DefaultTableModel model = (DefaultTableModel) TablicaTowar.getModel();
-            
-            Statement stmt;
-            stmt = DaneSklepu.getConn().createStatement();
-
-            ResultSet rs;
-            rs = stmt.executeQuery("select kod, nazwa, cena_zakup, cena_zamow, ilosc_w_magazynie, "
-                    + "do_zamowienia, rabat from towary order by kod");
-            
-            while (rs.next()) {
-                model.addRow(new Object[]{String.valueOf(rs.getInt(1)),rs.getString(2), String.valueOf(rs.getDouble(3)), String.valueOf(rs.getDouble(4)),
-                                            String.valueOf(rs.getInt(5)), rs.getString(6), String.valueOf(rs.getInt(7))});
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+//    public void wypelnijTabele() {
+//        try {
+//            DefaultTableModel model = (DefaultTableModel) TablicaTowar.getModel();
+//            
+//            Statement stmt;
+//            stmt = DaneSklepu.getConn().createStatement();
+//
+//            ResultSet rs;
+//            rs = stmt.executeQuery("select kod, nazwa, cena_zakup, cena_zamow, ilosc_w_magazynie, "
+//                    + "do_zamowienia, rabat from towary order by kod");
+//            
+//            while (rs.next()) {
+//                model.addRow(new Object[]{String.valueOf(rs.getInt(1)),rs.getString(2), String.valueOf(rs.getDouble(3)), String.valueOf(rs.getDouble(4)),
+//                                            String.valueOf(rs.getInt(5)), rs.getString(6), String.valueOf(rs.getInt(7))});
+//            }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TablicaTowar;
     private javax.swing.JButton jButton2;

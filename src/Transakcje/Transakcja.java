@@ -7,6 +7,7 @@ package Transakcje;
 
 import Klienci.GetClient;
 import jarex.Jarex;
+import jarex.MyJPanel;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -17,14 +18,22 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
  *
  * @author Łukasz Królik
  */
-public class Transakcja extends JPanel {
+public class Transakcja extends MyJPanel {
+
+    public int idKarty;
 
     /**
      * Creates new form Transakcja
      */
     public Transakcja() {
         initComponents();
-        
+
+    }
+
+    public Transakcja(int id) {
+        initComponents();
+        this.idKarty = id;
+
     }
 
     /**
@@ -132,7 +141,13 @@ public class Transakcja extends JPanel {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         JTabbedPane panelTransakcji = (JTabbedPane) SwingUtilities.getAncestorOfClass(JTabbedPane.class, this);
-        panelTransakcji.remove(0);// TODO add your handling code here:
+        panelTransakcji.remove(this.idKarty - 1);
+       
+
+        PanelTransakcji.getZestawLiczb().remove(Integer.valueOf(this.idKarty));
+        for (Integer i : PanelTransakcji.getZestawLiczb()) {
+            System.out.println(i);
+        }// TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
 

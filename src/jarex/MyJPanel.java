@@ -11,12 +11,15 @@ package jarex;
  */
 public class MyJPanel extends javax.swing.JPanel implements TabelaDoWypelnienia{
 
+   
     /**
      * Creates new form MyJPanel
      */
     public MyJPanel() {
         initComponents();
     }
+    
+
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -45,6 +48,6 @@ public class MyJPanel extends javax.swing.JPanel implements TabelaDoWypelnienia{
 
     @Override
     public void wypelnijTabele() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
