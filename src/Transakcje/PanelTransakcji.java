@@ -5,6 +5,7 @@
  */
 package Transakcje;
 
+import jarex.MyJPanel;
 import java.util.ArrayList;
 import java.util.Collections;
 import javax.swing.JComponent;
@@ -13,7 +14,7 @@ import javax.swing.JComponent;
  *
  * @author Łukasz Królik
  */
-public class PanelTransakcji extends javax.swing.JPanel {
+public class PanelTransakcji extends MyJPanel {
 
     private ArrayList<Integer> zestawLiczb = new ArrayList<>();
 

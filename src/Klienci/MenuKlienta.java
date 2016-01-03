@@ -5,11 +5,13 @@
  */
 package Klienci;
 
+import jarex.MyJPanel;
+
 /**
  *
  * @author Łukasz Królik
  */
-public class MenuKlienta extends javax.swing.JPanel {
+public class MenuKlienta extends MyJPanel {
 
     /**
      * Creates new form MenuKlienta

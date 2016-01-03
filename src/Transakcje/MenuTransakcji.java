@@ -5,11 +5,13 @@
  */
 package Transakcje;
 
+import jarex.MyJPanel;
+
 /**
  *
  * @author Łukasz Królik
  */
-public class MenuTransakcji extends javax.swing.JPanel {
+public class MenuTransakcji extends MyJPanel {
 
     /**
      * Creates new form MenuTransakcji

@@ -14,7 +14,7 @@ import java.awt.*;
  *
  * @author Łukasz Królik
  */
-public class MenuStartowe extends javax.swing.JPanel {
+public class MenuStartowe extends MyJPanel {
 
     
     /**

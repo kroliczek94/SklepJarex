@@ -5,11 +5,13 @@
  */
 package Towary;
 
+import jarex.MyJPanel;
+
 /**
  *
  * @author Łukasz Królik
  */
-public class MenuDostaw extends javax.swing.JPanel {
+public class MenuDostaw extends MyJPanel {
 
     /**
      * Creates new form MenuDostaw

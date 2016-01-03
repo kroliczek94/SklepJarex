@@ -5,17 +5,21 @@
  */
 package Towary;
 
+import jarex.DaneSklepu;
+import jarex.MyJPanel;
+
 /**
  *
  * @author Łukasz Królik
  */
-public class GetTowar extends MenuTowarow{
+public class GetTowar extends MyJPanel{
 
     /**
      * Creates new form GetTowarTrans
      */
     public GetTowar() {
         initComponents();
+        DaneSklepu.getStrony().get("PanelTransakcji").wypelnijTabele();
         //super();
         
         

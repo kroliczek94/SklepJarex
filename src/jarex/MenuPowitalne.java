@@ -9,7 +9,7 @@ package jarex;
  *
  * @author Łukasz Królik
  */
-public class MenuPowitalne extends javax.swing.JPanel {
+public class MenuPowitalne extends MyJPanel {
     public boolean manager = false;
     /**
      * Creates new form MenuPowitalne

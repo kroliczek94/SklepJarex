@@ -6,6 +6,7 @@
 package Towary;
 
 import jarex.DaneSklepu;
+import jarex.MyJPanel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Łukasz Królik
  */
-public class MenuTowarow extends javax.swing.JPanel {
+public class MenuTowarow extends MyJPanel {
 
     /**
      * Creates new form MenuTowarow
@@ -120,7 +121,7 @@ public class MenuTowarow extends javax.swing.JPanel {
                 // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void wypelnijTabele() {
+    public void wypelnijTabele() {
         try {
             DefaultTableModel model = (DefaultTableModel) TablicaTowar.getModel();
             

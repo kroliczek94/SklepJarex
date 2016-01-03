@@ -9,7 +9,7 @@ package jarex;
  *
  * @author Łukasz Królik
  */
-public class SekcjaStatystyczna extends javax.swing.JPanel {
+public class SekcjaStatystyczna extends MyJPanel {
 
     /**
      * Creates new form SekcjaStatystyczna

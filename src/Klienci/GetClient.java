@@ -6,12 +6,13 @@
 package Klienci;
 
 import jarex.Jarex;
+import jarex.MyJPanel;
 
 /**
  *
  * @author Łukasz Królik
  */
-public class GetClient extends javax.swing.JPanel {
+public class GetClient extends MyJPanel {
 
     /**
      * Creates new form GetClient

@@ -19,6 +19,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JPanel;
 
 
 /**
@@ -27,7 +28,7 @@ import java.util.logging.Logger;
  */
 public class DaneSklepu {
 
-    private static HashMap<String, Component> strony = new HashMap<>();
+    private static HashMap<String, MyJPanel> strony = new HashMap<>();
     private static boolean managerMode = true;
     private static ConcurrentLinkedDeque<String> stos = new ConcurrentLinkedDeque<>();
     private static boolean wsteczButton = false;
@@ -103,14 +104,14 @@ public class DaneSklepu {
     /**
      * @return the strony
      */
-    public static HashMap<String, Component> getStrony() {
+    public static HashMap<String, MyJPanel> getStrony() {
         return strony;
     }
 
     /**
      * @param strony the strony to set
      */
-    public static void setStrony(HashMap<String, Component> strony) {
+    public static void setStrony(HashMap<String, MyJPanel> strony) {
         DaneSklepu.strony = strony;
     }
 
@@ -118,7 +119,7 @@ public class DaneSklepu {
 
         MenuStartowe menu = new MenuStartowe();
         GetClient client = new GetClient();
-        PanelTransakcji panel = new PanelTransakcji();
+        PanelTransakcji panel1 = new PanelTransakcji();
 
         MenuPowitalne mstartowe = new MenuPowitalne();
         MenuKlienta mklienta = new MenuKlienta();
@@ -132,7 +133,7 @@ public class DaneSklepu {
         
         getStrony().put("MenuStartowe", menu);
         getStrony().put("GetClient", client);
-        getStrony().put("PanelTransakcji", panel);
+        getStrony().put("PanelTransakcji", panel1);
         getStrony().put("MenuPowitalne", mstartowe);
         getStrony().put("SekcjaStatystyczna", stats);
         getStrony().put("MenuKlienta", mklienta);
