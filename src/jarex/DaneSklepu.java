@@ -93,7 +93,7 @@ public class DaneSklepu {
     }
 
     public DaneSklepu() {
-        DaneSklepu.polacz();
+        //DaneSklepu.polacz();
         dodajStrony();
         
         
@@ -127,6 +127,9 @@ public class DaneSklepu {
         MenuTowarow mtowarow = new MenuTowarow();
         SekcjaStatystyczna stats = new SekcjaStatystyczna();
 
+        GetTowar gtowar = new GetTowar();
+        GetClient gclient = new GetClient();
+        
         getStrony().put("MenuStartowe", menu);
         getStrony().put("GetClient", client);
         getStrony().put("PanelTransakcji", panel);
@@ -137,7 +140,10 @@ public class DaneSklepu {
         getStrony().put("MenuDostaw", mdostaw);
         getStrony().put("MenuTowarow", mtowarow);
         getStrony().put("MenuKlienta", mklienta);
-
+        strony.put("GetTowar", gtowar);
+        strony.put("GetClient", gclient);
+        
+        
         for (Component c : getStrony().values()) {
             c.setBackground(new Color(4, 56, 145));
         }

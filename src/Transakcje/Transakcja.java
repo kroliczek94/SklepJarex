@@ -5,17 +5,26 @@
  */
 package Transakcje;
 
+import Klienci.GetClient;
+import jarex.Jarex;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
+
 /**
  *
  * @author Łukasz Królik
  */
-public class Transakcja extends javax.swing.JPanel {
+public class Transakcja extends JPanel {
 
     /**
      * Creates new form Transakcja
      */
     public Transakcja() {
         initComponents();
+        
     }
 
     /**
@@ -39,6 +48,11 @@ public class Transakcja extends javax.swing.JPanel {
         setBackground(new java.awt.Color(4, 56, 145));
 
         jButton1.setText("Nowy Towar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Zakończ transakcję");
 
@@ -58,6 +72,11 @@ public class Transakcja extends javax.swing.JPanel {
         jScrollPane1.setViewportView(jTable1);
 
         jButton3.setText("Anuluj transakcję");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Usuń towar");
 
@@ -102,7 +121,19 @@ public class Transakcja extends javax.swing.JPanel {
                     .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(15, 15, 15))
         );
+
+        getAccessibleContext().setAccessibleDescription("");
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Jarex.przejdz("GetTowar");
+// TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        JTabbedPane panelTransakcji = (JTabbedPane) SwingUtilities.getAncestorOfClass(JTabbedPane.class, this);
+        panelTransakcji.remove(0);// TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

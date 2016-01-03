@@ -9,13 +9,16 @@ package Towary;
  *
  * @author Łukasz Królik
  */
-public class GetTowar extends javax.swing.JPanel {
+public class GetTowar extends MenuTowarow{
 
     /**
      * Creates new form GetTowarTrans
      */
     public GetTowar() {
         initComponents();
+        //super();
+        
+        
     }
 
     /**

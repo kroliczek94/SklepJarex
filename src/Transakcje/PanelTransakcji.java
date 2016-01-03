@@ -5,6 +5,8 @@
  */
 package Transakcje;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import javax.swing.JComponent;
 
 /**
@@ -13,14 +15,16 @@ import javax.swing.JComponent;
  */
 public class PanelTransakcji extends javax.swing.JPanel {
 
+    private ArrayList<Integer> zestawLiczb = new ArrayList<>();
+
     /**
      * Creates new form PanelTransakcji
      */
     public PanelTransakcji() {
-        
-        
+
+        zestawLiczb.add(1);
         initComponents();
-        jTabbedPane1.addTab("dupa", new Transakcja());
+        TablicaTransakcji.addTab("Transakcja: " + String.valueOf(zestawLiczb.get(zestawLiczb.size() - 1)), new Transakcja());
     }
 
     /**
@@ -32,11 +36,11 @@ public class PanelTransakcji extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        TablicaTransakcji = new javax.swing.JTabbedPane();
         jButton1 = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
-        add(jTabbedPane1, java.awt.BorderLayout.CENTER);
+        add(TablicaTransakcji, java.awt.BorderLayout.CENTER);
 
         jButton1.setText("Wciśnij Ctrl + '+' by utworzyć kolejna transakcje");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -48,12 +52,37 @@ public class PanelTransakcji extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+
+        zestawLiczb.add(znajdzNajmniejszaMozliwaLiczbe());
+
+        TablicaTransakcji.addTab("Transakcja: " + String.valueOf(zestawLiczb.get(zestawLiczb.size() - 1)), new Transakcja());
+        TablicaTransakcji.setSelectedIndex(TablicaTransakcji.getComponentCount()-1);
+// TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    public int znajdzNajmniejszaMozliwaLiczbe() {
+        int najmniejsza = 1;
+        Collections.sort(zestawLiczb);
+        for (int i = 1; i < zestawLiczb.size(); i++) {
+            if (i - najmniejsza != 0) {
+                najmniejsza = i;
 
+                break;
+            }
+            najmniejsza = i + 1;
+        }
+        if (najmniejsza == zestawLiczb.size()) {
+            return najmniejsza + 1;
+        } else {
+            return najmniejsza + 1;
+        }
+    }
+
+    public void zakonczTransakcje() {
+        //TablicaTransakcji.remove(3);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTabbedPane TablicaTransakcji;
     private javax.swing.JButton jButton1;
-    private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
 }

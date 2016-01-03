@@ -24,7 +24,8 @@ public class MenuTowarow extends javax.swing.JPanel {
      */
     public MenuTowarow() {
         initComponents();
-        wypelnijTabele();
+        
+        //wypelnijTabele();
 
     }
 
@@ -61,7 +62,6 @@ public class MenuTowarow extends javax.swing.JPanel {
         ));
         TablicaTowar.setCellSelectionEnabled(true);
         TablicaTowar.setRowHeight(25);
-        TablicaTowar.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         jScrollPane1.setViewportView(TablicaTowar);
         TablicaTowar.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         if (TablicaTowar.getColumnModel().getColumnCount() > 0) {
@@ -72,6 +72,11 @@ public class MenuTowarow extends javax.swing.JPanel {
         }
 
         jButton4.setText("Edytuj towar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton6.setText("Usuń towar");
 
@@ -110,6 +115,10 @@ public class MenuTowarow extends javax.swing.JPanel {
                 .addGap(19, 19, 19))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+                // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     private void wypelnijTabele() {
         try {
