@@ -5,7 +5,15 @@
  */
 package Transakcje;
 
+import Towary.MenuTowarow;
+import jarex.DaneSklepu;
 import jarex.MyJPanel;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -21,6 +29,38 @@ public class MenuTransakcji extends MyJPanel {
        
     }
 
+    
+         public void wyczyscTabele() {
+        DefaultTableModel dm = (DefaultTableModel) TransakcjeTable.getModel();
+        int rowCount = dm.getRowCount();
+//Remove rows one by one from the end of the table
+        for (int i = rowCount - 1; i >= 0; i--) {
+            dm.removeRow(i);
+        }
+    }
+
+    @Override
+    public void wypelnijTabele() {
+        
+
+        try {
+            DefaultTableModel model = (DefaultTableModel) TransakcjeTable.getModel();
+            Statement stmt;
+            stmt = DaneSklepu.getConn().createStatement();
+
+            ResultSet rs;
+            rs = stmt.executeQuery("select d.id, data, k.nazwisko from transakcje d join klienci k on d.id_klienta = k.id  order by id");
+
+            while (rs.next()) {
+                model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), rs.getDate(3)});
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+
+        //model.removeRow(2);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,7 +73,7 @@ public class MenuTransakcji extends MyJPanel {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        TransakcjeTable = new javax.swing.JTable();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
 
@@ -41,7 +81,7 @@ public class MenuTransakcji extends MyJPanel {
 
         jButton3.setText("Raporty...");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        TransakcjeTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -52,8 +92,8 @@ public class MenuTransakcji extends MyJPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jTable1.setRowHeight(25);
-        jScrollPane1.setViewportView(jTable1);
+        TransakcjeTable.setRowHeight(25);
+        jScrollPane1.setViewportView(TransakcjeTable);
 
         jButton4.setText("Usuń transakcję");
 
@@ -103,11 +143,11 @@ public class MenuTransakcji extends MyJPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable TransakcjeTable;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

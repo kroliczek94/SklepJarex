@@ -52,7 +52,6 @@ public class PanelTransakcji extends MyJPanel {
             }
         });
 
-        TablicaTransakcji.setBackground(new java.awt.Color(0, 0, 255));
         TablicaTransakcji.setTabPlacement(javax.swing.JTabbedPane.BOTTOM);
         TablicaTransakcji.setFocusTraversalPolicyProvider(true);
         TablicaTransakcji.setRequestFocusEnabled(false);

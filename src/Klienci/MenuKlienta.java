@@ -46,7 +46,6 @@ public class MenuKlienta extends MyJPanel {
 
     @Override
     public void wypelnijTabele() {
-        
 
         try {
             DefaultTableModel model = (DefaultTableModel) TablicaKlient.getModel();
@@ -105,8 +104,18 @@ public class MenuKlienta extends MyJPanel {
         });
 
         jButton4.setText("Edytuj klienta");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Usuń klienta");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -148,14 +157,81 @@ public class MenuKlienta extends MyJPanel {
             "Imię:", imie,
             "Nazwisko:", nazwisko
         };
-
+        Statement stmt = null;
         UIManager.put("OptionPane.cancelButtonText", "Anuluj");
         int option = JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
-// KOD DODAJĄCY KLIENTA
+
+        if (option == JOptionPane.OK_OPTION) {
+            try {
+                stmt = DaneSklepu.getConn().createStatement();
+                String sql = "INSERT INTO KLIENCI(ID, IMIE, NAZWISKO) VALUES(idKlienta.NEXTVAL, '" + imie.getText() + "' , '" + nazwisko.getText() + "')";
+                stmt.executeUpdate(sql);
+            } catch (SQLException ex) {
+                Logger.getLogger(MenuKlienta.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        wyczyscTabele();
+        wypelnijTabele();
 
 // TODO add your handling code here:
 // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+
+        if (TablicaKlient.getSelectedRow() != -1) {
+            JTextField imie = new JTextField();
+            JTextField nazwisko = new JTextField();
+            Object[] message = {
+                "Imię:", imie,
+                "Nazwisko:", nazwisko
+            };
+            String id = (String) TablicaKlient.getValueAt(TablicaKlient.getSelectedRow(), 0);
+            imie.setText((String) TablicaKlient.getValueAt(TablicaKlient.getSelectedRow(), 1));
+            nazwisko.setText((String) TablicaKlient.getValueAt(TablicaKlient.getSelectedRow(), 2));
+            UIManager.put("OptionPane.cancelButtonText", "Anuluj");
+            int option = JOptionPane.showConfirmDialog(null, message, "Edytuj klienta", JOptionPane.OK_CANCEL_OPTION);
+
+            Statement stmt = null;
+
+            if (option == JOptionPane.OK_OPTION) {
+                try {
+                    stmt = DaneSklepu.getConn().createStatement();
+                    String sql = "UPDATE KLIENCI SET IMIE = '" + imie.getText() + "' , NAZWISKO = '" + nazwisko.getText() + "' where id = " + id;
+                    stmt.executeUpdate(sql);
+                } catch (SQLException ex) {
+                    Logger.getLogger(MenuKlienta.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            wyczyscTabele();
+            wypelnijTabele();
+        }
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String imie = (String) TablicaKlient.getValueAt(TablicaKlient.getSelectedRow(), 1);
+        String nazwisko = ((String) TablicaKlient.getValueAt(TablicaKlient.getSelectedRow(), 2));
+        String id = (String) TablicaKlient.getValueAt(TablicaKlient.getSelectedRow(), 0);
+        
+        int option = JOptionPane.showConfirmDialog(null, "Czy usunąć klienta : " + imie + ' ' + nazwisko);
+
+        Statement stmt = null;
+        if (option == JOptionPane.OK_OPTION) {
+            try {
+                stmt = DaneSklepu.getConn().createStatement();
+                String sql = "DELETE FROM KLIENCI WHERE ID = " + id;
+                stmt.executeUpdate(sql);
+            } catch (SQLException ex) {
+                Logger.getLogger(MenuKlienta.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        wyczyscTabele();
+        wypelnijTabele();
+// TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

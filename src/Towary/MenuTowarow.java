@@ -44,10 +44,10 @@ public class MenuTowarow extends MyJPanel {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        TablicaTowar = new javax.swing.JTable();
         jButton4 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        TablicaTowar = new javax.swing.JTable();
 
         jButton2.setText("Przeglądaj listę towarów do zamówienia");
 
@@ -65,26 +65,6 @@ public class MenuTowarow extends MyJPanel {
             }
         });
 
-        TablicaTowar.setAutoCreateRowSorter(true);
-        TablicaTowar.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Kod", "Nazwa", "Cena ", "Cena w dostawie", "Ilość w magazynie", "Do zamówienia", "Rabat"
-            }
-        ));
-        TablicaTowar.setCellSelectionEnabled(true);
-        TablicaTowar.setRowHeight(25);
-        jScrollPane1.setViewportView(TablicaTowar);
-        TablicaTowar.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        if (TablicaTowar.getColumnModel().getColumnCount() > 0) {
-            TablicaTowar.getColumnModel().getColumn(0).setMinWidth(40);
-            TablicaTowar.getColumnModel().getColumn(0).setMaxWidth(40);
-            TablicaTowar.getColumnModel().getColumn(2).setMinWidth(50);
-            TablicaTowar.getColumnModel().getColumn(2).setMaxWidth(50);
-        }
-
         jButton4.setText("Edytuj towar");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -94,6 +74,20 @@ public class MenuTowarow extends MyJPanel {
 
         jButton6.setText("Usuń towar");
 
+        TablicaTowar.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7"
+            }
+        ));
+        TablicaTowar.setRowHeight(25);
+        jScrollPane2.setViewportView(TablicaTowar);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -101,9 +95,9 @@ public class MenuTowarow extends MyJPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
                     .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -116,8 +110,8 @@ public class MenuTowarow extends MyJPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton5)
                     .addComponent(jButton4)
@@ -179,6 +173,6 @@ public class MenuTowarow extends MyJPanel {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 }

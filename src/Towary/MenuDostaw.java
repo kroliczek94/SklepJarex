@@ -27,6 +27,37 @@ public class MenuDostaw extends MyJPanel {
         initComponents();
     }
 
+     public void wyczyscTabele() {
+        DefaultTableModel dm = (DefaultTableModel) DostawyTable.getModel();
+        int rowCount = dm.getRowCount();
+//Remove rows one by one from the end of the table
+        for (int i = rowCount - 1; i >= 0; i--) {
+            dm.removeRow(i);
+        }
+    }
+
+    @Override
+    public void wypelnijTabele() {
+        
+
+        try {
+            DefaultTableModel model = (DefaultTableModel) DostawyTable.getModel();
+            Statement stmt;
+            stmt = DaneSklepu.getConn().createStatement();
+
+            ResultSet rs;
+            rs = stmt.executeQuery("select id, dostawca, data from dostawy order by id");
+
+            while (rs.next()) {
+                model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), rs.getDate(3)});
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+
+        //model.removeRow(2);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
