@@ -50,7 +50,7 @@ public class MainWindow extends javax.swing.JPanel {
     public void dodajNaglowek(PasekGorny pasek) {
         //PasekGorny pasek = new PasekGorny();
         this.add(pasek, BorderLayout.NORTH);
-
+        
         validate();
         repaint();
     }

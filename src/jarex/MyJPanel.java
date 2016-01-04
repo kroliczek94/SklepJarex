@@ -5,6 +5,8 @@
  */
 package jarex;
 
+import javax.swing.JLabel;
+
 /**
  *
  * @author Łukasz Królik
@@ -50,4 +52,11 @@ public class MyJPanel extends javax.swing.JPanel implements TabelaDoWypelnienia{
     public void wypelnijTabele() {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+
+    @Override
+    public void zmienLabela(String str) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

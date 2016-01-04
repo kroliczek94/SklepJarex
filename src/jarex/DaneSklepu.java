@@ -27,7 +27,7 @@ import javax.swing.JPanel;
  * @author Łukasz Królik
  */
 public class DaneSklepu {
-
+    private static String tytul;
     private static HashMap<String, MyJPanel> strony = new HashMap<>();
     private static boolean managerMode = true;
     private static ConcurrentLinkedDeque<String> stos = new ConcurrentLinkedDeque<>();
@@ -116,7 +116,7 @@ public class DaneSklepu {
     }
 
     private static void dodajStrony() {
-
+        
         MenuStartowe menu = new MenuStartowe();
         GetClient client = new GetClient();
         PanelTransakcji panel1 = new PanelTransakcji();
@@ -127,9 +127,12 @@ public class DaneSklepu {
         MenuTransakcji mtransakcji = new MenuTransakcji();
         MenuTowarow mtowarow = new MenuTowarow();
         SekcjaStatystyczna stats = new SekcjaStatystyczna();
+        PlanszaPoTransakcji ppt1 = new PlanszaPoTransakcji();
+      
 
         GetTowar gtowar = new GetTowar();
         GetClient gclient = new GetClient();
+        AddDostawa adost = new AddDostawa();
         
         getStrony().put("MenuStartowe", menu);
         getStrony().put("GetClient", client);
@@ -143,6 +146,8 @@ public class DaneSklepu {
         getStrony().put("MenuKlienta", mklienta);
         strony.put("GetTowar", gtowar);
         strony.put("GetClient", gclient);
+        strony.put("PlanszaPoTransakcji", ppt1);
+        strony.put("AddDostawa", adost);
         
         
         for (Component c : getStrony().values()) {

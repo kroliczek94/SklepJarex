@@ -5,6 +5,8 @@
  */
 package jarex;
 
+import java.awt.BorderLayout;
+import java.awt.ComponentOrientation;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.text.SimpleDateFormat;
@@ -30,6 +32,11 @@ public class PasekGorny extends javax.swing.JPanel {
         setBounds(0, 0, (int) maximumWindowBounds.getX(), 30);
 
         initComponents();
+        jPanel1.setLayout(new java.awt.FlowLayout(200));
+        remove(jPanel1);
+        remove(jPanel2);
+        this.add(jPanel1, BorderLayout.NORTH);
+        this.add(jPanel2, BorderLayout.CENTER);
         setTime();
 
     }
@@ -42,11 +49,16 @@ public class PasekGorny extends javax.swing.JPanel {
         DataLabel.setText("          Data: " + ft.format(dNow));
     }
 
+    public void setTitle(String str) {
+        
+        MiejsceLabel.setText(str);
+    }
+
     public void setMode() {
 
         if (DaneSklepu.isManagerMode() == true) {
             TrybLabel.setText("Tryb : Manager");
-                    
+
         } else {
             TrybLabel.setText("Tryb : Sprzedawca");
         }
@@ -61,6 +73,9 @@ public class PasekGorny extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel2 = new javax.swing.JPanel();
+        MiejsceLabel = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         WsteczButton = new javax.swing.JButton();
         SprzedazButton = new javax.swing.JButton();
         TowaryButton = new javax.swing.JButton();
@@ -77,6 +92,17 @@ public class PasekGorny extends javax.swing.JPanel {
         setToolTipText("");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setFont(new java.awt.Font("Times New Roman", 1, 11)); // NOI18N
+        setLayout(new java.awt.BorderLayout());
+
+        jPanel2.setBackground(new java.awt.Color(1, 32, 84));
+
+        MiejsceLabel.setForeground(new java.awt.Color(255, 255, 255));
+        MiejsceLabel.setText("Miejsce:");
+        jPanel2.add(MiejsceLabel);
+
+        add(jPanel2, java.awt.BorderLayout.PAGE_START);
+
+        jPanel1.setBackground(new java.awt.Color(1, 32, 84));
 
         WsteczButton.setText("Wstecz");
         WsteczButton.addActionListener(new java.awt.event.ActionListener() {
@@ -84,7 +110,7 @@ public class PasekGorny extends javax.swing.JPanel {
                 WsteczButtonActionPerformed(evt);
             }
         });
-        add(WsteczButton);
+        jPanel1.add(WsteczButton);
 
         SprzedazButton.setText("Sprzedaż");
         SprzedazButton.addActionListener(new java.awt.event.ActionListener() {
@@ -92,7 +118,7 @@ public class PasekGorny extends javax.swing.JPanel {
                 SprzedazButtonActionPerformed(evt);
             }
         });
-        add(SprzedazButton);
+        jPanel1.add(SprzedazButton);
 
         TowaryButton.setText("Towary");
         TowaryButton.setMaximumSize(new java.awt.Dimension(69, 25));
@@ -101,7 +127,7 @@ public class PasekGorny extends javax.swing.JPanel {
                 TowaryButtonActionPerformed(evt);
             }
         });
-        add(TowaryButton);
+        jPanel1.add(TowaryButton);
 
         KlienciButton.setText("Klienci");
         KlienciButton.addActionListener(new java.awt.event.ActionListener() {
@@ -109,7 +135,7 @@ public class PasekGorny extends javax.swing.JPanel {
                 KlienciButtonActionPerformed(evt);
             }
         });
-        add(KlienciButton);
+        jPanel1.add(KlienciButton);
 
         DostawyButton.setText("Dostawy");
         DostawyButton.addActionListener(new java.awt.event.ActionListener() {
@@ -117,7 +143,7 @@ public class PasekGorny extends javax.swing.JPanel {
                 DostawyButtonActionPerformed(evt);
             }
         });
-        add(DostawyButton);
+        jPanel1.add(DostawyButton);
 
         TransakcjaButton.setText("Transakcje");
         TransakcjaButton.addActionListener(new java.awt.event.ActionListener() {
@@ -125,7 +151,7 @@ public class PasekGorny extends javax.swing.JPanel {
                 TransakcjaButtonActionPerformed(evt);
             }
         });
-        add(TransakcjaButton);
+        jPanel1.add(TransakcjaButton);
 
         HistoriaButton.setText("Historia");
         HistoriaButton.addActionListener(new java.awt.event.ActionListener() {
@@ -133,7 +159,7 @@ public class PasekGorny extends javax.swing.JPanel {
                 HistoriaButtonActionPerformed(evt);
             }
         });
-        add(HistoriaButton);
+        jPanel1.add(HistoriaButton);
 
         PowitalnyButton.setText("Wybór trybu");
         PowitalnyButton.addActionListener(new java.awt.event.ActionListener() {
@@ -141,15 +167,15 @@ public class PasekGorny extends javax.swing.JPanel {
                 PowitalnyButtonActionPerformed(evt);
             }
         });
-        add(PowitalnyButton);
+        jPanel1.add(PowitalnyButton);
 
         TrybLabel.setForeground(new java.awt.Color(255, 255, 255));
         TrybLabel.setText("Tryb : ");
-        add(TrybLabel);
+        jPanel1.add(TrybLabel);
 
         DataLabel.setForeground(new java.awt.Color(255, 255, 255));
         DataLabel.setText("Data : ");
-        add(DataLabel);
+        jPanel1.add(DataLabel);
 
         ExitButton.setText("Wyjście");
         ExitButton.addActionListener(new java.awt.event.ActionListener() {
@@ -157,7 +183,9 @@ public class PasekGorny extends javax.swing.JPanel {
                 ExitButtonActionPerformed(evt);
             }
         });
-        add(ExitButton);
+        jPanel1.add(ExitButton);
+
+        add(jPanel1, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
 
     private void ExitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitButtonActionPerformed
@@ -166,20 +194,20 @@ public class PasekGorny extends javax.swing.JPanel {
     }//GEN-LAST:event_ExitButtonActionPerformed
 
     private void PowitalnyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PowitalnyButtonActionPerformed
-        
+
         Jarex.przejdz("MenuPowitalne");
 // TODO add your handling code here:
     }//GEN-LAST:event_PowitalnyButtonActionPerformed
 
     private void WsteczButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WsteczButtonActionPerformed
-        
-        if (DaneSklepu.getStos().size() > 0){
+
+        if (DaneSklepu.getStos().size() > 0) {
             DaneSklepu.setWsteczButton(true);
-        Jarex.przejdz((String) DaneSklepu.getStos().pollLast());
+            Jarex.przejdz((String) DaneSklepu.getStos().pollLast());
+        } else {
+            JOptionPane.showMessageDialog(DaneSklepu.getStrony().get("MenuPowitalne"), "Nie robiłeś nic wcześniej", "Błąd", 0);
         }
-        else
-            JOptionPane.showMessageDialog(this, "Nie robiłeś nic wcześniej", "Błąd", 0);
-        
+
 //String s = 
 // TODO add your handling code here:
     }//GEN-LAST:event_WsteczButtonActionPerformed
@@ -215,11 +243,14 @@ public class PasekGorny extends javax.swing.JPanel {
     private javax.swing.JButton ExitButton;
     private javax.swing.JButton HistoriaButton;
     private javax.swing.JButton KlienciButton;
+    private javax.swing.JLabel MiejsceLabel;
     private javax.swing.JButton PowitalnyButton;
     private javax.swing.JButton SprzedazButton;
     private javax.swing.JButton TowaryButton;
     private javax.swing.JButton TransakcjaButton;
     private javax.swing.JLabel TrybLabel;
     private javax.swing.JButton WsteczButton;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 }

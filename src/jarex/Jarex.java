@@ -43,6 +43,7 @@ public class Jarex {
         PasekGorny p = new PasekGorny();
         window.add(okno);
         okno.dodajNaglowek(p);
+        //okno.dodajElement("PasekMiejsca");
         //okno.dodajElement(s.getStrony().get("MenuPowitalne"));
         przejdz("MenuPowitalne");
         window.setVisible(true);
