@@ -5,7 +5,14 @@
  */
 package Towary;
 
+import jarex.DaneSklepu;
 import jarex.MyJPanel;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -30,12 +37,12 @@ public class MenuDostaw extends MyJPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        DostawyTable = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        DostawyTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -46,9 +53,8 @@ public class MenuDostaw extends MyJPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jTable1.setRowHeight(25);
-        jTable1.setShowVerticalLines(false);
-        jScrollPane1.setViewportView(jTable1);
+        DostawyTable.setRowHeight(25);
+        jScrollPane1.setViewportView(DostawyTable);
 
         jButton1.setText("Dodaj nową dostawę");
         jButton1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -97,11 +103,12 @@ public class MenuDostaw extends MyJPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable DostawyTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

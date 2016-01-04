@@ -6,12 +6,14 @@
 package jarex;
 
 import javax.swing.JLabel;
+import javax.swing.JTable;
 
 /**
  *
  * @author Łukasz Królik
  */
 public interface TabelaDoWypelnienia {
+    public void wyczyscTabele();
     public void wypelnijTabele();
     public void zmienLabela(String str);
 }

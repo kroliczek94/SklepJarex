@@ -27,11 +27,7 @@ public class PanelTransakcji extends MyJPanel {
 
         zestawLiczb.add(1);
         initComponents();
-        
-//        remove(jButton1);
-//        remove(TablicaTransakcji);
-//        add(TablicaTransakcji, BorderLayout.NORTH);
-//        add(jButton1, BorderLayout.CENTER);
+
         TablicaTransakcji.addTab("Transakcja: " + String.valueOf(zestawLiczb.get(zestawLiczb.size() - 1)), new Transakcja());
     }
 
@@ -75,9 +71,9 @@ public class PanelTransakcji extends MyJPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(TablicaTransakcji, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
+                .addComponent(TablicaTransakcji, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents

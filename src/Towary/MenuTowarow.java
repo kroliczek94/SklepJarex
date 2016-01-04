@@ -12,6 +12,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -25,9 +28,8 @@ public class MenuTowarow extends MyJPanel {
      */
     public MenuTowarow() {
         initComponents();
-        
-        //wypelnijTabele();
 
+        //wypelnijTabele();
     }
 
     /**
@@ -57,6 +59,11 @@ public class MenuTowarow extends MyJPanel {
         });
 
         jButton5.setText("Dodaj nowy towar");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         TablicaTowar.setAutoCreateRowSorter(true);
         TablicaTowar.setModel(new javax.swing.table.DefaultTableModel(
@@ -124,32 +131,47 @@ public class MenuTowarow extends MyJPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-                // TODO add your handling code here:
+        // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         jarex.Jarex.przejdz("AddDostawa");// TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
-//    public void wypelnijTabele() {
-//        try {
-//            DefaultTableModel model = (DefaultTableModel) TablicaTowar.getModel();
-//            
-//            Statement stmt;
-//            stmt = DaneSklepu.getConn().createStatement();
-//
-//            ResultSet rs;
-//            rs = stmt.executeQuery("select kod, nazwa, cena_zakup, cena_zamow, ilosc_w_magazynie, "
-//                    + "do_zamowienia, rabat from towary order by kod");
-//            
-//            while (rs.next()) {
-//                model.addRow(new Object[]{String.valueOf(rs.getInt(1)),rs.getString(2), String.valueOf(rs.getDouble(3)), String.valueOf(rs.getDouble(4)),
-//                                            String.valueOf(rs.getInt(5)), rs.getString(6), String.valueOf(rs.getInt(7))});
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    public void wyczyscTabele() {
+        DefaultTableModel dm = (DefaultTableModel) TablicaTowar.getModel();
+        int rowCount = dm.getRowCount();
+//Remove rows one by one from the end of the table
+        for (int i = rowCount - 1; i >= 0; i--) {
+            dm.removeRow(i);
+        }
+    }
+
+    @Override
+    public void wypelnijTabele() {
+        try {
+
+            DefaultTableModel model = (DefaultTableModel) TablicaTowar.getModel();
+
+            Statement stmt;
+            stmt = DaneSklepu.getConn().createStatement();
+
+            ResultSet rs;
+            rs = stmt.executeQuery("select kod, nazwa, cena_zakup, cena_zamow, ilosc_w_magazynie, "
+                    + "do_zamowienia, rabat from towary order by kod");
+
+            while (rs.next()) {
+                model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), String.valueOf(rs.getDouble(3)), String.valueOf(rs.getDouble(4)),
+                    String.valueOf(rs.getInt(5)), rs.getString(6), String.valueOf(rs.getInt(7))});
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TablicaTowar;
     private javax.swing.JButton jButton2;

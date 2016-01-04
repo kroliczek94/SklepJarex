@@ -6,13 +6,20 @@
 package Towary;
 
 import jarex.DaneSklepu;
+import jarex.Jarex;
 import jarex.MyJPanel;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Łukasz Królik
  */
-public class GetTowar extends MyJPanel{
+public class GetTowar extends MyJPanel {
 
     /**
      * Creates new form GetTowarTrans
@@ -21,8 +28,47 @@ public class GetTowar extends MyJPanel{
         initComponents();
         //DaneSklepu.getStrony().get("PanelTransakcji").wypelnijTabele();
         //super();
-        
-        
+
+    }
+
+    public void wyczyscTabele() {
+        DefaultTableModel dm = (DefaultTableModel) GetTowarTable.getModel();
+        int rowCount = dm.getRowCount();
+//Remove rows one by one from the end of the table
+        for (int i = rowCount - 1; i >= 0; i--) {
+            dm.removeRow(i);
+        }
+    }
+
+    @Override
+    public void wypelnijTabele() {
+        boolean transakcja = true;
+        try {
+            DefaultTableModel model = (DefaultTableModel) GetTowarTable.getModel();
+            Statement stmt;
+            stmt = DaneSklepu.getConn().createStatement();
+
+            ResultSet rs;
+            if (transakcja) {
+                rs = stmt.executeQuery("select kod, nazwa, cena_zakup from towary order by kod");
+                while (rs.next()) {
+                    model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), String.valueOf(rs.getDouble(3))});
+                }
+            } else {
+                model.setColumnIdentifiers(new Object[] {"Kod", "Nazwa", "Cena w dostawie"});
+                rs = stmt.executeQuery("select kod, nazwa, cena_zamow from towary order by kod");
+                while (rs.next()) {
+                    model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), String.valueOf(rs.getDouble(3)), String.valueOf(rs.getDouble(4)),
+                        String.valueOf(rs.getInt(5)), rs.getString(6)});
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+
+        //model.removeRow(2);
     }
 
     /**
@@ -35,37 +81,39 @@ public class GetTowar extends MyJPanel{
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        GetTowarTable = new javax.swing.JTable();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
         jScrollPane1.setBackground(new java.awt.Color(93, 141, 223));
 
-        jTable1.setAutoCreateRowSorter(true);
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        GetTowarTable.setAutoCreateRowSorter(true);
+        GetTowarTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Kod", "Nazwa", "Cena"
             }
         ));
-        jTable1.setRowHeight(25);
-        jScrollPane1.setViewportView(jTable1);
+        GetTowarTable.setRowHeight(25);
+        jScrollPane1.setViewportView(GetTowarTable);
 
         jButton1.setText("Wybierz");
 
-        jButton2.setText("Zarządaj towarami");
-
         jButton4.setText("Anuluj");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Kod");
@@ -80,12 +128,7 @@ public class GetTowar extends MyJPanel{
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 547, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -95,7 +138,11 @@ public class GetTowar extends MyJPanel{
                             .addComponent(jTextField2)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -110,26 +157,27 @@ public class GetTowar extends MyJPanel{
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
-                .addGap(22, 22, 22)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
-                .addGap(7, 7, 7))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        Jarex.przejdz((String) DaneSklepu.getStos().pollLast());// TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable GetTowarTable;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables

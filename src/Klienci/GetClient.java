@@ -7,6 +7,7 @@ package Klienci;
 
 import jarex.Jarex;
 import jarex.MyJPanel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -137,7 +138,7 @@ public class GetClient extends MyJPanel {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-       
+        JOptionPane.showInputDialog("Podaj Nazwisko nowego klienta");
         jButton3.setText("Akceptuj");// TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 

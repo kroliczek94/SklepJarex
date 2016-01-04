@@ -32,7 +32,7 @@ public class Jarex {
     public static void main(String[] args) {
 
         Connection conn = null;
-        // Jarex.polacz(conn);
+        
 
         JFrame window = new JFrame("JAREX");
         ustawFullScreena(window);

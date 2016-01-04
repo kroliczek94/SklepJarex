@@ -108,7 +108,7 @@ public class DaneSklepu {
     }
 
     public DaneSklepu() {
-        //DaneSklepu.polacz();
+        DaneSklepu.polacz();
         dodajStrony();
         
         

@@ -5,7 +5,20 @@
  */
 package Klienci;
 
+import Towary.MenuTowarow;
+import jarex.DaneSklepu;
 import jarex.MyJPanel;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -18,7 +31,41 @@ public class MenuKlienta extends MyJPanel {
      */
     public MenuKlienta() {
         initComponents();
+        //wypelnijTabele();
+
+    }
+
+    public void wyczyscTabele() {
+        DefaultTableModel dm = (DefaultTableModel) TablicaKlient.getModel();
+        int rowCount = dm.getRowCount();
+//Remove rows one by one from the end of the table
+        for (int i = rowCount - 1; i >= 0; i--) {
+            dm.removeRow(i);
+        }
+    }
+
+    @Override
+    public void wypelnijTabele() {
         
+
+        try {
+            DefaultTableModel model = (DefaultTableModel) TablicaKlient.getModel();
+            Statement stmt;
+            stmt = DaneSklepu.getConn().createStatement();
+
+            ResultSet rs;
+            rs = stmt.executeQuery("select id, imie, nazwisko, stan_konta, stan_naklejek from klienci order by id");
+
+            while (rs.next()) {
+                model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), rs.getString(3), String.valueOf(rs.getInt(4)),
+                    String.valueOf(rs.getInt(5))});
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+
+        //model.removeRow(2);
     }
 
     /**
@@ -41,20 +88,21 @@ public class MenuKlienta extends MyJPanel {
 
         TablicaKlient.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Imię", "Nazwisko", "Stan Konta", "Stan naklejek"
             }
         ));
         TablicaKlient.setRowHeight(25);
-        TablicaKlient.setShowVerticalLines(false);
         jScrollPane1.setViewportView(TablicaKlient);
 
         jButton3.setText("Dodaj klienta");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Edytuj klienta");
 
@@ -92,6 +140,22 @@ public class MenuKlienta extends MyJPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        JTextField imie = new JTextField();
+        JTextField nazwisko = new JTextField();
+        Object[] message = {
+            "Imię:", imie,
+            "Nazwisko:", nazwisko
+        };
+
+        UIManager.put("OptionPane.cancelButtonText", "Anuluj");
+        int option = JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
+// KOD DODAJĄCY KLIENTA
+
+// TODO add your handling code here:
+// TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
