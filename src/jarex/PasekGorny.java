@@ -6,13 +6,10 @@
 package jarex;
 
 import java.awt.BorderLayout;
-import java.awt.ComponentOrientation;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.swing.ImageIcon;
-import javax.swing.JApplet;
 import javax.swing.JOptionPane;
 
 /**
@@ -49,9 +46,9 @@ public class PasekGorny extends javax.swing.JPanel {
         DataLabel.setText("          Data: " + ft.format(dNow));
     }
 
-    public void setTitle(String str) {
+    public void setTitle() {
         
-        MiejsceLabel.setText(str);
+        MiejsceLabel.setText(DaneSklepu.getTytul());
     }
 
     public void setMode() {
@@ -96,6 +93,7 @@ public class PasekGorny extends javax.swing.JPanel {
 
         jPanel2.setBackground(new java.awt.Color(1, 32, 84));
 
+        MiejsceLabel.setFont(new java.awt.Font("Arial Black", 1, 11)); // NOI18N
         MiejsceLabel.setForeground(new java.awt.Color(255, 255, 255));
         MiejsceLabel.setText("Miejsce:");
         jPanel2.add(MiejsceLabel);
@@ -189,6 +187,7 @@ public class PasekGorny extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ExitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitButtonActionPerformed
+        
         System.exit(0);
         // TODO add your handling code here:
     }//GEN-LAST:event_ExitButtonActionPerformed

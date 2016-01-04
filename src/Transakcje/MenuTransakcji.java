@@ -58,6 +58,11 @@ public class MenuTransakcji extends MyJPanel {
         jButton4.setText("Usuń transakcję");
 
         jButton5.setText("Okno sprzedaży");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -91,6 +96,10 @@ public class MenuTransakcji extends MyJPanel {
                 .addGap(20, 20, 20))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        jarex.Jarex.przejdz("PanelTransakcji");// TODO add your handling code here:
+    }//GEN-LAST:event_jButton5ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

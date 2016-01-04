@@ -93,6 +93,20 @@ public class DaneSklepu {
         conn = aConn;
     }
 
+    /**
+     * @return the tytul
+     */
+    public static String getTytul() {
+        return tytul;
+    }
+
+    /**
+     * @param aTytul the tytul to set
+     */
+    public static void setTytul(String aTytul) {
+        tytul = aTytul;
+    }
+
     public DaneSklepu() {
         //DaneSklepu.polacz();
         dodajStrony();
@@ -143,7 +157,7 @@ public class DaneSklepu {
         getStrony().put("MenuTransakcji", mtransakcji);
         getStrony().put("MenuDostaw", mdostaw);
         getStrony().put("MenuTowarow", mtowarow);
-        getStrony().put("MenuKlienta", mklienta);
+        
         strony.put("GetTowar", gtowar);
         strony.put("GetClient", gclient);
         strony.put("PlanszaPoTransakcji", ppt1);
@@ -155,6 +169,48 @@ public class DaneSklepu {
         }
     }
 
+    public static void wybierzTytulDlaNazwy(String str){
+        String odpowiedz = null;
+        if (null != str) switch (str) {
+            case "MenuPowitalne":
+                odpowiedz = "MENU POWITALNE - WYBIERZ TRYB W JAKIM CHCESZ PRACOWAĆ";
+                break;
+            case "MenuStartowe":
+                odpowiedz = "MENU STARTOWE";
+                break;
+            case "AddDostawa":
+                odpowiedz = "DODAJ NOWĄ DOSTAWĘ";
+                break;
+            case "GetClient":
+                odpowiedz = "WYBIERZ KLIENTA";
+                break;
+            case "GetTowar":
+                odpowiedz = "WYBIERZ TOWAR";
+                break;
+            case "MenuKlienta":
+                odpowiedz = "KLIENCI";
+                break;
+            case "MenuTowarow":
+                odpowiedz = "TOWARY";
+                break;
+            case "MenuDostaw":
+                odpowiedz = "DOSTAWY";
+                break;
+            case "MenuTransakcji":
+                odpowiedz = "TRANSAKCJE";
+                break;
+            case "SekcjaStatystyczna":
+                odpowiedz = "STATYSTYKI";
+                break;
+            case "PanelTransakcji":
+                odpowiedz = "SPRZEDAŻ";
+                break;
+        }
+        
+        
+        
+        setTytul(odpowiedz);
+    }
     /**
      * @return the stos
      */

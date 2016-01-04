@@ -31,6 +31,11 @@ public class SekcjaStatystyczna extends MyJPanel {
         jButton2 = new javax.swing.JButton();
 
         jButton1.setText("Przeglądaj zeszłe transakcje");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Raport...");
 
@@ -55,6 +60,10 @@ public class SekcjaStatystyczna extends MyJPanel {
                 .addContainerGap(225, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Jarex.przejdz("MenuTransakcji");// TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

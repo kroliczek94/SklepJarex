@@ -43,6 +43,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Przegl&#x105;daj zesz&#x142;e transakcje"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButton2">
       <Properties>

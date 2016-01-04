@@ -50,6 +50,11 @@ public class MenuTowarow extends MyJPanel {
         jButton2.setText("Przeglądaj listę towarów do zamówienia");
 
         jButton3.setText("Przyjmij nową dostawę");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("Dodaj nowy towar");
 
@@ -121,6 +126,10 @@ public class MenuTowarow extends MyJPanel {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
                 // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        jarex.Jarex.przejdz("AddDostawa");// TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 //    public void wypelnijTabele() {
 //        try {

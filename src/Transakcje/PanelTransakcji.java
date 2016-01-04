@@ -6,6 +6,7 @@
 package Transakcje;
 
 import jarex.MyJPanel;
+import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.Collections;
 import javax.swing.JComponent;
@@ -26,6 +27,11 @@ public class PanelTransakcji extends MyJPanel {
 
         zestawLiczb.add(1);
         initComponents();
+        
+//        remove(jButton1);
+//        remove(TablicaTransakcji);
+//        add(TablicaTransakcji, BorderLayout.NORTH);
+//        add(jButton1, BorderLayout.CENTER);
         TablicaTransakcji.addTab("Transakcja: " + String.valueOf(zestawLiczb.get(zestawLiczb.size() - 1)), new Transakcja());
     }
 
@@ -38,11 +44,10 @@ public class PanelTransakcji extends MyJPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        TablicaTransakcji = new javax.swing.JTabbedPane();
         jButton1 = new javax.swing.JButton();
+        TablicaTransakcji = new javax.swing.JTabbedPane();
 
-        setLayout(new java.awt.BorderLayout());
-        add(TablicaTransakcji, java.awt.BorderLayout.CENTER);
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         jButton1.setText("Wciśnij Ctrl + '+' by utworzyć kolejna transakcje");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -50,7 +55,31 @@ public class PanelTransakcji extends MyJPanel {
                 jButton1ActionPerformed(evt);
             }
         });
-        add(jButton1, java.awt.BorderLayout.PAGE_START);
+
+        TablicaTransakcji.setBackground(new java.awt.Color(0, 0, 255));
+        TablicaTransakcji.setTabPlacement(javax.swing.JTabbedPane.BOTTOM);
+        TablicaTransakcji.setFocusTraversalPolicyProvider(true);
+        TablicaTransakcji.setRequestFocusEnabled(false);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
+                    .addComponent(TablicaTransakcji))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(TablicaTransakcji, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

@@ -46,6 +46,7 @@ public class Jarex {
         //okno.dodajElement("PasekMiejsca");
         //okno.dodajElement(s.getStrony().get("MenuPowitalne"));
         przejdz("MenuPowitalne");
+        
         window.setVisible(true);
 
         while (true) {
@@ -59,6 +60,7 @@ public class Jarex {
             okno.repaint();
             p.setTime();
             p.setMode();
+            p.setTitle();
             if (akcja) {
                 okno.dodajElement(doPokazania);
             }

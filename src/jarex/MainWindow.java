@@ -61,6 +61,7 @@ public class MainWindow extends javax.swing.JPanel {
             this.remove(DaneSklepu.getStrony().get(current));
         }
         this.add(DaneSklepu.getStrony().get(str), BorderLayout.CENTER);
+        DaneSklepu.wybierzTytulDlaNazwy(str);
         DaneSklepu.getStrony().get(str).wypelnijTabele();
         previous = current;
         if (previous != null && !DaneSklepu.isWsteczButton()) {

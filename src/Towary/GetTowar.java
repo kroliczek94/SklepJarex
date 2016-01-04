@@ -47,7 +47,6 @@ public class GetTowar extends MyJPanel{
         jScrollPane1.setBackground(new java.awt.Color(93, 141, 223));
 
         jTable1.setAutoCreateRowSorter(true);
-        jTable1.setBackground(new java.awt.Color(94, 141, 223));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -59,6 +58,7 @@ public class GetTowar extends MyJPanel{
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTable1.setRowHeight(25);
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setText("Wybierz");
@@ -67,8 +67,10 @@ public class GetTowar extends MyJPanel{
 
         jButton4.setText("Anuluj");
 
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Kod");
 
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Nazwa");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -108,13 +110,14 @@ public class GetTowar extends MyJPanel{
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
+                .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton4))
-                .addGap(13, 13, 13)
-                .addComponent(jButton2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2)
+                .addGap(7, 7, 7))
         );
     }// </editor-fold>//GEN-END:initComponents
 
