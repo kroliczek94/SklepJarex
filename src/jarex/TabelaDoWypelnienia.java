@@ -14,6 +14,7 @@ import javax.swing.JTable;
  */
 public interface TabelaDoWypelnienia {
     
+    
     public void wyczyscTabele();
     public void wypelnijTabele();
     public void zmienLabela(String str);

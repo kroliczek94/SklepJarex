@@ -13,7 +13,8 @@ import javax.swing.JTable;
  * @author Łukasz Królik
  */
 public class MyJPanel extends javax.swing.JPanel implements TabelaDoWypelnienia{
-    private int currentID;
+    private Integer currentID;
+    private Integer nrKolejny;
    
     /**
      * Creates new form MyJPanel
@@ -68,15 +69,29 @@ public class MyJPanel extends javax.swing.JPanel implements TabelaDoWypelnienia{
     /**
      * @return the currentID
      */
-    public int getCurrentID() {
+    public Integer getCurrentID() {
         return currentID;
     }
 
     /**
      * @param currentID the currentID to set
      */
-    public void setCurrentID(int currentID) {
+    public void setCurrentID(Integer currentID) {
         this.currentID = currentID;
+    }
+
+    /**
+     * @return the nrKolejny
+     */
+    public Integer getNrKolejny() {
+        return nrKolejny;
+    }
+
+    /**
+     * @param nrKolejny the nrKolejny to set
+     */
+    public void setNrKolejny(Integer nrKolejny) {
+        this.nrKolejny = nrKolejny;
     }
 
 }

@@ -5,7 +5,14 @@
  */
 package Towary;
 
+import jarex.DaneSklepu;
 import jarex.MyJPanel;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -13,11 +20,42 @@ import jarex.MyJPanel;
  */
 public class AddDostawa extends MyJPanel {
 
+    int i = 0;
     /**
      * Creates new form AddDostawa
      */
     public AddDostawa() {
         initComponents();
+    }
+    
+        public void wyczyscTabele() {
+        DefaultTableModel dm = (DefaultTableModel) AddDostawaTable.getModel();
+        int rowCount = dm.getRowCount();
+//Remove rows one by one from the end of the table
+        for (int i = rowCount - 1; i >= 0; i--) {
+            dm.removeRow(i);
+        }
+    }
+    
+    @Override
+    public void wypelnijTabele() {
+        
+        try {
+            DefaultTableModel model = (DefaultTableModel) AddDostawaTable.getModel();
+            Statement stmt;
+            stmt = DaneSklepu.getConn().createStatement();
+            
+            ResultSet rs;
+            rs = stmt.executeQuery("select nr_kolejny, t.nazwa, t.cena_zamow, ilosc from towary_w_dost x join towary t on t.kod = x.kod_towaru where id_dost = ' "+DaneSklepu.getStrony().get("AddDostawa").getCurrentID() + "'order by nr_kolejny");
+            
+            while (rs.next()) {
+                model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), Double.valueOf(rs.getString(3)), String.valueOf(rs.getInt(4))});
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }
+
     }
 
     /**
@@ -30,12 +68,12 @@ public class AddDostawa extends MyJPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        AddDostawaTable = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        AddDostawaTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -46,8 +84,8 @@ public class AddDostawa extends MyJPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jTable1.setRowHeight(25);
-        jScrollPane1.setViewportView(jTable1);
+        AddDostawaTable.setRowHeight(25);
+        jScrollPane1.setViewportView(AddDostawaTable);
 
         jButton1.setText("Wybierz towar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -57,8 +95,18 @@ public class AddDostawa extends MyJPanel {
         });
 
         jButton2.setText("Zakończ i dodaj");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Anuluj dostawę");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -93,15 +141,33 @@ public class AddDostawa extends MyJPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        i++;
+        DaneSklepu.getStrony().get("AddDostawa").setNrKolejny(i);
         jarex.Jarex.przejdz("GetTowar");// TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            DaneSklepu.getConn().commit();// TODO add your handling code here:
+        } catch (SQLException ex) {
+            Logger.getLogger(AddDostawa.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+            DaneSklepu.getConn().rollback();// TODO add your handling code here:
+        } catch (SQLException ex) {
+            Logger.getLogger(AddDostawa.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable AddDostawaTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

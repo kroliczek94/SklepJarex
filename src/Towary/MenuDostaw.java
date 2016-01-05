@@ -10,6 +10,7 @@ import jarex.MyJPanel;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Savepoint;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,7 +32,7 @@ public class MenuDostaw extends MyJPanel {
     public MenuDostaw() {
         initComponents();
     }
-
+    
     public void wyczyscTabele() {
         DefaultTableModel dm = (DefaultTableModel) DostawyTable.getModel();
         int rowCount = dm.getRowCount();
@@ -40,24 +41,29 @@ public class MenuDostaw extends MyJPanel {
             dm.removeRow(i);
         }
     }
-
+    
     @Override
     public void wypelnijTabele() {
-
+        
+        try {
+            DaneSklepu.getConn().commit();
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuDostaw.class.getName()).log(Level.SEVERE, null, ex);
+        }
         try {
             DefaultTableModel model = (DefaultTableModel) DostawyTable.getModel();
             Statement stmt;
             stmt = DaneSklepu.getConn().createStatement();
-
+            
             ResultSet rs;
-            rs = stmt.executeQuery("select id, dostawca, data from dostawy order by id");
-
+            rs = stmt.executeQuery("select id, dostawca, TO_CHAR(data, 'DD-MM-YYYY HH24:MI') from dostawy order by id");
+            
             while (rs.next()) {
-                model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), rs.getDate(3)});
+                model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), rs.getString(3)});
             }
         } catch (SQLException ex) {
             Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);
-
+            
         }
 
         //model.removeRow(2);
@@ -135,40 +141,43 @@ public class MenuDostaw extends MyJPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       // jarex.Jarex.przejdz("AddDostawa");// TODO add your handling code here:
+        
         try {
             JComboBox nazwa = new JComboBox();
-
+            
             Statement stmt = null;
             stmt = DaneSklepu.getConn().createStatement();
-
+            
             ResultSet rs = null;
             rs = stmt.executeQuery("select distinct dostawca from dostawy");
-
+            nazwa.addItem("");
             while (rs.next()) {
                 nazwa.addItem(rs.getString(1));
             }
+            
             nazwa.setEditable(true);
             Object[] message = {
                 "Dostawca:", nazwa};
-
-            PreparedStatement stmt1 = null;
-
+            
+            Statement stmt1 = null;
+            
             UIManager.put("OptionPane.cancelButtonText", "Anuluj");
-            int option = JOptionPane.showConfirmDialog(null, message, "Nazwa Dostawcy", JOptionPane.OK_CANCEL_OPTION);
-
+            int option = JOptionPane.showConfirmDialog(null, message, ""
+                    + "Wybierz z listy lub podaj\nnazwę nowego dostawcy", JOptionPane.OK_CANCEL_OPTION);
+            
             if (option == JOptionPane.OK_OPTION) {
-                stmt1 = DaneSklepu.getConn().prepareStatement("Insert into dostawy(id, dostawca) values (iddost.NEXTVAL, ?)");
-                stmt1.setString(1, (String) nazwa.getSelectedItem());
-                System.out.println("Coś tam sie udało");
+                stmt1 = DaneSklepu.getConn().createStatement();
+                
+                stmt1.executeUpdate("Insert into dostawy(id, dostawca) values (iddost.NEXTVAL,'" + (String) nazwa.getSelectedItem() + "')");
             }
-
+            rs = stmt.executeQuery("select max(id) from dostawy");
+            DaneSklepu.getStrony().get("AddDostawa").setNrKolejny(0);
+            if (rs.next()) DaneSklepu.getStrony().get("AddDostawa").setCurrentID(rs.getInt(1));
         } catch (SQLException ex) {
             Logger.getLogger(MenuDostaw.class.getName()).log(Level.SEVERE, null, ex);
         }
-        wyczyscTabele();
-wypelnijTabele();
-       // jarex.Jarex.przejdz("AddDostawa");
+        
+        jarex.Jarex.przejdz("AddDostawa");
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
