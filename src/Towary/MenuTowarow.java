@@ -5,8 +5,10 @@
  */
 package Towary;
 
+import Klienci.MenuKlienta;
 import jarex.DaneSklepu;
 import jarex.MyJPanel;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,6 +17,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -29,7 +32,6 @@ public class MenuTowarow extends MyJPanel {
     public MenuTowarow() {
         initComponents();
 
-        //wypelnijTabele();
     }
 
     /**
@@ -125,7 +127,47 @@ public class MenuTowarow extends MyJPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+
+        if (TablicaTowar.getSelectedRow() != -1) {
+            JTextField nazwa = new JTextField();
+            JTextField cena = new JTextField();
+            JTextField cena_dost = new JTextField();
+
+            Object[] message = {
+                "Nazwa produktu:", nazwa,
+                "Cena sprzedaży:", cena,
+                "Cena dostawy:", cena_dost,};
+            String idText = (String) TablicaTowar.getValueAt(TablicaTowar.getSelectedRow(), 0);
+            String nazwaText = (String) TablicaTowar.getValueAt(TablicaTowar.getSelectedRow(), 1);
+            String cenaText = (String) TablicaTowar.getValueAt(TablicaTowar.getSelectedRow(), 2);
+            String cenaDostText = (String) TablicaTowar.getValueAt(TablicaTowar.getSelectedRow(), 3);
+
+            nazwa.setText(nazwaText);
+            cena.setText(cenaText);
+            cena_dost.setText(cenaDostText);
+
+            PreparedStatement stmt = null;
+            UIManager.put("OptionPane.cancelButtonText", "Anuluj");
+            int option = JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
+
+            if (option == JOptionPane.OK_OPTION) {
+                try {
+                    stmt = DaneSklepu.getConn().prepareStatement("Update towary set nazwa = ?, cena_zakup = ?, cena_zamow = ? where kod = " + idText);
+                    stmt.setString(1, nazwa.getText());
+                    stmt.setDouble(2, Double.valueOf(cena.getText()));
+                    stmt.setDouble(3, Double.valueOf(cena_dost.getText()));
+
+                    stmt.executeUpdate();
+                } catch (SQLException ex) {
+                    Logger.getLogger(MenuKlienta.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            wyczyscTabele();
+            wypelnijTabele();
+
+        }
+// TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -133,7 +175,34 @@ public class MenuTowarow extends MyJPanel {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        JTextField nazwa = new JTextField();
+        JTextField cena = new JTextField();
+        JTextField cena_dost = new JTextField();
 
+        Object[] message = {
+            "Nazwa produktu:", nazwa,
+            "Cena sprzedaży:", cena,
+            "Cena dostawy:", cena_dost,};
+
+        PreparedStatement stmt = null;
+        UIManager.put("OptionPane.cancelButtonText", "Anuluj");
+        int option = JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
+
+        if (option == JOptionPane.OK_OPTION) {
+            try {
+                stmt = DaneSklepu.getConn().prepareStatement("Insert into towary(kod, nazwa, cena_zakup, cena_zamow, DO_ZAMOWIENIA) values (idtrans.NEXTVAL , ? , ? , ?, 'TAK')");
+                stmt.setString(1, nazwa.getText());
+                stmt.setDouble(2, Double.valueOf(cena.getText()));
+                stmt.setDouble(3, Double.valueOf(cena_dost.getText()));
+
+                stmt.executeUpdate();
+            } catch (SQLException ex) {
+                Logger.getLogger(MenuKlienta.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        wyczyscTabele();
+        wypelnijTabele();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     public void wyczyscTabele() {

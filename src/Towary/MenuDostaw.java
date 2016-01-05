@@ -7,11 +7,16 @@ package Towary;
 
 import jarex.DaneSklepu;
 import jarex.MyJPanel;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -27,7 +32,7 @@ public class MenuDostaw extends MyJPanel {
         initComponents();
     }
 
-     public void wyczyscTabele() {
+    public void wyczyscTabele() {
         DefaultTableModel dm = (DefaultTableModel) DostawyTable.getModel();
         int rowCount = dm.getRowCount();
 //Remove rows one by one from the end of the table
@@ -38,7 +43,6 @@ public class MenuDostaw extends MyJPanel {
 
     @Override
     public void wypelnijTabele() {
-        
 
         try {
             DefaultTableModel model = (DefaultTableModel) DostawyTable.getModel();
@@ -58,6 +62,7 @@ public class MenuDostaw extends MyJPanel {
 
         //model.removeRow(2);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -130,9 +135,41 @@ public class MenuDostaw extends MyJPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        jarex.Jarex.przejdz("AddDostawa");// TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+       // jarex.Jarex.przejdz("AddDostawa");// TODO add your handling code here:
+        try {
+            JComboBox nazwa = new JComboBox();
 
+            Statement stmt = null;
+            stmt = DaneSklepu.getConn().createStatement();
+
+            ResultSet rs = null;
+            rs = stmt.executeQuery("select distinct dostawca from dostawy");
+
+            while (rs.next()) {
+                nazwa.addItem(rs.getString(1));
+            }
+            nazwa.setEditable(true);
+            Object[] message = {
+                "Dostawca:", nazwa};
+
+            PreparedStatement stmt1 = null;
+
+            UIManager.put("OptionPane.cancelButtonText", "Anuluj");
+            int option = JOptionPane.showConfirmDialog(null, message, "Nazwa Dostawcy", JOptionPane.OK_CANCEL_OPTION);
+
+            if (option == JOptionPane.OK_OPTION) {
+                stmt1 = DaneSklepu.getConn().prepareStatement("Insert into dostawy(id, dostawca) values (iddost.NEXTVAL, ?)");
+                stmt1.setString(1, (String) nazwa.getSelectedItem());
+                System.out.println("Coś tam sie udało");
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuDostaw.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        wyczyscTabele();
+wypelnijTabele();
+       // jarex.Jarex.przejdz("AddDostawa");
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

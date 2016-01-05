@@ -159,7 +159,7 @@ public class MenuKlienta extends MyJPanel {
         };
         Statement stmt = null;
         UIManager.put("OptionPane.cancelButtonText", "Anuluj");
-        int option = JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
+        int option = JOptionPane.showConfirmDialog(null, message, "Dodaj klienta", JOptionPane.OK_CANCEL_OPTION);
 
         if (option == JOptionPane.OK_OPTION) {
             try {
@@ -187,6 +187,7 @@ public class MenuKlienta extends MyJPanel {
                 "Imię:", imie,
                 "Nazwisko:", nazwisko
             };
+
             String id = (String) TablicaKlient.getValueAt(TablicaKlient.getSelectedRow(), 0);
             imie.setText((String) TablicaKlient.getValueAt(TablicaKlient.getSelectedRow(), 1));
             nazwisko.setText((String) TablicaKlient.getValueAt(TablicaKlient.getSelectedRow(), 2));

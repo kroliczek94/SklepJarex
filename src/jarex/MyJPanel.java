@@ -13,7 +13,7 @@ import javax.swing.JTable;
  * @author Łukasz Królik
  */
 public class MyJPanel extends javax.swing.JPanel implements TabelaDoWypelnienia{
-
+    private int currentID;
    
     /**
      * Creates new form MyJPanel
@@ -63,6 +63,20 @@ public class MyJPanel extends javax.swing.JPanel implements TabelaDoWypelnienia{
     @Override
     public void wyczyscTabele() {
        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     * @return the currentID
+     */
+    public int getCurrentID() {
+        return currentID;
+    }
+
+    /**
+     * @param currentID the currentID to set
+     */
+    public void setCurrentID(int currentID) {
+        this.currentID = currentID;
     }
 
 }
