@@ -5,8 +5,15 @@
  */
 package Transakcje;
 
+import Towary.MenuTowarow;
 import jarex.DaneSklepu;
 import jarex.MyJPanel;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -21,6 +28,44 @@ public class PlanszaPoTransakcji extends MyJPanel {
         initComponents();
     }
 
+    
+    
+    @Override
+    public void wyczyscTabele() {
+        DefaultTableModel dm = (DefaultTableModel) TablicaTowarow.getModel();
+        int rowCount = dm.getRowCount();
+//Remove rows one by one from the end of the table
+        for (int i1 = rowCount - 1; i1 >= 0; i1--) {
+            dm.removeRow(i1);
+        }
+    }
+
+    @Override
+    public void wypelnijTabele() {
+
+        try {
+            DefaultTableModel model = (DefaultTableModel) TablicaTowarow.getModel();
+            Statement stmt;
+            stmt = DaneSklepu.getConn().createStatement();
+
+            ResultSet rs;
+            rs = stmt.executeQuery("select nr_kolejny, t.nazwa, t.cena_zakup, ilosc from towary_w_trans x join towary t on "
+                    + "t.kod = x.kod_towaru where id_trans =  " + DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID() + " order by nr_kolejny");
+
+            while (rs.next()) {
+                model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), Double.valueOf(rs.getString(3)), String.valueOf(rs.getInt(4)), Double.valueOf(rs.getString(3)) * rs.getInt(4)});
+            }
+
+//            rs = stmt.executeQuery("select sum(cena*ilosc) from towary_w_dost where id = " + String.valueOf(DaneSklepu.getStrony().get("AddDostawa").getCurrentID()));
+//            
+//            model.addRow(new Object[]{});
+//            model.addRow(new Object[]{"", "", "RAZEM : ", rs.getInt(1) });
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,7 +78,7 @@ public class PlanszaPoTransakcji extends MyJPanel {
         jButton1 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        TablicaTowarow = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -45,7 +90,7 @@ public class PlanszaPoTransakcji extends MyJPanel {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        TablicaTowarow.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -56,8 +101,8 @@ public class PlanszaPoTransakcji extends MyJPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jTable1.setRowHeight(25);
-        jScrollPane1.setViewportView(jTable1);
+        TablicaTowarow.setRowHeight(25);
+        jScrollPane1.setViewportView(TablicaTowarow);
 
         jButton2.setText("Zakończ");
 
@@ -112,12 +157,12 @@ public class PlanszaPoTransakcji extends MyJPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable TablicaTowarow;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

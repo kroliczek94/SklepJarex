@@ -43,13 +43,10 @@ public class PanelTransakcji extends MyJPanel {
 
     @Override
     public void wypelnijTabele() {
-//        try {
-//            DaneSklepu.getConn().setAutoCommit(false);
-//            DaneSklepu.getConn().commit();
-//
-//        } catch (SQLException ex) {
-//            Logger.getLogger(MenuDostaw.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+
+        MyJPanel tab = (MyJPanel) TablicaTransakcji.getSelectedComponent();
+        tab.wyczyscTabele();
+        tab.wypelnijTabele();
     }
 
     /**

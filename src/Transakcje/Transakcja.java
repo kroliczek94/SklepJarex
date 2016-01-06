@@ -6,9 +6,11 @@
 package Transakcje;
 
 import Klienci.GetClient;
+import Towary.MenuTowarow;
 import jarex.DaneSklepu;
 import jarex.Jarex;
 import jarex.MyJPanel;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -20,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -45,6 +48,43 @@ public class Transakcja extends MyJPanel {
         } catch (SQLException ex) {
             Logger.getLogger(Transakcja.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Override
+    public void wyczyscTabele() {
+        DefaultTableModel dm = (DefaultTableModel) TransakcjaTable.getModel();
+        int rowCount = dm.getRowCount();
+//Remove rows one by one from the end of the table
+        for (int i1 = rowCount - 1; i1 >= 0; i1--) {
+            dm.removeRow(i1);
+        }
+    }
+
+    @Override
+    public void wypelnijTabele() {
+
+        try {
+            DefaultTableModel model = (DefaultTableModel) TransakcjaTable.getModel();
+            Statement stmt;
+            stmt = DaneSklepu.getConn().createStatement();
+
+            ResultSet rs;
+            rs = stmt.executeQuery("select nr_kolejny, t.nazwa, t.cena_zakup, ilosc from towary_w_trans x join towary t on "
+                    + "t.kod = x.kod_towaru where id_trans =  " + DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID() + " order by nr_kolejny");
+
+            while (rs.next()) {
+                model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), Double.valueOf(rs.getString(3)), String.valueOf(rs.getInt(4)), Double.valueOf(rs.getString(3)) * rs.getInt(4)});
+            }
+
+//            rs = stmt.executeQuery("select sum(cena*ilosc) from towary_w_dost where id = " + String.valueOf(DaneSklepu.getStrony().get("AddDostawa").getCurrentID()));
+//            
+//            model.addRow(new Object[]{});
+//            model.addRow(new Object[]{"", "", "RAZEM : ", rs.getInt(1) });
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+
     }
 
     public void tworzNowaTransakcje() {
@@ -80,7 +120,7 @@ public class Transakcja extends MyJPanel {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        TransakcjaTable = new javax.swing.JTable();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
@@ -102,20 +142,20 @@ public class Transakcja extends MyJPanel {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        TransakcjaTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
             }
         ));
-        jTable1.setRowHeight(25);
-        jTable1.setShowVerticalLines(false);
-        jScrollPane1.setViewportView(jTable1);
+        TransakcjaTable.setRowHeight(25);
+        TransakcjaTable.setShowVerticalLines(false);
+        jScrollPane1.setViewportView(TransakcjaTable);
 
         jButton3.setText("Anuluj transakcję");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -179,13 +219,14 @@ public class Transakcja extends MyJPanel {
             Statement stmt = null;
             stmt = DaneSklepu.getConn().createStatement();
             ResultSet rs = null;
-            rs = stmt.executeQuery("select max(nr_kolejny) from towary_w_trans where id_trans = " + String.valueOf(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()) + "");
+            rs = stmt.executeQuery("select max(nr_kolejny) from towary_w_trans where id_trans = " + IdTransakcji + "");
             if (rs.next()) {
-                System.out.println("NR KOL: " + rs.getInt(1));
+                System.out.println("NR KOL: " + rs.getInt(1) + "ID TRANS: " + String.valueOf(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()));
                 DaneSklepu.getStrony().get("PanelTransakcji").setNrKolejny(rs.getInt(1) + 1);
             }
             DaneSklepu.getStrony().get("GetTowar").setTransakcja(true);
             DaneSklepu.getStrony().get("PanelTransakcji").setCurrentID(IdTransakcji);
+            
 
 // TODO add your handling code here:
             Jarex.przejdz("GetTowar");
@@ -214,6 +255,7 @@ public class Transakcja extends MyJPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable TransakcjaTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -221,6 +263,5 @@ public class Transakcja extends MyJPanel {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
