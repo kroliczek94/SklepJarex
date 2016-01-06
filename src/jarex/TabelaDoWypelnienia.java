@@ -5,9 +5,6 @@
  */
 package jarex;
 
-import javax.swing.JLabel;
-import javax.swing.JTable;
-
 /**
  *
  * @author Łukasz Królik

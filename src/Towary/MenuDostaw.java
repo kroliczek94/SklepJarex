@@ -10,13 +10,11 @@ import jarex.MyJPanel;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Savepoint;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
@@ -32,7 +30,8 @@ public class MenuDostaw extends MyJPanel {
     public MenuDostaw() {
         initComponents();
     }
-    
+
+    @Override
     public void wyczyscTabele() {
         DefaultTableModel dm = (DefaultTableModel) DostawyTable.getModel();
         int rowCount = dm.getRowCount();
@@ -41,29 +40,32 @@ public class MenuDostaw extends MyJPanel {
             dm.removeRow(i);
         }
     }
-    
+
     @Override
     public void wypelnijTabele() {
-        
-        try {
+         try {
+            DaneSklepu.getConn().setAutoCommit(false);
             DaneSklepu.getConn().commit();
+
         } catch (SQLException ex) {
             Logger.getLogger(MenuDostaw.class.getName()).log(Level.SEVERE, null, ex);
         }
+       
         try {
             DefaultTableModel model = (DefaultTableModel) DostawyTable.getModel();
             Statement stmt;
             stmt = DaneSklepu.getConn().createStatement();
-            
+
             ResultSet rs;
-            rs = stmt.executeQuery("select id, dostawca, TO_CHAR(data, 'DD-MM-YYYY HH24:MI') from dostawy order by id");
-            
+            rs = stmt.executeQuery("select id, TO_CHAR(data, 'DD-MM-YYYY HH24:MI'), dostawca, sum(cena*ilosc) from dostawy d join towary_w_dost t on d.id = t.id_dost group by id, data, dostawca order by data desc");
+
             while (rs.next()) {
-                model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), rs.getString(3)});
+                model.addRow(new Object[]{String.valueOf(rs.getInt(1)),rs.getString(2), rs.getString(3), rs.getDouble(4)});
             }
+            
         } catch (SQLException ex) {
             Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);
-            
+
         }
 
         //model.removeRow(2);
@@ -97,6 +99,10 @@ public class MenuDostaw extends MyJPanel {
         ));
         DostawyTable.setRowHeight(25);
         jScrollPane1.setViewportView(DostawyTable);
+        if (DostawyTable.getColumnModel().getColumnCount() > 0) {
+            DostawyTable.getColumnModel().getColumn(0).setMinWidth(0);
+            DostawyTable.getColumnModel().getColumn(0).setMaxWidth(0);
+        }
 
         jButton1.setText("Dodaj nową dostawę");
         jButton1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -107,8 +113,18 @@ public class MenuDostaw extends MyJPanel {
         });
 
         jButton2.setText("Edytuj dostawę");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Usuń dostawę");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -141,44 +157,66 @@ public class MenuDostaw extends MyJPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
+
         try {
             JComboBox nazwa = new JComboBox();
-            
+
             Statement stmt = null;
             stmt = DaneSklepu.getConn().createStatement();
-            
+
             ResultSet rs = null;
             rs = stmt.executeQuery("select distinct dostawca from dostawy");
             nazwa.addItem("");
             while (rs.next()) {
                 nazwa.addItem(rs.getString(1));
             }
-            
+
             nazwa.setEditable(true);
             Object[] message = {
                 "Dostawca:", nazwa};
-            
+
             Statement stmt1 = null;
-            
+
             UIManager.put("OptionPane.cancelButtonText", "Anuluj");
             int option = JOptionPane.showConfirmDialog(null, message, ""
                     + "Wybierz z listy lub podaj\nnazwę nowego dostawcy", JOptionPane.OK_CANCEL_OPTION);
-            
+
             if (option == JOptionPane.OK_OPTION) {
                 stmt1 = DaneSklepu.getConn().createStatement();
-                
+
                 stmt1.executeUpdate("Insert into dostawy(id, dostawca) values (iddost.NEXTVAL,'" + (String) nazwa.getSelectedItem() + "')");
             }
             rs = stmt.executeQuery("select max(id) from dostawy");
             DaneSklepu.getStrony().get("AddDostawa").setNrKolejny(0);
-            if (rs.next()) DaneSklepu.getStrony().get("AddDostawa").setCurrentID(rs.getInt(1));
+            DaneSklepu.getStrony().get("GetTowar").setTransakcja(false);
+            if (rs.next()) {
+                DaneSklepu.getStrony().get("AddDostawa").setCurrentID(rs.getInt(1));
+            }
         } catch (SQLException ex) {
             Logger.getLogger(MenuDostaw.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         jarex.Jarex.przejdz("AddDostawa");
+
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        DaneSklepu.getStrony().get("AddDostawa").setCurrentID(Integer.valueOf((String)DostawyTable.getValueAt(DostawyTable.getSelectedRow(), 0)));
+        jarex.Jarex.przejdz("AddDostawa");// TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+            int i = new Integer((String) DostawyTable.getValueAt(DostawyTable.getSelectedRow(), 0));
+            
+            PreparedStatement stmt = null;
+            stmt = DaneSklepu.getConn().prepareStatement("Delete from dostawy where id = ?");
+            stmt.setInt(1, i);
+            // TODO add your handling code here:
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuDostaw.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

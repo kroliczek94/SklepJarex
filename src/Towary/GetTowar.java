@@ -35,6 +35,7 @@ public class GetTowar extends MyJPanel {
 
     }
 
+    @Override
     public void wyczyscTabele() {
         DefaultTableModel dm = (DefaultTableModel) GetTowarTable.getModel();
         int rowCount = dm.getRowCount();
@@ -195,7 +196,7 @@ public class GetTowar extends MyJPanel {
             Integer i = new Integer((String) GetTowarTable.getValueAt(GetTowarTable.getSelectedRow(), 0));
             try {
                 PreparedStatement stmt = null;
-                stmt = DaneSklepu.getConn().prepareStatement("insert into TOWARY_W_DOST values (? , ?, ? ,?)");
+                stmt = DaneSklepu.getConn().prepareStatement("insert into TOWARY_W_DOST values (? , ?, ? ,?, (select cena_zamow from towary where kod = "+i + "))");
                 stmt.setInt(1, DaneSklepu.getStrony().get("AddDostawa").getNrKolejny());
                 stmt.setInt(2, new Integer(ilosc.getText()));
                 stmt.setInt(3, i);

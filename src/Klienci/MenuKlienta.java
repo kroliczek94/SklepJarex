@@ -14,8 +14,6 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
@@ -35,6 +33,7 @@ public class MenuKlienta extends MyJPanel {
 
     }
 
+    @Override
     public void wyczyscTabele() {
         DefaultTableModel dm = (DefaultTableModel) TablicaKlient.getModel();
         int rowCount = dm.getRowCount();

@@ -5,9 +5,6 @@
  */
 package jarex;
 
-import javax.swing.JLabel;
-import javax.swing.JTable;
-
 /**
  *
  * @author Łukasz Królik
@@ -15,12 +12,14 @@ import javax.swing.JTable;
 public class MyJPanel extends javax.swing.JPanel implements TabelaDoWypelnienia{
     private Integer currentID;
     private Integer nrKolejny;
-   
+    private boolean transakcja;
+    
     /**
      * Creates new form MyJPanel
      */
     public MyJPanel() {
         initComponents();
+        
     }
     
 
@@ -92,6 +91,20 @@ public class MyJPanel extends javax.swing.JPanel implements TabelaDoWypelnienia{
      */
     public void setNrKolejny(Integer nrKolejny) {
         this.nrKolejny = nrKolejny;
+    }
+
+    /**
+     * @return the transakcja
+     */
+    public boolean isTransakcja() {
+        return transakcja;
+    }
+
+    /**
+     * @param transakcja the transakcja to set
+     */
+    public void setTransakcja(boolean transakcja) {
+        this.transakcja = transakcja;
     }
 
 }

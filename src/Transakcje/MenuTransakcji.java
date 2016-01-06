@@ -30,6 +30,7 @@ public class MenuTransakcji extends MyJPanel {
     }
 
     
+    @Override
          public void wyczyscTabele() {
         DefaultTableModel dm = (DefaultTableModel) TransakcjeTable.getModel();
         int rowCount = dm.getRowCount();

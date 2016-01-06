@@ -5,6 +5,7 @@
  */
 package Towary;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type;
 import jarex.DaneSklepu;
 import jarex.MyJPanel;
 import java.sql.ResultSet;
@@ -21,39 +22,47 @@ import javax.swing.table.DefaultTableModel;
 public class AddDostawa extends MyJPanel {
 
     int i = 0;
+
     /**
      * Creates new form AddDostawa
      */
     public AddDostawa() {
         initComponents();
     }
-    
-        public void wyczyscTabele() {
+
+    @Override
+    public void wyczyscTabele() {
         DefaultTableModel dm = (DefaultTableModel) AddDostawaTable.getModel();
         int rowCount = dm.getRowCount();
 //Remove rows one by one from the end of the table
-        for (int i = rowCount - 1; i >= 0; i--) {
-            dm.removeRow(i);
+        for (int i1 = rowCount - 1; i1 >= 0; i1--) {
+            dm.removeRow(i1);
         }
     }
-    
+
     @Override
     public void wypelnijTabele() {
-        
+
         try {
             DefaultTableModel model = (DefaultTableModel) AddDostawaTable.getModel();
             Statement stmt;
             stmt = DaneSklepu.getConn().createStatement();
-            
+
             ResultSet rs;
-            rs = stmt.executeQuery("select nr_kolejny, t.nazwa, t.cena_zamow, ilosc from towary_w_dost x join towary t on t.kod = x.kod_towaru where id_dost = ' "+DaneSklepu.getStrony().get("AddDostawa").getCurrentID() + "'order by nr_kolejny");
-            
+            rs = stmt.executeQuery("select nr_kolejny, t.nazwa, t.cena_zamow, ilosc from towary_w_dost x join towary t on t.kod = x.kod_towaru where id_dost = ' " + DaneSklepu.getStrony().get("AddDostawa").getCurrentID() + "'order by nr_kolejny");
+
             while (rs.next()) {
-                model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), Double.valueOf(rs.getString(3)), String.valueOf(rs.getInt(4))});
+                model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), Double.valueOf(rs.getString(3)), String.valueOf(rs.getInt(4)), Double.valueOf(rs.getString(3))*rs.getInt(4)});
             }
+            
+//            rs = stmt.executeQuery("select sum(cena*ilosc) from towary_w_dost where id = " + String.valueOf(DaneSklepu.getStrony().get("AddDostawa").getCurrentID()));
+//            
+//            model.addRow(new Object[]{});
+//            model.addRow(new Object[]{"", "", "RAZEM : ", rs.getInt(1) });
+            
         } catch (SQLException ex) {
             Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);
-            
+
         }
 
     }
@@ -69,28 +78,30 @@ public class AddDostawa extends MyJPanel {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         AddDostawaTable = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        WybierzTowarButton = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         AddDostawaTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
             }
         ));
         AddDostawaTable.setRowHeight(25);
         jScrollPane1.setViewportView(AddDostawaTable);
 
-        jButton1.setText("Wybierz towar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        WybierzTowarButton.setText("Dodaj pozycję");
+        WybierzTowarButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                WybierzTowarButtonActionPerformed(evt);
             }
         });
 
@@ -108,6 +119,10 @@ public class AddDostawa extends MyJPanel {
             }
         });
 
+        jButton1.setText("Edytuj pozycję");
+
+        jButton4.setText("Usuń pozycję");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -115,40 +130,59 @@ public class AddDostawa extends MyJPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(WybierzTowarButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 706, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 475, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(WybierzTowarButton)
+                    .addComponent(jButton1)
+                    .addComponent(jButton4)
+                    .addComponent(jButton3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton2)
                 .addContainerGap())
         );
+
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {WybierzTowarButton, jButton1, jButton2, jButton3, jButton4});
+
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        i++;
-        DaneSklepu.getStrony().get("AddDostawa").setNrKolejny(i);
-        jarex.Jarex.przejdz("GetTowar");// TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void WybierzTowarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WybierzTowarButtonActionPerformed
+        try {
+            Statement stmt = null;
+            stmt = DaneSklepu.getConn().createStatement();
+            ResultSet rs = null;
+            rs = stmt.executeQuery("select max(nr_kolejny) from towary_w_dost where id_dost = "+ String.valueOf(DaneSklepu.getStrony().get("AddDostawa").getCurrentID())+ "");
+            if (rs.next())  {
+                System.out.println("NR KOL: " + rs.getInt(1));
+                DaneSklepu.getStrony().get("AddDostawa").setNrKolejny(rs.getInt(1)+1);
+            }
+            jarex.Jarex.przejdz("GetTowar");// TODO add your handling code here:
+        } catch (SQLException ex) {
+            Logger.getLogger(AddDostawa.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_WybierzTowarButtonActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
             DaneSklepu.getConn().commit();// TODO add your handling code here:
+            DaneSklepu.getConn().setAutoCommit(true);
+            jarex.Jarex.przejdz("MenuDostaw");
         } catch (SQLException ex) {
             Logger.getLogger(AddDostawa.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -157,6 +191,8 @@ public class AddDostawa extends MyJPanel {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
             DaneSklepu.getConn().rollback();// TODO add your handling code here:
+            DaneSklepu.getConn().setAutoCommit(true);
+            jarex.Jarex.przejdz("MenuDostaw");
         } catch (SQLException ex) {
             Logger.getLogger(AddDostawa.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -165,9 +201,11 @@ public class AddDostawa extends MyJPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable AddDostawaTable;
+    private javax.swing.JButton WybierzTowarButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
