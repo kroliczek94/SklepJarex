@@ -50,7 +50,7 @@ public class MenuTransakcji extends MyJPanel {
             stmt = DaneSklepu.getConn().createStatement();
 
             ResultSet rs;
-            rs = stmt.executeQuery("select d.id, data, k.nazwisko from transakcje d join klienci k on d.id_klienta = k.id  order by id");
+            rs = stmt.executeQuery("select d.id, data, k.nazwisko from transakcje d left join klienci k on d.id_klienta = k.id order by data");
 
             while (rs.next()) {
                 model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), rs.getDate(3)});
@@ -60,7 +60,6 @@ public class MenuTransakcji extends MyJPanel {
 
         }
 
-        //model.removeRow(2);
     }
     /**
      * This method is called from within the constructor to initialize the form.

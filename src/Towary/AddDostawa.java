@@ -5,7 +5,6 @@
  */
 package Towary;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type;
 import jarex.DaneSklepu;
 import jarex.MyJPanel;
 import java.sql.ResultSet;

@@ -89,11 +89,15 @@ public class MenuKlienta extends MyJPanel {
 
             },
             new String [] {
-                "ID", "Imię", "Nazwisko", "Stan Konta", "Stan naklejek"
+                "ID", "Imię", "Nazwisko", "Stan Konta"
             }
         ));
         TablicaKlient.setRowHeight(25);
         jScrollPane1.setViewportView(TablicaKlient);
+        if (TablicaKlient.getColumnModel().getColumnCount() > 0) {
+            TablicaKlient.getColumnModel().getColumn(0).setMinWidth(0);
+            TablicaKlient.getColumnModel().getColumn(0).setMaxWidth(0);
+        }
 
         jButton3.setText("Dodaj klienta");
         jButton3.addActionListener(new java.awt.event.ActionListener() {

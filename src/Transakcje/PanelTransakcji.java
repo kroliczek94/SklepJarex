@@ -5,12 +5,21 @@
  */
 package Transakcje;
 
+import Towary.MenuDostaw;
+import Towary.MenuTowarow;
+import jarex.DaneSklepu;
 import jarex.MyJPanel;
 import java.awt.BorderLayout;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -29,6 +38,21 @@ public class PanelTransakcji extends MyJPanel {
         initComponents();
 
         TablicaTransakcji.addTab("Transakcja: " + String.valueOf(zestawLiczb.get(zestawLiczb.size() - 1)), new Transakcja());
+    }
+
+    public void wyczyscTabele() {
+
+    }
+
+    @Override
+    public void wypelnijTabele() {
+        try {
+            DaneSklepu.getConn().setAutoCommit(false);
+            DaneSklepu.getConn().commit();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuDostaw.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -78,17 +102,16 @@ public class PanelTransakcji extends MyJPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
-        if (zestawLiczb.size() < 10){
-        getZestawLiczb().add(znajdzNajmniejszaMozliwaLiczbe());
-        for (Integer i : zestawLiczb){
-            System.out.println("Dodane przed:" + i);
-        }
-        TablicaTransakcji.addTab("Transakcja: " + String.valueOf(getZestawLiczb().get(getZestawLiczb().size() - 1)), new Transakcja(TablicaTransakcji.getComponentCount()+1));
-        TablicaTransakcji.setSelectedIndex(TablicaTransakcji.getComponentCount() - 1);
-        }
-        else{
-            JOptionPane.showMessageDialog(this,  "Nie można utworzyc więcej transakcji");
+
+        if (zestawLiczb.size() < 10) {
+            getZestawLiczb().add(znajdzNajmniejszaMozliwaLiczbe());
+            for (Integer i : zestawLiczb) {
+                System.out.println("Dodane przed:" + i);
+            }
+            TablicaTransakcji.addTab("Transakcja: " + String.valueOf(getZestawLiczb().get(getZestawLiczb().size() - 1)), new Transakcja(TablicaTransakcji.getComponentCount() + 1));
+            TablicaTransakcji.setSelectedIndex(TablicaTransakcji.getComponentCount() - 1);
+        } else {
+            JOptionPane.showMessageDialog(this, "Nie można utworzyc więcej transakcji");
         }
 // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -96,21 +119,23 @@ public class PanelTransakcji extends MyJPanel {
     public int znajdzNajmniejszaMozliwaLiczbe() {
         int najmniejsza = -1;
         Collections.sort(getZestawLiczb());
-        for (int i = 0; i < getZestawLiczb().size()-1; i++) {
-            if (zestawLiczb.get(i+1) - zestawLiczb.get(i) == 1) {
+        for (int i = 0; i < getZestawLiczb().size() - 1; i++) {
+            if (zestawLiczb.get(i + 1) - zestawLiczb.get(i) == 1) {
                 continue;
             }
             najmniejsza = zestawLiczb.get(i) + 1;
             break;
         }
-        if (najmniejsza == -1) return zestawLiczb.size() +1;
-        else return najmniejsza;
-            
-           
+        if (najmniejsza == -1) {
+            return zestawLiczb.size() + 1;
+        } else {
+            return najmniejsza;
+        }
+
     }
 
     public void zakonczTransakcje() {
-        
+
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane TablicaTransakcji;

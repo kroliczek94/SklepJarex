@@ -6,9 +6,16 @@
 package Transakcje;
 
 import Klienci.GetClient;
+import jarex.DaneSklepu;
 import jarex.Jarex;
 import jarex.MyJPanel;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
@@ -27,13 +34,26 @@ public class Transakcja extends MyJPanel {
      */
     public Transakcja() {
         initComponents();
+        tworzNowaTransakcje();
 
+    }
+
+    public void tworzNowaTransakcje() {
+        try {
+
+            Statement stmt = null;
+            stmt = DaneSklepu.getConn().createStatement();
+
+            stmt.executeUpdate("Insert into transakcje(id) values (idtrans.NEXTVAL)");
+        } catch (SQLException ex) {
+            Logger.getLogger(Transakcja.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public Transakcja(int id) {
         initComponents();
         this.idKarty = id;
-
+        tworzNowaTransakcje();
     }
 
     /**
@@ -145,16 +165,15 @@ public class Transakcja extends MyJPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        
-        JTabbedPane panelTransakcji = (JTabbedPane) SwingUtilities.getAncestorOfClass(JTabbedPane.class, this);
-        if (panelTransakcji.getTabCount() > 1){
-        panelTransakcji.remove(this.idKarty - 1);
-       
 
-        PanelTransakcji.getZestawLiczb().remove(Integer.valueOf(this.idKarty));
-        for (Integer i : PanelTransakcji.getZestawLiczb()) {
-            System.out.println(i);
-        }// TODO add your handling code here:
+        JTabbedPane panelTransakcji = (JTabbedPane) SwingUtilities.getAncestorOfClass(JTabbedPane.class, this);
+        if (panelTransakcji.getTabCount() > 1) {
+            panelTransakcji.remove(this.idKarty - 1);
+
+            PanelTransakcji.getZestawLiczb().remove(Integer.valueOf(this.idKarty));
+            for (Integer i : PanelTransakcji.getZestawLiczb()) {
+                System.out.println(i);
+            }// TODO add your handling code here:
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
