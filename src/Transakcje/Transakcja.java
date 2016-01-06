@@ -28,6 +28,7 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 public class Transakcja extends MyJPanel {
 
     public int idKarty;
+    public Integer IdTransakcji = null;
 
     /**
      * Creates new form Transakcja
@@ -36,24 +37,35 @@ public class Transakcja extends MyJPanel {
         initComponents();
         tworzNowaTransakcje();
 
-    }
-
-    public void tworzNowaTransakcje() {
         try {
-
-            Statement stmt = null;
-            stmt = DaneSklepu.getConn().createStatement();
-
-            stmt.executeUpdate("Insert into transakcje(id) values (idtrans.NEXTVAL)");
+            ResultSet rs = DaneSklepu.getConn().createStatement().executeQuery("Select max(id) from transakcje");
+            if (rs.next()) {
+                this.IdTransakcji = rs.getInt(1);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(Transakcja.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public Transakcja(int id) {
+    public void tworzNowaTransakcje() {
+        try {
+            //DaneSklepu.getStrony().get("GetTowar").setTransakcja(true);
+            Statement stmt = null;
+            stmt = DaneSklepu.getConn().createStatement();
+
+            stmt.executeUpdate("Insert into transakcje(id) values (idtrans.NEXTVAL)");
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Transakcja.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public Transakcja(int id, int IDTrans) {
         initComponents();
         this.idKarty = id;
-        tworzNowaTransakcje();
+        this.IdTransakcji = IDTrans;
+        //tworzNowaTransakcje();
+
     }
 
     /**
@@ -160,8 +172,27 @@ public class Transakcja extends MyJPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Jarex.przejdz("GetTowar");
+        if (IdTransakcji == null) {
+
+        }
+        try {
+            Statement stmt = null;
+            stmt = DaneSklepu.getConn().createStatement();
+            ResultSet rs = null;
+            rs = stmt.executeQuery("select max(nr_kolejny) from towary_w_trans where id_trans = " + String.valueOf(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()) + "");
+            if (rs.next()) {
+                System.out.println("NR KOL: " + rs.getInt(1));
+                DaneSklepu.getStrony().get("PanelTransakcji").setNrKolejny(rs.getInt(1) + 1);
+            }
+            DaneSklepu.getStrony().get("GetTowar").setTransakcja(true);
+            DaneSklepu.getStrony().get("PanelTransakcji").setCurrentID(IdTransakcji);
+
 // TODO add your handling code here:
+            Jarex.przejdz("GetTowar");
+// TODO add your handling code here:
+        } catch (SQLException ex) {
+            Logger.getLogger(Transakcja.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed

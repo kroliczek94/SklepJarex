@@ -14,6 +14,7 @@ import java.awt.Component;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Savepoint;
 import java.util.HashMap;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -21,20 +22,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JPanel;
 
-
 /**
  *
  * @author Łukasz Królik
  */
 public class DaneSklepu {
+
     private static String tytul;
     private static HashMap<String, MyJPanel> strony = new HashMap<>();
     private static boolean managerMode = true;
     private static ConcurrentLinkedDeque<String> stos = new ConcurrentLinkedDeque<>();
     private static boolean wsteczButton = false;
-    
+    private static ArrayList<Savepoint> ptZapisu = new ArrayList<>();
     private static Connection conn = null;
-    
+
     public static void polacz() {
         Properties connectionProps = new Properties();
         connectionProps.put("user", "inf117242");
@@ -50,7 +51,7 @@ public class DaneSklepu {
         }
 
     }
-    
+
     /**
      * @return the managerMode
      */
@@ -110,9 +111,7 @@ public class DaneSklepu {
     public DaneSklepu() {
         DaneSklepu.polacz();
         dodajStrony();
-        
-        
-        
+
     }
 
     /**
@@ -130,7 +129,8 @@ public class DaneSklepu {
     }
 
     private static void dodajStrony() {
-        
+
+        GetTowar gtowar = new GetTowar();
         MenuStartowe menu = new MenuStartowe();
         GetClient client = new GetClient();
         PanelTransakcji panel1 = new PanelTransakcji();
@@ -142,75 +142,74 @@ public class DaneSklepu {
         MenuTowarow mtowarow = new MenuTowarow();
         SekcjaStatystyczna stats = new SekcjaStatystyczna();
         PlanszaPoTransakcji ppt1 = new PlanszaPoTransakcji();
-      
 
-        GetTowar gtowar = new GetTowar();
         GetClient gclient = new GetClient();
         AddDostawa adost = new AddDostawa();
-        
+
+        strony.put("GetTowar", gtowar);
         getStrony().put("MenuStartowe", menu);
         getStrony().put("GetClient", client);
-        getStrony().put("PanelTransakcji", panel1);
+
         getStrony().put("MenuPowitalne", mstartowe);
         getStrony().put("SekcjaStatystyczna", stats);
         getStrony().put("MenuKlienta", mklienta);
         getStrony().put("MenuTransakcji", mtransakcji);
         getStrony().put("MenuDostaw", mdostaw);
         getStrony().put("MenuTowarow", mtowarow);
-        
-        strony.put("GetTowar", gtowar);
+
         strony.put("GetClient", gclient);
         strony.put("PlanszaPoTransakcji", ppt1);
         strony.put("AddDostawa", adost);
-        
-        
+        getStrony().put("PanelTransakcji", panel1);
+
         for (Component c : getStrony().values()) {
             c.setBackground(new Color(4, 56, 145));
         }
     }
 
-    public static void wybierzTytulDlaNazwy(String str){
+    public static void wybierzTytulDlaNazwy(String str) {
         String odpowiedz = null;
-        if (null != str) switch (str) {
-            case "MenuPowitalne":
-                odpowiedz = "MENU POWITALNE - WYBIERZ TRYB W JAKIM CHCESZ PRACOWAĆ";
-                break;
-            case "MenuStartowe":
-                odpowiedz = "MENU STARTOWE";
-                break;
-            case "AddDostawa":
-                odpowiedz = "DODAJ NOWĄ DOSTAWĘ";
-                break;
-            case "GetClient":
-                odpowiedz = "WYBIERZ KLIENTA";
-                break;
-            case "GetTowar":
-                odpowiedz = "WYBIERZ TOWAR";
-                break;
-            case "MenuKlienta":
-                odpowiedz = "KLIENCI";
-                break;
-            case "MenuTowarow":
-                odpowiedz = "TOWARY";
-                break;
-            case "MenuDostaw":
-                odpowiedz = "DOSTAWY";
-                break;
-            case "MenuTransakcji":
-                odpowiedz = "TRANSAKCJE";
-                break;
-            case "SekcjaStatystyczna":
-                odpowiedz = "STATYSTYKI";
-                break;
-            case "PanelTransakcji":
-                odpowiedz = "SPRZEDAŻ";
-                break;
+        if (null != str) {
+            switch (str) {
+                case "MenuPowitalne":
+                    odpowiedz = "MENU POWITALNE - WYBIERZ TRYB W JAKIM CHCESZ PRACOWAĆ";
+                    break;
+                case "MenuStartowe":
+                    odpowiedz = "MENU STARTOWE";
+                    break;
+                case "AddDostawa":
+                    odpowiedz = "DODAJ NOWĄ DOSTAWĘ";
+                    break;
+                case "GetClient":
+                    odpowiedz = "WYBIERZ KLIENTA";
+                    break;
+                case "GetTowar":
+                    odpowiedz = "WYBIERZ TOWAR";
+                    break;
+                case "MenuKlienta":
+                    odpowiedz = "KLIENCI";
+                    break;
+                case "MenuTowarow":
+                    odpowiedz = "TOWARY";
+                    break;
+                case "MenuDostaw":
+                    odpowiedz = "DOSTAWY";
+                    break;
+                case "MenuTransakcji":
+                    odpowiedz = "TRANSAKCJE";
+                    break;
+                case "SekcjaStatystyczna":
+                    odpowiedz = "STATYSTYKI";
+                    break;
+                case "PanelTransakcji":
+                    odpowiedz = "SPRZEDAŻ";
+                    break;
+            }
         }
-        
-        
-        
+
         setTytul(odpowiedz);
     }
+
     /**
      * @return the stos
      */

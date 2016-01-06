@@ -6,10 +6,8 @@
 package Transakcje;
 
 import Towary.MenuDostaw;
-import Towary.MenuTowarow;
 import jarex.DaneSklepu;
 import jarex.MyJPanel;
-import java.awt.BorderLayout;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,9 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JComponent;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -28,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
 public class PanelTransakcji extends MyJPanel {
 
     private static ArrayList<Integer> zestawLiczb = new ArrayList<>();
+    private int ktoryCheckPoint = 0;
 
     /**
      * Creates new form PanelTransakcji
@@ -46,13 +43,13 @@ public class PanelTransakcji extends MyJPanel {
 
     @Override
     public void wypelnijTabele() {
-        try {
-            DaneSklepu.getConn().setAutoCommit(false);
-            DaneSklepu.getConn().commit();
-
-        } catch (SQLException ex) {
-            Logger.getLogger(MenuDostaw.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            DaneSklepu.getConn().setAutoCommit(false);
+//            DaneSklepu.getConn().commit();
+//
+//        } catch (SQLException ex) {
+//            Logger.getLogger(MenuDostaw.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     /**
@@ -108,7 +105,25 @@ public class PanelTransakcji extends MyJPanel {
             for (Integer i : zestawLiczb) {
                 System.out.println("Dodane przed:" + i);
             }
-            TablicaTransakcji.addTab("Transakcja: " + String.valueOf(getZestawLiczb().get(getZestawLiczb().size() - 1)), new Transakcja(TablicaTransakcji.getComponentCount() + 1));
+            Integer ID = null;
+
+            try {
+                //DaneSklepu.getStrony().get("GetTowar").setTransakcja(true);
+                Statement stmt = null;
+                stmt = DaneSklepu.getConn().createStatement();
+
+                stmt.executeUpdate("Insert into transakcje(id) values (idtrans.NEXTVAL)");
+
+                ResultSet rs = stmt.executeQuery("select max(id) from transakcje");
+
+                if (rs.next()) {
+                    ID = rs.getInt(1);
+                    System.out.println(ID);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Transakcja.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            TablicaTransakcji.addTab("Transakcja: " + String.valueOf(getZestawLiczb().get(getZestawLiczb().size() - 1)), new Transakcja(TablicaTransakcji.getComponentCount() + 1, ID));
             TablicaTransakcji.setSelectedIndex(TablicaTransakcji.getComponentCount() - 1);
         } else {
             JOptionPane.showMessageDialog(this, "Nie można utworzyc więcej transakcji");

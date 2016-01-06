@@ -53,7 +53,7 @@ public class MenuKlienta extends MyJPanel {
 
             ResultSet rs;
             rs = stmt.executeQuery("select id, imie, nazwisko, stan_konta, stan_naklejek from klienci order by id");
-
+            
             while (rs.next()) {
                 model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), rs.getString(3), String.valueOf(rs.getInt(4)),
                     String.valueOf(rs.getInt(5))});

@@ -47,7 +47,7 @@ public class GetTowar extends MyJPanel {
 
     @Override
     public void wypelnijTabele() {
-        boolean transakcja = true;
+        boolean transakcja = DaneSklepu.getStrony().get("GetTowar").isTransakcja();
         try {
             DefaultTableModel model = (DefaultTableModel) GetTowarTable.getModel();
             Statement stmt;
@@ -63,8 +63,7 @@ public class GetTowar extends MyJPanel {
                 model.setColumnIdentifiers(new Object[]{"Kod", "Nazwa", "Cena w dostawie"});
                 rs = stmt.executeQuery("select kod, nazwa, cena_zamow from towary order by kod");
                 while (rs.next()) {
-                    model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), String.valueOf(rs.getDouble(3)), String.valueOf(rs.getDouble(4)),
-                        String.valueOf(rs.getInt(5)), rs.getString(6)});
+                    model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), String.valueOf(rs.getDouble(3))});
                 }
             }
 
@@ -182,40 +181,61 @@ public class GetTowar extends MyJPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         JTextField ilosc = new JTextField();
-        
 
         Object[] message = {
             "Podaj ilosc wzietego towaru:", ilosc
-            };
-
+        };
 
         UIManager.put("OptionPane.cancelButtonText", "Anuluj");
         int option = JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
-        
+
         if (GetTowarTable.getSelectedRow() != -1) {
-            Integer i = new Integer((String) GetTowarTable.getValueAt(GetTowarTable.getSelectedRow(), 0));
-            try {
-                PreparedStatement stmt = null;
-                stmt = DaneSklepu.getConn().prepareStatement("insert into TOWARY_W_DOST values (? , ?, ? ,?, (select cena_zamow from towary where kod = "+i + "))");
-                stmt.setInt(1, DaneSklepu.getStrony().get("AddDostawa").getNrKolejny());
-                stmt.setInt(2, new Integer(ilosc.getText()));
-                stmt.setInt(3, i);
-                stmt.setInt(4, DaneSklepu.getStrony().get("AddDostawa").getCurrentID());
-                stmt.executeUpdate();
-                
-                stmt = DaneSklepu.getConn().prepareStatement("update towary set ilosc = (select ilosc from towary where kod = ?) + ?, do_zamowienia = 'NIE' where kod = ?");
-                stmt.setInt(1, i);
-                stmt.setInt(2, new Integer(ilosc.getText()));
-                stmt.setInt(3, i);
-                
-                
-            } catch (SQLException ex) {
-                Logger.getLogger(GetTowar.class.getName()).log(Level.SEVERE, null, ex);
+            boolean transakcja = DaneSklepu.getStrony().get("GetTowar").isTransakcja();
+            if (!transakcja) {
+
+                Integer i = new Integer((String) GetTowarTable.getValueAt(GetTowarTable.getSelectedRow(), 0));
+                try {
+                    PreparedStatement stmt = null;
+                    stmt = DaneSklepu.getConn().prepareStatement("insert into TOWARY_W_DOST values (? , ?, ? ,?, (select cena_zamow from towary where kod = " + i + "))");
+                    stmt.setInt(1, DaneSklepu.getStrony().get("AddDostawa").getNrKolejny());
+                    stmt.setInt(2, new Integer(ilosc.getText()));
+                    stmt.setInt(3, i);
+                    stmt.setInt(4, DaneSklepu.getStrony().get("AddDostawa").getCurrentID());
+                    stmt.executeUpdate();
+
+                    stmt = DaneSklepu.getConn().prepareStatement("update towary set ilosc = (select ilosc from towary where kod = ?) + ?, do_zamowienia = 'NIE' where kod = ?");
+                    stmt.setInt(1, i);
+                    stmt.setInt(2, new Integer(ilosc.getText()));
+                    stmt.setInt(3, i);
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(GetTowar.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                Integer i = new Integer((String) GetTowarTable.getValueAt(GetTowarTable.getSelectedRow(), 0));
+                try {
+                    PreparedStatement stmt = null;
+                    stmt = DaneSklepu.getConn().prepareStatement("insert into towary_w_trans(nr_kolejny, ilosc, rabat, kod_towaru, id_trans, cena) values(?,?,3,?,?,(select cena_zakup from towary where kod = " + i + "))");
+              
+                    stmt.setInt(1, DaneSklepu.getStrony().get("PanelTransakcji").getNrKolejny());
+                    stmt.setInt(2, new Integer(ilosc.getText()));
+                    stmt.setInt(3, i);
+                    stmt.setInt(4, DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID());
+                    stmt.executeUpdate();
+
+                    
+                    System.out.println();
+//                    stmt = DaneSklepu.getConn().prepareStatement("update towary set ilosc = (select ilosc from towary where kod = ?) + ?, do_zamowienia = 'NIE' where kod = ?");
+//                    stmt.setInt(1, i);
+//                    stmt.setInt(2, new Integer(ilosc.getText()));
+//                    stmt.setInt(3, i);
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(GetTowar.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-            
         }
 
-        
         //DaneSklepu.getStrony().get(DaneSklepu.getStos().peekLast()).setCurrentID(i);
         Jarex.przejdz((String) DaneSklepu.getStos().pollLast());// TODO add your handling code here:
 
