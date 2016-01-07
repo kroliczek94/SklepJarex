@@ -12,6 +12,8 @@ package jarex;
 public class MyJPanel extends javax.swing.JPanel implements TabelaDoWypelnienia{
     private Integer currentID;
     private Integer nrKolejny;
+    private Integer idKlienta;
+    
     private boolean transakcja;
     
     /**
@@ -56,7 +58,7 @@ public class MyJPanel extends javax.swing.JPanel implements TabelaDoWypelnienia{
 
 
     @Override
-    public void zmienLabela(String str) {
+    public void zmienLabela() {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -105,6 +107,20 @@ public class MyJPanel extends javax.swing.JPanel implements TabelaDoWypelnienia{
      */
     public void setTransakcja(boolean transakcja) {
         this.transakcja = transakcja;
+    }
+
+    /**
+     * @return the idKlienta
+     */
+    public Integer getIdKlienta() {
+        return idKlienta;
+    }
+
+    /**
+     * @param idKlienta the idKlienta to set
+     */
+    public void setIdKlienta(Integer idKlienta) {
+        this.idKlienta = idKlienta;
     }
 
 }

@@ -8,19 +8,21 @@ package Transakcje;
 import Towary.MenuTowarow;
 import jarex.DaneSklepu;
 import jarex.MyJPanel;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.html.HTMLDocument;
 
 /**
  *
  * @author Łukasz Królik
  */
 public class PlanszaPoTransakcji extends MyJPanel {
-
+    Double doZaplacenia = null;
     /**
      * Creates new form PlanszaPoTransakcji
      */
@@ -28,8 +30,6 @@ public class PlanszaPoTransakcji extends MyJPanel {
         initComponents();
     }
 
-    
-    
     @Override
     public void wyczyscTabele() {
         DefaultTableModel dm = (DefaultTableModel) TablicaTowarow.getModel();
@@ -55,7 +55,20 @@ public class PlanszaPoTransakcji extends MyJPanel {
             while (rs.next()) {
                 model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), Double.valueOf(rs.getString(3)), String.valueOf(rs.getInt(4)), Double.valueOf(rs.getString(3)) * rs.getInt(4)});
             }
+            
+            
+            Statement stmt1 = null;
+            stmt1 = DaneSklepu.getConn().createStatement();
+            
+            ResultSet rs1 = stmt1.executeQuery("Select sum(ilosc * cena) from towary_w_trans where id_trans = " + DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID());
 
+            Double doZaplaty = null;
+            while (rs1.next()) {
+                
+               doZaplaty = Double.valueOf(rs1.getString(1));
+               this.doZaplacenia = doZaplaty;
+            }
+            jLabel2.setText("DO ZAPŁACENIA:" + doZaplaty);
 //            rs = stmt.executeQuery("select sum(cena*ilosc) from towary_w_dost where id = " + String.valueOf(DaneSklepu.getStrony().get("AddDostawa").getCurrentID()));
 //            
 //            model.addRow(new Object[]{});
@@ -65,6 +78,24 @@ public class PlanszaPoTransakcji extends MyJPanel {
 
         }
 
+    }
+
+    
+        @Override
+    public void zmienLabela() {
+        try {
+            PreparedStatement stmt = null;
+            ResultSet rs = null;
+            
+            stmt = DaneSklepu.getConn().prepareStatement("Select imie, nazwisko from klienci where id = ?");
+            stmt.setInt(1, DaneSklepu.getStrony().get("GetClient").getIdKlienta());
+            
+            rs = stmt.executeQuery();
+            
+            if (rs.next()) jLabel3.setText("Wybrany klient: " + rs.getString(1) + " " + rs.getString(2));
+        } catch (SQLException ex) {
+            Logger.getLogger(PlanszaPoTransakcji.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -76,12 +107,13 @@ public class PlanszaPoTransakcji extends MyJPanel {
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         TablicaTowarow = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        kwotaField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
 
         jButton1.setText("Wybierz klienta");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -104,13 +136,33 @@ public class PlanszaPoTransakcji extends MyJPanel {
         TablicaTowarow.setRowHeight(25);
         jScrollPane1.setViewportView(TablicaTowarow);
 
-        jButton2.setText("Zakończ");
+        kwotaField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                kwotaFieldKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                kwotaFieldKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                kwotaFieldKeyTyped(evt);
+            }
+        });
+
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("jLabel2");
 
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("jLabel1");
 
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("jLabel2");
+        jButton2.setText("Zakończ");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("jLabel3");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -118,42 +170,84 @@ public class PlanszaPoTransakcji extends MyJPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel2)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel1))
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(15, 15, 15))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
+                        .addGap(15, 15, 15))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(34, 34, 34))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(kwotaField, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel1))
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addComponent(kwotaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addContainerGap())
+                .addGap(22, 22, 22))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         jarex.Jarex.przejdz("GetClient");// TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void kwotaFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kwotaFieldKeyTyped
+
+    }//GEN-LAST:event_kwotaFieldKeyTyped
+
+    private void kwotaFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kwotaFieldKeyPressed
+       
+    }//GEN-LAST:event_kwotaFieldKeyPressed
+
+    private void kwotaFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kwotaFieldKeyReleased
+        if (!kwotaField.getText().isEmpty()) {
+            
+            Double liczba = Double.valueOf(kwotaField.getText());
+            Double reszta = liczba - doZaplacenia;
+            if (reszta > 0) {
+                jLabel1.setText("RESZTA: " + reszta);
+            } else {
+                jLabel1.setText("PODAJ WIĘKSZĄ KWOTĘ!");
+            }
+        }// TODO add your handling code here: // TODO add your handling code here:
+    }//GEN-LAST:event_kwotaFieldKeyReleased
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            Statement stmt = null;
+            stmt = DaneSklepu.getConn().createStatement();
+            
+            stmt.executeUpdate("Update transakcje set id_klienta = " + DaneSklepu.getStrony().get("GetClient").getIdKlienta() + " where id = " + DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID());
+            jarex.Jarex.przejdz("PanelTransakcji");
+// TODO add your handling code here:
+        } catch (SQLException ex) {
+            Logger.getLogger(PlanszaPoTransakcji.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -162,7 +256,8 @@ public class PlanszaPoTransakcji extends MyJPanel {
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField kwotaField;
     // End of variables declaration//GEN-END:variables
 }
