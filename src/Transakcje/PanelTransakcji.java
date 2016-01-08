@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import oracle.sql.DATE;
 
 /**
  *
@@ -30,23 +31,46 @@ public class PanelTransakcji extends MyJPanel {
      * Creates new form PanelTransakcji
      */
     public PanelTransakcji() {
+        try {
+            DaneSklepu.getConn().setAutoCommit(false);
+            DaneSklepu.getConn().commit();
+            zestawLiczb.add(1);
+            initComponents();
 
-        zestawLiczb.add(1);
-        initComponents();
-
-        TablicaTransakcji.addTab("Transakcja: " + String.valueOf(zestawLiczb.get(zestawLiczb.size() - 1)), new Transakcja());
+            TablicaTransakcji.addTab("Transakcja: " + String.valueOf(zestawLiczb.get(zestawLiczb.size() - 1)), new Transakcja());
+        } catch (SQLException ex) {
+            Logger.getLogger(PanelTransakcji.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
+    @Override
     public void wyczyscTabele() {
+        if (DaneSklepu.getStrony().get("PanelTransakcji").isPoTransakcji()) {
+            if (zestawLiczb.size() == 1) {
+
+                int index = TablicaTransakcji.getSelectedIndex();
+                TablicaTransakcji.remove(index);
+
+                Integer ID = DodajTransakcje();
+                TablicaTransakcji.addTab("Transakcja: " + (index + 1), new Transakcja(index, ID));
+
+            } else {
+                int index = TablicaTransakcji.getSelectedIndex();
+                TablicaTransakcji.remove(index);
+
+                TablicaTransakcji.setSelectedIndex(0);
+            }
+        }
 
     }
 
     @Override
     public void wypelnijTabele() {
-
+        DaneSklepu.getStrony().get("PanelTransakcji").setPoTransakcji(false);
         MyJPanel tab = (MyJPanel) TablicaTransakcji.getSelectedComponent();
         tab.wyczyscTabele();
         tab.wypelnijTabele();
+
     }
 
     /**
@@ -73,6 +97,16 @@ public class PanelTransakcji extends MyJPanel {
         TablicaTransakcji.setTabPlacement(javax.swing.JTabbedPane.BOTTOM);
         TablicaTransakcji.setFocusTraversalPolicyProvider(true);
         TablicaTransakcji.setRequestFocusEnabled(false);
+        TablicaTransakcji.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                TablicaTransakcjiStateChanged(evt);
+            }
+        });
+        TablicaTransakcji.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                TablicaTransakcjiComponentShown(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -95,31 +129,36 @@ public class PanelTransakcji extends MyJPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private int DodajTransakcje() {
+        Integer ID = null;
+
+        try {
+            //DaneSklepu.getStrony().get("GetTowar").setTransakcja(true);
+            Statement stmt = null;
+            stmt = DaneSklepu.getConn().createStatement();
+
+            stmt.executeUpdate("Insert into transakcje(id) values (idtrans.NEXTVAL)");
+
+            ResultSet rs = stmt.executeQuery("select max(id) from transakcje");
+
+            if (rs.next()) {
+                ID = rs.getInt(1);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Transakcja.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ID;
+    }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
+        Integer ID = DodajTransakcje();
         if (zestawLiczb.size() < 10) {
             getZestawLiczb().add(znajdzNajmniejszaMozliwaLiczbe());
             for (Integer i : zestawLiczb) {
                 System.out.println("Dodane przed:" + i);
             }
-            Integer ID = null;
 
-            try {
-                //DaneSklepu.getStrony().get("GetTowar").setTransakcja(true);
-                Statement stmt = null;
-                stmt = DaneSklepu.getConn().createStatement();
-
-                stmt.executeUpdate("Insert into transakcje(id) values (idtrans.NEXTVAL)");
-
-                ResultSet rs = stmt.executeQuery("select max(id) from transakcje");
-
-                if (rs.next()) {
-                    ID = rs.getInt(1);
-                    System.out.println(ID);
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(Transakcja.class.getName()).log(Level.SEVERE, null, ex);
-            }
             TablicaTransakcji.addTab("Transakcja: " + String.valueOf(getZestawLiczb().get(getZestawLiczb().size() - 1)), new Transakcja(TablicaTransakcji.getComponentCount() + 1, ID));
             TablicaTransakcji.setSelectedIndex(TablicaTransakcji.getComponentCount() - 1);
         } else {
@@ -127,6 +166,19 @@ public class PanelTransakcji extends MyJPanel {
         }
 // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void TablicaTransakcjiComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_TablicaTransakcjiComponentShown
+
+    }//GEN-LAST:event_TablicaTransakcjiComponentShown
+
+    private void TablicaTransakcjiStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_TablicaTransakcjiStateChanged
+        try {
+            Transakcja trans = (Transakcja) TablicaTransakcji.getSelectedComponent();
+            DaneSklepu.getStrony().get("PanelTransakcji").setCurrentID(trans.getIdTransakcji());
+
+        } catch (NullPointerException ex) {
+        }// TODO add your handling code here:        // TODO add your handling code here:// TODO add your handling code here:
+    }//GEN-LAST:event_TablicaTransakcjiStateChanged
 
     public int znajdzNajmniejszaMozliwaLiczbe() {
         int najmniejsza = -1;
@@ -139,6 +191,7 @@ public class PanelTransakcji extends MyJPanel {
             break;
         }
         if (najmniejsza == -1) {
+            //if (zestawLiczb.size() == 1) return 1;else 
             return zestawLiczb.size() + 1;
         } else {
             return najmniejsza;

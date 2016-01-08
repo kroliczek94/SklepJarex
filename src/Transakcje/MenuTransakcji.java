@@ -53,7 +53,7 @@ public class MenuTransakcji extends MyJPanel {
             rs = stmt.executeQuery("select d.id, data, k.nazwisko from transakcje d left join klienci k on d.id_klienta = k.id order by data");
 
             while (rs.next()) {
-                model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), rs.getDate(3)});
+                model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), rs.getString(3)});
             }
         } catch (SQLException ex) {
             Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);

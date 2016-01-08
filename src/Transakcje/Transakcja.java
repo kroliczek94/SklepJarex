@@ -30,8 +30,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Transakcja extends MyJPanel {
 
-    public int idKarty;
-    public Integer IdTransakcji = null;
+    private int idKarty;
+    private Integer IdTransakcji = null;
 
     /**
      * Creates new form Transakcja
@@ -45,6 +45,8 @@ public class Transakcja extends MyJPanel {
             if (rs.next()) {
                 this.IdTransakcji = rs.getInt(1);
             }
+            DaneSklepu.getConn().setAutoCommit(false);
+            DaneSklepu.getConn().commit();
         } catch (SQLException ex) {
             Logger.getLogger(Transakcja.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -212,21 +214,20 @@ public class Transakcja extends MyJPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (IdTransakcji == null) {
+        if (getIdTransakcji() == null) {
 
         }
         try {
             Statement stmt = null;
             stmt = DaneSklepu.getConn().createStatement();
             ResultSet rs = null;
-            rs = stmt.executeQuery("select max(nr_kolejny) from towary_w_trans where id_trans = " + IdTransakcji + "");
+            rs = stmt.executeQuery("select max(nr_kolejny) from towary_w_trans where id_trans = " + getIdTransakcji() + "");
             if (rs.next()) {
                 System.out.println("NR KOL: " + rs.getInt(1) + "ID TRANS: " + String.valueOf(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()));
                 DaneSklepu.getStrony().get("PanelTransakcji").setNrKolejny(rs.getInt(1) + 1);
             }
             DaneSklepu.getStrony().get("GetTowar").setTransakcja(true);
-            DaneSklepu.getStrony().get("PanelTransakcji").setCurrentID(IdTransakcji);
-            
+            DaneSklepu.getStrony().get("PanelTransakcji").setCurrentID(getIdTransakcji());
 
 // TODO add your handling code here:
             Jarex.przejdz("GetTowar");
@@ -240,12 +241,30 @@ public class Transakcja extends MyJPanel {
 
         JTabbedPane panelTransakcji = (JTabbedPane) SwingUtilities.getAncestorOfClass(JTabbedPane.class, this);
         if (panelTransakcji.getTabCount() > 1) {
-            panelTransakcji.remove(this.idKarty - 1);
 
-            PanelTransakcji.getZestawLiczb().remove(Integer.valueOf(this.idKarty));
-            for (Integer i : PanelTransakcji.getZestawLiczb()) {
-                System.out.println(i);
-            }// TODO add your handling code here:
+            panelTransakcji.remove(this.getIdKarty() - 1);
+
+            PanelTransakcji.getZestawLiczb().remove(Integer.valueOf(this.getIdKarty()));
+            try {
+                PreparedStatement stmt = null;
+                stmt = DaneSklepu.getConn().prepareStatement("Delete from towary_w_trans where id_trans = ?");
+                stmt.setInt(1, DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID());
+                stmt.executeUpdate();
+
+                stmt = DaneSklepu.getConn().prepareStatement("Delete from transakcje where id = ?");
+                stmt.setInt(1, DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID());
+                stmt.executeUpdate();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Transakcja.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                
+                DaneSklepu.getConn().rollback();
+            } catch (SQLException ex) {
+                Logger.getLogger(Transakcja.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -264,4 +283,32 @@ public class Transakcja extends MyJPanel {
     private javax.swing.JButton jButton6;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the idKarty
+     */
+    public int getIdKarty() {
+        return idKarty;
+    }
+
+    /**
+     * @param idKarty the idKarty to set
+     */
+    public void setIdKarty(int idKarty) {
+        this.idKarty = idKarty;
+    }
+
+    /**
+     * @return the IdTransakcji
+     */
+    public Integer getIdTransakcji() {
+        return IdTransakcji;
+    }
+
+    /**
+     * @param IdTransakcji the IdTransakcji to set
+     */
+    public void setIdTransakcji(Integer IdTransakcji) {
+        this.IdTransakcji = IdTransakcji;
+    }
 }

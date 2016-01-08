@@ -15,6 +15,7 @@ public class MyJPanel extends javax.swing.JPanel implements TabelaDoWypelnienia{
     private Integer idKlienta;
     
     private boolean transakcja;
+    private boolean poTransakcji = false;
     
     /**
      * Creates new form MyJPanel
@@ -121,6 +122,20 @@ public class MyJPanel extends javax.swing.JPanel implements TabelaDoWypelnienia{
      */
     public void setIdKlienta(Integer idKlienta) {
         this.idKlienta = idKlienta;
+    }
+
+    /**
+     * @return the poTransakcji
+     */
+    public boolean isPoTransakcji() {
+        return poTransakcji;
+    }
+
+    /**
+     * @param poTransakcji the poTransakcji to set
+     */
+    public void setPoTransakcji(boolean poTransakcji) {
+        this.poTransakcji = poTransakcji;
     }
 
 }

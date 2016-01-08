@@ -59,6 +59,10 @@
         <Property name="focusTraversalPolicyProvider" type="boolean" value="true"/>
         <Property name="requestFocusEnabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="TablicaTransakcjiStateChanged"/>
+        <EventHandler event="componentShown" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="TablicaTransakcjiComponentShown"/>
+      </Events>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
     </Container>

@@ -134,6 +134,11 @@ public class PlanszaPoTransakcji extends MyJPanel {
             }
         ));
         TablicaTowarow.setRowHeight(25);
+        TablicaTowarow.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                TablicaTowarowComponentShown(evt);
+            }
+        });
         jScrollPane1.setViewportView(TablicaTowarow);
 
         kwotaField.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -240,14 +245,19 @@ public class PlanszaPoTransakcji extends MyJPanel {
         try {
             Statement stmt = null;
             stmt = DaneSklepu.getConn().createStatement();
-            
+            DaneSklepu.getStrony().get("PanelTransakcji").setPoTransakcji(true);
             stmt.executeUpdate("Update transakcje set id_klienta = " + DaneSklepu.getStrony().get("GetClient").getIdKlienta() + " where id = " + DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID());
             jarex.Jarex.przejdz("PanelTransakcji");
+            
 // TODO add your handling code here:
         } catch (SQLException ex) {
             Logger.getLogger(PlanszaPoTransakcji.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void TablicaTowarowComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_TablicaTowarowComponentShown
+       
+    }//GEN-LAST:event_TablicaTowarowComponentShown
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
