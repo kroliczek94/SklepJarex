@@ -56,7 +56,6 @@ public class PlanszaPoTransakcji extends MyJPanel {
                 model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), Double.valueOf(rs.getString(3)), String.valueOf(rs.getInt(4)), Double.valueOf(rs.getString(3)) * rs.getInt(4)});
             }
             
-            
             Statement stmt1 = null;
             stmt1 = DaneSklepu.getConn().createStatement();
             
@@ -69,10 +68,11 @@ public class PlanszaPoTransakcji extends MyJPanel {
                this.doZaplacenia = doZaplaty;
             }
             jLabel2.setText("DO ZAPŁACENIA:" + doZaplaty);
-//            rs = stmt.executeQuery("select sum(cena*ilosc) from towary_w_dost where id = " + String.valueOf(DaneSklepu.getStrony().get("AddDostawa").getCurrentID()));
-//            
-//            model.addRow(new Object[]{});
-//            model.addRow(new Object[]{"", "", "RAZEM : ", rs.getInt(1) });
+            
+            stmt1 = DaneSklepu.getConn().createStatement();
+            
+            
+
         } catch (SQLException ex) {
             Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);
 

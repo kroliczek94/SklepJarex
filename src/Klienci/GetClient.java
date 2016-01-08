@@ -15,6 +15,8 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -187,14 +189,33 @@ public class GetClient extends MyJPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Jarex.setDoPokazania("MenuStartowe");
-        Jarex.setAkcja(true);
+        jarex.Jarex.przejdz("PlanszaPoTransakcji");
 // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        JOptionPane.showInputDialog("Podaj Nazwisko nowego klienta");
-        jButton3.setText("Akceptuj");// TODO add your handling code here:
+                JTextField imie = new JTextField();
+        JTextField nazwisko = new JTextField();
+        Object[] message = {
+            "Imię:", imie,
+            "Nazwisko:", nazwisko
+        };
+        Statement stmt = null;
+        UIManager.put("OptionPane.cancelButtonText", "Anuluj");
+        int option = JOptionPane.showConfirmDialog(null, message, "Dodaj klienta", JOptionPane.OK_CANCEL_OPTION);
+
+        if (option == JOptionPane.OK_OPTION) {
+            try {
+                stmt = DaneSklepu.getConn().createStatement();
+                String sql = "INSERT INTO KLIENCI(ID, IMIE, NAZWISKO) VALUES(idKlienta.NEXTVAL, '" + imie.getText() + "' , '" + nazwisko.getText() + "')";
+                stmt.executeUpdate(sql);
+            } catch (SQLException ex) {
+                Logger.getLogger(MenuKlienta.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        wyczyscTabele();
+        wypelnijTabele();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed

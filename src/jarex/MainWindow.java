@@ -6,6 +6,9 @@
 package jarex;
 
 import java.awt.BorderLayout;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -49,31 +52,42 @@ public class MainWindow extends javax.swing.JPanel {
     public void dodajNaglowek(PasekGorny pasek) {
         //PasekGorny pasek = new PasekGorny();
         this.add(pasek, BorderLayout.NORTH);
-        
+
         validate();
         repaint();
     }
 
     public void dodajElement(String str) {
-        //String str = DaneSklepu.getStrony().
-        if (current != null) {
-            this.remove(DaneSklepu.getStrony().get(current));
-        }
-        
-
-        this.add(DaneSklepu.getStrony().get(str), BorderLayout.CENTER);
-        DaneSklepu.wybierzTytulDlaNazwy(str);
-        DaneSklepu.getStrony().get(str).wyczyscTabele();
-        DaneSklepu.getStrony().get(str).wypelnijTabele();
-        previous = current;
-        if (previous != null && !DaneSklepu.isWsteczButton()) {
+        try {
+            //String str = DaneSklepu.getStrony().
             
-            DaneSklepu.getStos().add(previous);
-            DaneSklepu.setWsteczButton(false);
+            DaneSklepu.getConn().setAutoCommit(true);
+            
+            if (current != null) {
+                this.remove(DaneSklepu.getStrony().get(current));
+            }
+            
+            if (str == "PanelTransakcji"){
+                DaneSklepu.getConn().setAutoCommit(false);
+            }
+            
+            } catch (SQLException ex) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
-        current = str;
-        validate();
-        repaint();
+            this.add(DaneSklepu.getStrony().get(str), BorderLayout.CENTER);
+            DaneSklepu.wybierzTytulDlaNazwy(str);
+            DaneSklepu.getStrony().get(str).wyczyscTabele();
+            DaneSklepu.getStrony().get(str).wypelnijTabele();
+            previous = current;
+            if (previous != null && !DaneSklepu.isWsteczButton()) {
+                
+                DaneSklepu.getStos().add(previous);
+                DaneSklepu.setWsteczButton(false);
+            }
+            current = str;
+            validate();
+            repaint();
+        
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

@@ -75,6 +75,11 @@ public class MenuTowarow extends MyJPanel {
         });
 
         jButton6.setText("Usuń towar");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         TablicaTowar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -190,7 +195,7 @@ public class MenuTowarow extends MyJPanel {
 
         if (option == JOptionPane.OK_OPTION) {
             try {
-                stmt = DaneSklepu.getConn().prepareStatement("Insert into towary(kod, nazwa, cena_zakup, cena_zamow, DO_ZAMOWIENIA) values (idtrans.NEXTVAL , ? , ? , ?, 'TAK')");
+                stmt = DaneSklepu.getConn().prepareStatement("Insert into towary(kod, nazwa, cena_zakup, cena_zamow, DO_ZAMOWIENIA) values (idtowar.NEXTVAL , ? , ? , ?, 'TAK')");
                 stmt.setString(1, nazwa.getText());
                 stmt.setDouble(2, Double.valueOf(cena.getText()));
                 stmt.setDouble(3, Double.valueOf(cena_dost.getText()));
@@ -204,6 +209,37 @@ public class MenuTowarow extends MyJPanel {
         wyczyscTabele();
         wypelnijTabele();
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+       
+        if (TablicaTowar.getSelectedRow() != -1) {
+            
+            String idText = (String) TablicaTowar.getValueAt(TablicaTowar.getSelectedRow(), 0);
+            String nazwaText = (String) TablicaTowar.getValueAt(TablicaTowar.getSelectedRow(), 1);
+            String cenaText = (String) TablicaTowar.getValueAt(TablicaTowar.getSelectedRow(), 2);
+            String cenaDostText = (String) TablicaTowar.getValueAt(TablicaTowar.getSelectedRow(), 3);
+
+            
+            PreparedStatement stmt = null;
+            UIManager.put("OptionPane.cancelButtonText", "Anuluj");
+            int option = JOptionPane.showConfirmDialog(null, "Czy usunąć towar: " + nazwaText, "Potwierdzenie", JOptionPane.OK_CANCEL_OPTION);
+
+            if (option == JOptionPane.OK_OPTION) {
+                try {
+                    stmt = DaneSklepu.getConn().prepareStatement("Delete from towary where kod = " + idText);
+                    
+                    stmt.executeUpdate();
+                } catch (SQLException ex) {
+                    Logger.getLogger(MenuKlienta.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            wyczyscTabele();
+            wypelnijTabele();
+
+        }
+// TODO add your handling code here: // TODO add your handling code here:
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     public void wyczyscTabele() {
         DefaultTableModel dm = (DefaultTableModel) TablicaTowar.getModel();

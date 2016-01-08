@@ -33,7 +33,7 @@ public class DaneSklepu {
     private static boolean managerMode = true;
     private static ConcurrentLinkedDeque<String> stos = new ConcurrentLinkedDeque<>();
     private static boolean wsteczButton = false;
-    private static ArrayList<Savepoint> ptZapisu = new ArrayList<>();
+
     private static Connection conn = null;
 
     public static void polacz() {
@@ -44,6 +44,8 @@ public class DaneSklepu {
             conn = DriverManager.getConnection(
                     "jdbc:oracle:thin:@//admlab2-main.cs.put.poznan.pl:1521/dblab01.cs.put.poznan.pl", connectionProps);
             System.out.println("Połączono z bazą danych");
+
+
         } catch (SQLException ex) {
             Logger.getLogger(Jarex.class.getName()).log(Level.SEVERE,
                     "nie udało się połączyć z bazą danych", ex);
@@ -145,6 +147,8 @@ public class DaneSklepu {
 
         GetClient gclient = new GetClient();
         AddDostawa adost = new AddDostawa();
+        
+        HistorycznaTransakcja histran = new HistorycznaTransakcja();
 
         strony.put("GetTowar", gtowar);
         getStrony().put("MenuStartowe", menu);
@@ -161,6 +165,7 @@ public class DaneSklepu {
         strony.put("PlanszaPoTransakcji", ppt1);
         strony.put("AddDostawa", adost);
         getStrony().put("PanelTransakcji", panel1);
+        getStrony().put("HistorycznaTransakcja", histran);
 
         for (Component c : getStrony().values()) {
             c.setBackground(new Color(4, 56, 145));
@@ -203,6 +208,12 @@ public class DaneSklepu {
                     break;
                 case "PanelTransakcji":
                     odpowiedz = "SPRZEDAŻ";
+                    break;
+                case "HistorycznaTransakcja":
+                    odpowiedz = "WYŚWIETLANIE MINIONEJ TRANSAKCJI";
+                    break;
+                case "PlanszaPoTransakcji":
+                    odpowiedz = "TRANSAKCJA ZAKOŃCZONA";
                     break;
             }
         }

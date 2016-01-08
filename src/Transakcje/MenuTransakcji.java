@@ -26,15 +26,13 @@ public class MenuTransakcji extends MyJPanel {
      */
     public MenuTransakcji() {
         initComponents();
-       
+
     }
 
-    
     @Override
-         public void wyczyscTabele() {
+    public void wyczyscTabele() {
         DefaultTableModel dm = (DefaultTableModel) TransakcjeTable.getModel();
         int rowCount = dm.getRowCount();
-//Remove rows one by one from the end of the table
         for (int i = rowCount - 1; i >= 0; i--) {
             dm.removeRow(i);
         }
@@ -42,7 +40,6 @@ public class MenuTransakcji extends MyJPanel {
 
     @Override
     public void wypelnijTabele() {
-        
 
         try {
             DefaultTableModel model = (DefaultTableModel) TransakcjeTable.getModel();
@@ -50,10 +47,12 @@ public class MenuTransakcji extends MyJPanel {
             stmt = DaneSklepu.getConn().createStatement();
 
             ResultSet rs;
-            rs = stmt.executeQuery("select d.id, data, k.nazwisko from transakcje d left join klienci k on d.id_klienta = k.id order by data");
+            rs = stmt.executeQuery("select d.id, TO_CHAR(data, 'DD-MM-YYYY HH24:MI'), k.imie ||' '|| k.nazwisko, TO_CHAR(sum(ilosc*cena),'99999.99')"
+                    + " from transakcje d left join klienci k on d.id_klienta = k.id "
+                    + "join towary_w_trans x on d.id = x.id_trans group by k.imie, k.nazwisko, data, d.id order by DATA DESC");
 
             while (rs.next()) {
-                model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), rs.getString(3)});
+                model.addRow(new Object[]{String.valueOf(rs.getInt(1)), String.valueOf(rs.getString(2)), rs.getString(3), rs.getString(4)});
             }
         } catch (SQLException ex) {
             Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);
@@ -61,6 +60,7 @@ public class MenuTransakcji extends MyJPanel {
         }
 
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -77,7 +77,12 @@ public class MenuTransakcji extends MyJPanel {
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
 
-        jButton2.setText("Edytuj dane o transakcji");
+        jButton2.setText("Wyświetl transakcje");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Raporty...");
 
@@ -140,6 +145,15 @@ public class MenuTransakcji extends MyJPanel {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         jarex.Jarex.przejdz("PanelTransakcji");// TODO add your handling code here:
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if (TransakcjeTable.getSelectedRow() != -1) {
+            int i = new Integer((String) TransakcjeTable.getValueAt(TransakcjeTable.getSelectedRow(), 0));
+            DaneSklepu.getStrony().get("MenuTransakcji").setCurrentID(i);
+            jarex.Jarex.przejdz("HistorycznaTransakcja");// TODO add your handling code here:
+        }
+
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

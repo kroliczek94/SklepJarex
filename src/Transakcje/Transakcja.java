@@ -45,8 +45,7 @@ public class Transakcja extends MyJPanel {
             if (rs.next()) {
                 this.IdTransakcji = rs.getInt(1);
             }
-            DaneSklepu.getConn().setAutoCommit(false);
-            DaneSklepu.getConn().commit();
+
         } catch (SQLException ex) {
             Logger.getLogger(Transakcja.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -119,14 +118,28 @@ public class Transakcja extends MyJPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         TransakcjaTable = new javax.swing.JTable();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(jTable1);
 
         setBackground(new java.awt.Color(4, 56, 145));
 
@@ -167,10 +180,18 @@ public class Transakcja extends MyJPanel {
         });
 
         jButton4.setText("Usuń towar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
-        jButton5.setText("Zmień ilość");
-
-        jButton6.setText("Edytuj cenę /rabat");
+        jButton6.setText("Edytuj pozycję");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -180,16 +201,14 @@ public class Transakcja extends MyJPanel {
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
+                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
-                        .addGap(6, 6, 6)
-                        .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
+                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 666, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -205,7 +224,6 @@ public class Transakcja extends MyJPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(15, 15, 15))
         );
@@ -237,40 +255,97 @@ public class Transakcja extends MyJPanel {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void UsunTransakcjeZTowarami(Integer idtrans) {
+        try {
+            PreparedStatement stmt = null;
+            stmt = DaneSklepu.getConn().prepareStatement("Delete from towary_w_trans where id_trans = ?");
+            stmt.setInt(1, idtrans);
+            stmt.executeUpdate();
 
-        JTabbedPane panelTransakcji = (JTabbedPane) SwingUtilities.getAncestorOfClass(JTabbedPane.class, this);
-        if (panelTransakcji.getTabCount() > 1) {
+            stmt = DaneSklepu.getConn().prepareStatement("Delete from transakcje where id = ?");
+            stmt.setInt(1, idtrans);
+            stmt.executeUpdate();
 
-            panelTransakcji.remove(this.getIdKarty() - 1);
-
-            PanelTransakcji.getZestawLiczb().remove(Integer.valueOf(this.getIdKarty()));
-            try {
-                PreparedStatement stmt = null;
-                stmt = DaneSklepu.getConn().prepareStatement("Delete from towary_w_trans where id_trans = ?");
-                stmt.setInt(1, DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID());
-                stmt.executeUpdate();
-
-                stmt = DaneSklepu.getConn().prepareStatement("Delete from transakcje where id = ?");
-                stmt.setInt(1, DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID());
-                stmt.executeUpdate();
-
-            } catch (SQLException ex) {
-                Logger.getLogger(Transakcja.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            try {
-                
-                DaneSklepu.getConn().rollback();
-            } catch (SQLException ex) {
-                Logger.getLogger(Transakcja.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Transakcja.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        JTabbedPane panelTransakcji = (JTabbedPane) SwingUtilities.getAncestorOfClass(JTabbedPane.class, this);
+
+        //panelTransakcji.remove(this.getIdKarty() - 1);
+        //PanelTransakcji.getZestawLiczb().remove(Integer.valueOf(this.getIdKarty()));
+        UsunTransakcjeZTowarami(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID());
+
+        DaneSklepu.getStrony().get("PanelTransakcji").setInterrupt(idKarty);
+
+        if (panelTransakcji.getComponentCount() == 1) {
+
+            try {
+                int index = panelTransakcji.getSelectedIndex();
+                panelTransakcji.remove(index);
+
+                DaneSklepu.getConn().commit();
+
+                Integer ID = null;
+
+                try {
+
+                    Statement stmt = null;
+                    stmt = DaneSklepu.getConn().createStatement();
+
+                    stmt.executeUpdate("Insert into transakcje(id) values (idtrans.NEXTVAL)");
+
+                    ResultSet rs = stmt.executeQuery("select max(id) from transakcje");
+
+                    if (rs.next()) {
+                        ID = rs.getInt(1);
+
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(Transakcja.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                panelTransakcji.addTab("Transakcja: " + (index + 1), new Transakcja(index, ID));
+            } catch (SQLException ex) {
+                Logger.getLogger(PanelTransakcji.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else {
+            int index = panelTransakcji.getSelectedIndex();
+            panelTransakcji.remove(index);
+            panelTransakcji.setSelectedIndex(0);
+        }
+
+        
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         Jarex.przejdz("PlanszaPoTransakcji");// TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        int i = new Integer((String) TransakcjaTable.getValueAt(TransakcjaTable.getSelectedRow(), 0));
+        System.out.println(i);
+        if (i > 0) {
+            try {
+                PreparedStatement stmt = null;
+                stmt = DaneSklepu.getConn().prepareStatement("Delete from towary_w_trans where nr_kolejny = ? and id_trans = ?");
+                stmt.setInt(1, i);
+                stmt.setInt(2, DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID());
+                stmt.executeUpdate();
+                DaneSklepu.getStrony().get("PanelTransakcji").wyczyscTabele();
+                DaneSklepu.getStrony().get("PanelTransakcji").wypelnijTabele();
+            } // TODO add your handling code here:
+            catch (SQLException ex) {
+                Logger.getLogger(Transakcja.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+         int i = new Integer((String) TransakcjaTable.getValueAt(TransakcjaTable.getSelectedRow(), 0));// TODO add your handling code here:
+    }//GEN-LAST:event_jButton6ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -279,9 +354,10 @@ public class Transakcja extends MyJPanel {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 
     /**

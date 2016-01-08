@@ -16,6 +16,7 @@ public class MyJPanel extends javax.swing.JPanel implements TabelaDoWypelnienia{
     
     private boolean transakcja;
     private boolean poTransakcji = false;
+    private int interrupt = -1;
     
     /**
      * Creates new form MyJPanel
@@ -137,5 +138,21 @@ public class MyJPanel extends javax.swing.JPanel implements TabelaDoWypelnienia{
     public void setPoTransakcji(boolean poTransakcji) {
         this.poTransakcji = poTransakcji;
     }
+
+    /**
+     * @return the interrupt
+     */
+    public int getInterrupt() {
+        return interrupt;
+    }
+
+    /**
+     * @param interrupt the interrupt to set
+     */
+    public void setInterrupt(int interrupt) {
+        this.interrupt = interrupt;
+    }
+
+
 
 }

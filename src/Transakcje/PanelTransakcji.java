@@ -31,33 +31,34 @@ public class PanelTransakcji extends MyJPanel {
      * Creates new form PanelTransakcji
      */
     public PanelTransakcji() {
-        try {
-            DaneSklepu.getConn().setAutoCommit(false);
-            DaneSklepu.getConn().commit();
-            zestawLiczb.add(1);
-            initComponents();
 
-            TablicaTransakcji.addTab("Transakcja: " + String.valueOf(zestawLiczb.get(zestawLiczb.size() - 1)), new Transakcja());
-        } catch (SQLException ex) {
-            Logger.getLogger(PanelTransakcji.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        zestawLiczb.add(1);
+        initComponents();
+
+        TablicaTransakcji.addTab("Transakcja: " + String.valueOf(zestawLiczb.get(zestawLiczb.size() - 1)), new Transakcja());
+
     }
 
     @Override
     public void wyczyscTabele() {
         if (DaneSklepu.getStrony().get("PanelTransakcji").isPoTransakcji()) {
-            if (zestawLiczb.size() == 1) {
+            if (TablicaTransakcji.getComponentCount()== 1) {
 
-                int index = TablicaTransakcji.getSelectedIndex();
-                TablicaTransakcji.remove(index);
-
-                Integer ID = DodajTransakcje();
-                TablicaTransakcji.addTab("Transakcja: " + (index + 1), new Transakcja(index, ID));
+                try {
+                    int index = TablicaTransakcji.getSelectedIndex();
+                    TablicaTransakcji.remove(index);
+                    
+                    DaneSklepu.getConn().commit();
+                    
+                    Integer ID = DodajTransakcje();
+                    TablicaTransakcji.addTab("Transakcja: " + (index + 1), new Transakcja(index, ID));
+                } catch (SQLException ex) {
+                    Logger.getLogger(PanelTransakcji.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
             } else {
                 int index = TablicaTransakcji.getSelectedIndex();
                 TablicaTransakcji.remove(index);
-
                 TablicaTransakcji.setSelectedIndex(0);
             }
         }
@@ -151,7 +152,11 @@ public class PanelTransakcji extends MyJPanel {
         return ID;
     }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
+        int index = DaneSklepu.getStrony().get("PanelTransakcji").getInterrupt() -1;
+        DaneSklepu.getStrony().get("PanelTransakcji").setInterrupt(-1);
+        if (index > 0){
+            zestawLiczb.remove(index);
+        }
         Integer ID = DodajTransakcje();
         if (zestawLiczb.size() < 10) {
             getZestawLiczb().add(znajdzNajmniejszaMozliwaLiczbe());
