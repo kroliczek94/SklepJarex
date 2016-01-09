@@ -47,7 +47,7 @@ public class PasekGorny extends javax.swing.JPanel {
     }
 
     public void setTitle() {
-        
+
         MiejsceLabel.setText(DaneSklepu.getTytul());
     }
 
@@ -55,10 +55,24 @@ public class PasekGorny extends javax.swing.JPanel {
 
         if (DaneSklepu.isManagerMode() == true) {
             TrybLabel.setText("Tryb : Manager");
+            aktywneKlawisze(true);
 
         } else {
             TrybLabel.setText("Tryb : Sprzedawca");
+            aktywneKlawisze(false);
         }
+    }
+
+    public void aktywneKlawisze(boolean stan) {
+        DostawyButton.setVisible(stan);
+        TransakcjaButton.setVisible(stan);
+        SprzedazButton.setVisible(stan);
+        TowaryButton.setVisible(stan);
+        WsteczButton.setVisible(stan);
+        KlienciButton.setVisible(stan);
+        HistoriaButton.setVisible(stan);
+        
+        
     }
 
     /**
@@ -187,7 +201,7 @@ public class PasekGorny extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ExitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitButtonActionPerformed
-        
+
         System.exit(0);
         // TODO add your handling code here:
     }//GEN-LAST:event_ExitButtonActionPerformed

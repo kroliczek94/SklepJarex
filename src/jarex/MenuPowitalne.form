@@ -18,9 +18,9 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="-2" pref="97" max="-2" attributes="0"/>
-              <Component id="SprzedawcaButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="221" max="32767" attributes="0"/>
-              <Component id="ManagerButton" min="-2" pref="97" max="-2" attributes="0"/>
+              <Component id="SprzedawcaButton" pref="182" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+              <Component id="ManagerButton" pref="187" max="32767" attributes="0"/>
               <EmptySpace min="-2" pref="106" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -28,10 +28,10 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="216" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="SprzedawcaButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="ManagerButton" alignment="3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="88" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                  <Component id="ManagerButton" pref="151" max="32767" attributes="0"/>
+                  <Component id="SprzedawcaButton" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="129" max="-2" attributes="0"/>
           </Group>

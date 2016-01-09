@@ -30,7 +30,7 @@ public class DaneSklepu {
 
     private static String tytul;
     private static HashMap<String, MyJPanel> strony = new HashMap<>();
-    private static boolean managerMode = true;
+    private static boolean managerMode = false;
     private static ConcurrentLinkedDeque<String> stos = new ConcurrentLinkedDeque<>();
     private static boolean wsteczButton = false;
 

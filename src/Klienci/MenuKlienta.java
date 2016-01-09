@@ -8,6 +8,7 @@ package Klienci;
 import Towary.MenuTowarow;
 import jarex.DaneSklepu;
 import jarex.MyJPanel;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -46,7 +47,6 @@ public class MenuKlienta extends MyJPanel {
     @Override
     public void wypelnijTabele() {
 
-      
         try {
             DefaultTableModel model = (DefaultTableModel) TablicaKlient.getModel();
             Statement stmt;
@@ -56,7 +56,7 @@ public class MenuKlienta extends MyJPanel {
             rs = stmt.executeQuery("select k.id, imie, nazwisko, sum(z.dozaplaty) from transakcje z right join "
                     + "klienci k on k.id = z.id_klienta left join "
                     + "towary_w_trans t on z.id = t.id_trans group by  nazwisko, k.id, imie");
-            
+
             while (rs.next()) {
                 model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), rs.getString(3), rs.getInt(4)});
             }
@@ -85,6 +85,11 @@ public class MenuKlienta extends MyJPanel {
         jButton1 = new javax.swing.JButton();
 
         jButton2.setText("Przyjmij zwrot długu");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         TablicaKlient.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -221,7 +226,7 @@ public class MenuKlienta extends MyJPanel {
         String imie = (String) TablicaKlient.getValueAt(TablicaKlient.getSelectedRow(), 1);
         String nazwisko = ((String) TablicaKlient.getValueAt(TablicaKlient.getSelectedRow(), 2));
         String id = (String) TablicaKlient.getValueAt(TablicaKlient.getSelectedRow(), 0);
-        
+
         int option = JOptionPane.showConfirmDialog(null, "Czy usunąć klienta : " + imie + ' ' + nazwisko);
 
         Statement stmt = null;
@@ -238,6 +243,55 @@ public class MenuKlienta extends MyJPanel {
         wypelnijTabele();
 // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+        if (TablicaKlient.getSelectedRow() != -1) {
+           
+                JTextField kwota = new JTextField();
+                
+                Object[] message = {
+                    "Podaj wpłatę klienta:", kwota,
+                    
+                };
+                
+                String id = (String) TablicaKlient.getValueAt(TablicaKlient.getSelectedRow(), 0);
+                
+                UIManager.put("OptionPane.cancelButtonText", "Anuluj");
+                int option = JOptionPane.showConfirmDialog(null, message, "Edytuj klienta", JOptionPane.OK_CANCEL_OPTION);
+                 try {
+                Statement stmt = null;
+                Statement stmt1 = null;
+                stmt = DaneSklepu.getConn().createStatement();
+                stmt1 = DaneSklepu.getConn().createStatement();
+                
+                ResultSet rs = stmt.executeQuery("Select id, dozaplaty from transakcje where id_klienta = " + id + " order by data");
+                     
+                while (rs.next())
+                {
+                    Double reszta = Double.valueOf(kwota.getText()) - rs.getDouble(2);
+                    if (reszta >= 0)
+                    {
+                        stmt1.executeUpdate("update transakcje set dozaplaty = 0 where id = " + rs.getInt(1)  );
+                        kwota.setText(String.valueOf(reszta));
+                        System.out.println("Więcej niż 0");
+                    }
+                    else
+                    {
+                        stmt1.executeUpdate("update transakcje set dozaplaty = " +(-1.0)*reszta + "where id = " + rs.getInt(1)  );
+                        System.out.println("Mniej niż 0");
+                        break;
+                    }
+                }
+                
+                wyczyscTabele();
+                wypelnijTabele();
+            } catch (SQLException ex) {
+                Logger.getLogger(MenuKlienta.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+// TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

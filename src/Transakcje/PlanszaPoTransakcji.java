@@ -5,6 +5,7 @@
  */
 package Transakcje;
 
+import Klienci.MenuKlienta;
 import Towary.MenuTowarow;
 import jarex.DaneSklepu;
 import jarex.MyJPanel;
@@ -15,6 +16,8 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.html.HTMLDocument;
 
@@ -117,6 +120,7 @@ public class PlanszaPoTransakcji extends MyJPanel {
         ResztaLabel = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         KlientLabel = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
 
         jButton1.setText("Wybierz klienta");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -172,6 +176,13 @@ public class PlanszaPoTransakcji extends MyJPanel {
         KlientLabel.setForeground(new java.awt.Color(255, 255, 255));
         KlientLabel.setText("WYBRANY KLIENT: BRAK");
 
+        jButton3.setText("Zwrot długu");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -181,8 +192,9 @@ public class PlanszaPoTransakcji extends MyJPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(KlientLabel)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(KlientLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE)
@@ -203,16 +215,18 @@ public class PlanszaPoTransakcji extends MyJPanel {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addComponent(kwotaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(kwotaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(KlientLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ResztaLabel)
                     .addComponent(jLabel2)
-                    .addComponent(KlientLabel))
+                    .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
                 .addGap(22, 22, 22))
         );
 
@@ -246,10 +260,11 @@ public class PlanszaPoTransakcji extends MyJPanel {
     }//GEN-LAST:event_kwotaFieldKeyReleased
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if (ResztaLabel.getText() == "WIĘCEJ!" && KlientLabel.getText() == "WYBRANY KLIENT: BRAK") {
+        if ("WIĘCEJ!".equals(ResztaLabel.getText()) && "WYBRANY KLIENT: BRAK".equals(KlientLabel.getText())) {
             JOptionPane.showMessageDialog(null, "Podaj wyższą kwotę wpłaty, albo wybierz dłużnika do obciążenia");
         } else {
-            if (ResztaLabel.getText() == "WIĘCEJ!") {
+            if (!"WIĘCEJ!".equals(ResztaLabel.getText())) {
+            } else {
                 try {
                     Statement stmt = null;
                     stmt = DaneSklepu.getConn().createStatement();
@@ -266,7 +281,7 @@ public class PlanszaPoTransakcji extends MyJPanel {
                 }
             }
             KlientLabel.setText("WYBRANY KLIENT: BRAK");
-            DaneSklepu.getStrony().get("GetClient").setIdKlienta(null);
+            DaneSklepu.getStrony().get("GetClient").setIdKlienta(-1);
             kwotaField.setText(null);
             DaneSklepu.getStrony().get("PanelTransakcji").setPoTransakcji(true);
             jarex.Jarex.przejdz("PanelTransakcji");
@@ -278,6 +293,57 @@ public class PlanszaPoTransakcji extends MyJPanel {
 
     }//GEN-LAST:event_TablicaTowarowComponentShown
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+
+        if (DaneSklepu.getStrony().get("GetClient").getIdKlienta() != -1) {
+
+            JTextField kwota = new JTextField();
+
+            Object[] message = {
+                "Podaj wpłatę klienta:", kwota,};
+
+            String id = String.valueOf(DaneSklepu.getStrony().get("GetClient").getIdKlienta());
+            UIManager.put("OptionPane.cancelButtonText", "Anuluj");
+            int option = JOptionPane.showConfirmDialog(null, message, "Edytuj klienta", JOptionPane.OK_CANCEL_OPTION);
+            try {
+                Statement stmt = null;
+                Statement stmt1 = null;
+                PreparedStatement stmt2 = null;
+
+                stmt = DaneSklepu.getConn().createStatement();
+                stmt1 = DaneSklepu.getConn().createStatement();
+                stmt2 = DaneSklepu.getConn().prepareStatement("insert into towary_w_trans(nr_kolejny, ilosc, kod_towaru,id_trans, cena, rabat) values (0, 1, 0, ?, ?, 5)");
+
+                ResultSet rs = stmt.executeQuery("Select id, dozaplaty from transakcje where id_klienta = " + id + " order by data");
+                Double suma = 0.0;
+                while (rs.next()) {
+                    Double reszta = Double.valueOf(kwota.getText()) - rs.getDouble(2);
+
+                    if (reszta >= 0) {
+                        suma += rs.getDouble(2);
+                        stmt1.executeUpdate("update transakcje set dozaplaty = 0 where id = " + rs.getInt(1));
+                        kwota.setText(String.valueOf(reszta));
+                        System.out.println("Więcej niż 0");
+                    } else {
+                        suma += Double.valueOf(String.valueOf(kwota.getText()));
+                        stmt1.executeUpdate("update transakcje set dozaplaty = " + (-1.0) * reszta + "where id = " + rs.getInt(1));
+                        System.out.println("Mniej niż 0");
+                        break;
+                    }
+                }
+
+                stmt2.setInt(1, DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID());
+                stmt2.setDouble(2, suma);
+                stmt2.executeUpdate();
+
+                wyczyscTabele();
+                wypelnijTabele();
+            } catch (SQLException ex) {
+                Logger.getLogger(MenuKlienta.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel KlientLabel;
@@ -285,6 +351,7 @@ public class PlanszaPoTransakcji extends MyJPanel {
     private javax.swing.JTable TablicaTowarow;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField kwotaField;

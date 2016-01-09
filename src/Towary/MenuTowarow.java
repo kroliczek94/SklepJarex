@@ -83,13 +83,13 @@ public class MenuTowarow extends MyJPanel {
 
         TablicaTowar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7"
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6"
             }
         ));
         TablicaTowar.setRowHeight(25);
@@ -133,7 +133,7 @@ public class MenuTowarow extends MyJPanel {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
 
-        if (TablicaTowar.getSelectedRow() != -1) {
+        if (TablicaTowar.getSelectedRow() >0) {
             JTextField nazwa = new JTextField();
             JTextField cena = new JTextField();
             JTextField cena_dost = new JTextField();
@@ -212,7 +212,7 @@ public class MenuTowarow extends MyJPanel {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
        
-        if (TablicaTowar.getSelectedRow() != -1) {
+        if (TablicaTowar.getSelectedRow() > 0) {
             
             String idText = (String) TablicaTowar.getValueAt(TablicaTowar.getSelectedRow(), 0);
             String nazwaText = (String) TablicaTowar.getValueAt(TablicaTowar.getSelectedRow(), 1);
@@ -238,13 +238,14 @@ public class MenuTowarow extends MyJPanel {
             wypelnijTabele();
 
         }
-// TODO add your handling code here: // TODO add your handling code here:
+
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    @Override
     public void wyczyscTabele() {
         DefaultTableModel dm = (DefaultTableModel) TablicaTowar.getModel();
         int rowCount = dm.getRowCount();
-//Remove rows one by one from the end of the table
+
         for (int i = rowCount - 1; i >= 0; i--) {
             dm.removeRow(i);
         }
@@ -261,11 +262,11 @@ public class MenuTowarow extends MyJPanel {
 
             ResultSet rs;
             rs = stmt.executeQuery("select kod, nazwa, cena_zakup, cena_zamow, ilosc_w_magazynie, "
-                    + "do_zamowienia, rabat from towary order by kod");
+                    + "do_zamowienia, rabat from towary where kod > 0 order by kod");
 
             while (rs.next()) {
                 model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), String.valueOf(rs.getDouble(3)), String.valueOf(rs.getDouble(4)),
-                    String.valueOf(rs.getInt(5)), rs.getString(6), String.valueOf(rs.getInt(7))});
+                    String.valueOf(rs.getInt(5)), rs.getString(6)});
             }
         } catch (SQLException ex) {
             Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);

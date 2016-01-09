@@ -5,19 +5,44 @@
  */
 package jarex;
 
+import java.awt.Color;
+import java.awt.Insets;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+
 /**
  *
  * @author Łukasz Królik
  */
 public class MenuPowitalne extends MyJPanel {
+
     public boolean manager = false;
+
     /**
      * Creates new form MenuPowitalne
      */
     public MenuPowitalne() {
         initComponents();
-        
-        
+
+    }
+
+    public void zmienGrafike(JButton button, ImageIcon image) {
+        button.setForeground(Color.RED);
+        button.setFocusPainted(true);
+        button.setContentAreaFilled(false);
+        button.setMargin(new Insets(0, 0, 0, 0));
+        button.setIcon(image);
+    }
+
+    protected ImageIcon createImageIcon(String path,
+            String description) {
+        java.net.URL imgURL = getClass().getResource(path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL, description);
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
     }
 
     /**
@@ -52,18 +77,18 @@ public class MenuPowitalne extends MyJPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(97, 97, 97)
-                .addComponent(SprzedawcaButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 221, Short.MAX_VALUE)
-                .addComponent(ManagerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(SprzedawcaButton, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
+                .addGap(40, 40, 40)
+                .addComponent(ManagerButton, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
                 .addGap(106, 106, 106))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(216, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(SprzedawcaButton)
-                    .addComponent(ManagerButton))
+                .addContainerGap(88, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(ManagerButton, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+                    .addComponent(SprzedawcaButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(129, 129, 129))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -72,12 +97,12 @@ public class MenuPowitalne extends MyJPanel {
 
         Jarex.przejdz("MenuStartowe");
         DaneSklepu.setManagerMode(true);
-       // TODO add your handling code here:
+        // TODO add your handling code here:
     }//GEN-LAST:event_ManagerButtonActionPerformed
 
     private void SprzedawcaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SprzedawcaButtonActionPerformed
-        Jarex.przejdz("MenuStartowe");
-         DaneSklepu.setManagerMode(false);
+        Jarex.przejdz("PanelTransakcji");
+        DaneSklepu.setManagerMode(false);
 // TODO add your handling code here:
     }//GEN-LAST:event_SprzedawcaButtonActionPerformed
 

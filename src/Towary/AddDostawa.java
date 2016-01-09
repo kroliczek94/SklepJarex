@@ -1,5 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
+ * To change this license header, choose License Headers  Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -170,6 +170,7 @@ public class AddDostawa extends MyJPanel {
                 System.out.println("NR KOL: " + rs.getInt(1));
                 DaneSklepu.getStrony().get("AddDostawa").setNrKolejny(rs.getInt(1) + 1);
             }
+            
             jarex.Jarex.przejdz("GetTowar");// TODO add your handling code here:
         } catch (SQLException ex) {
             Logger.getLogger(AddDostawa.class.getName()).log(Level.SEVERE, null, ex);
