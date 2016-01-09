@@ -55,7 +55,7 @@ public class GetTowar extends MyJPanel {
 
             ResultSet rs;
             if (transakcja) {
-                rs = stmt.executeQuery("select kod, nazwa, cena_zakup from towary where kod > 0 order by kod");
+                rs = stmt.executeQuery("select kod, nazwa, cena_zakup from towary where kod > 0 and kod like '%" + kodField.getText() + "%' and nazwa like '%" + NazwaField.getText() + "%' order by kod");
                 while (rs.next()) {
                     model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), String.valueOf(rs.getDouble(3))});
                 }
@@ -83,8 +83,8 @@ public class GetTowar extends MyJPanel {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         GetTowarTable = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        kodField = new javax.swing.JTextField();
+        NazwaField = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -106,6 +106,24 @@ public class GetTowar extends MyJPanel {
         ));
         GetTowarTable.setRowHeight(25);
         jScrollPane1.setViewportView(GetTowarTable);
+
+        kodField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                kodFieldKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                kodFieldKeyReleased(evt);
+            }
+        });
+
+        NazwaField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                NazwaFieldKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                NazwaFieldKeyReleased(evt);
+            }
+        });
 
         jButton1.setText("Wybierz");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -137,11 +155,11 @@ public class GetTowar extends MyJPanel {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 547, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(kodField, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1))
                         .addGap(41, 41, 41)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField2)
+                            .addComponent(NazwaField)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(0, 0, Short.MAX_VALUE))))
@@ -160,8 +178,8 @@ public class GetTowar extends MyJPanel {
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(kodField, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(NazwaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -225,29 +243,26 @@ public class GetTowar extends MyJPanel {
                     stmt.executeUpdate();
 
                     PreparedStatement stmt1 = null;
-                    
+
                     Integer wynik = null;
                     Statement stmt2 = null;
                     stmt2 = DaneSklepu.getConn().createStatement();
                     ResultSet rs = stmt2.executeQuery("select ilosc_w_magazynie from towary where kod = " + i);
-                    if (rs.next())
-                    {
+                    if (rs.next()) {
                         wynik = rs.getInt(1);
                     }
-                    
+
                     stmt1 = DaneSklepu.getConn().prepareStatement("update towary set ilosc_w_magazynie = ?, do_zamowienia = ? where kod = ?");
                     Integer reszta = wynik - Integer.valueOf(ilosc.getText());
-                    if (reszta > 0){
+                    if (reszta > 0) {
                         stmt1.setInt(1, reszta);
                         stmt1.setString(2, "NIE");
-                    }
-                    else
-                    {
+                    } else {
                         stmt1.setInt(1, 0);
                         stmt1.setString(2, "TAK");
                         JOptionPane.showMessageDialog(null, "Stan w magazynie mniejszy od zera!");
                     }
-                    
+
                     stmt1.setInt(3, i);
                     stmt1.executeUpdate();
 
@@ -263,15 +278,38 @@ public class GetTowar extends MyJPanel {
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void kodFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kodFieldKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_kodFieldKeyPressed
+
+    private void NazwaFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NazwaFieldKeyPressed
+
+// TODO add your handling code here:
+    }//GEN-LAST:event_NazwaFieldKeyPressed
+
+    private void kodFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kodFieldKeyReleased
+        kodField.setText(kodField.getText().toUpperCase());
+        wyczyscTabele();
+        wypelnijTabele();
+// TODO add your handling code here:
+    }//GEN-LAST:event_kodFieldKeyReleased
+
+    private void NazwaFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NazwaFieldKeyReleased
+        NazwaField.setText(NazwaField.getText().toUpperCase());
+        wyczyscTabele();
+        wypelnijTabele();
+// TODO add your handling code here:
+    }//GEN-LAST:event_NazwaFieldKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable GetTowarTable;
+    private javax.swing.JTextField NazwaField;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField kodField;
     // End of variables declaration//GEN-END:variables
 }

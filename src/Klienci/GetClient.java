@@ -31,7 +31,7 @@ public class GetClient extends MyJPanel {
     public GetClient() {
         initComponents();
     }
-    
+
     @Override
     public void wyczyscTabele() {
         DefaultTableModel dm = (DefaultTableModel) tabelaGetClient.getModel();
@@ -41,26 +41,27 @@ public class GetClient extends MyJPanel {
             dm.removeRow(i);
         }
     }
-    
+
     @Override
     public void wypelnijTabele() {
-        
+
         try {
             DefaultTableModel model = (DefaultTableModel) tabelaGetClient.getModel();
             Statement stmt;
             stmt = DaneSklepu.getConn().createStatement();
-            
+
             ResultSet rs;
+
             rs = stmt.executeQuery("select k.id, imie, nazwisko, sum(z.dozaplaty) from transakcje z right join "
                     + "klienci k on k.id = z.id_klienta left join "
-                    + "towary_w_trans t on z.id = t.id_trans group by  nazwisko, k.id, imie");
-            
+                    + "towary_w_trans t on z.id = t.id_trans where imie like '%" + imieField.getText() + "%' and nazwisko like '%" + nazwiskoField.getText() + "%' group by nazwisko, k.id, imie");
+
             while (rs.next()) {
                 model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), rs.getString(3), rs.getInt(4)});
             }
         } catch (SQLException ex) {
             Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);
-            
+
         }
 
         //model.removeRow(2);
@@ -75,17 +76,25 @@ public class GetClient extends MyJPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        TextNazwisko = new javax.swing.JTextField();
+        nazwiskoField = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaGetClient = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
-        jTextField2 = new javax.swing.JTextField();
+        imieField = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
 
-        TextNazwisko.setToolTipText("Nazwisko ");
+        nazwiskoField.setToolTipText("Nazwisko ");
+        nazwiskoField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                nazwiskoFieldKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                nazwiskoFieldKeyReleased(evt);
+            }
+        });
 
         tabelaGetClient.setAutoCreateRowSorter(true);
         tabelaGetClient.setModel(new javax.swing.table.DefaultTableModel(
@@ -124,6 +133,7 @@ public class GetClient extends MyJPanel {
             }
         });
 
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Nazwisko");
 
         jButton3.setText("Dodaj Klienta");
@@ -133,12 +143,21 @@ public class GetClient extends MyJPanel {
             }
         });
 
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        imieField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                imieFieldActionPerformed(evt);
+            }
+        });
+        imieField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                imieFieldKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                imieFieldKeyReleased(evt);
             }
         });
 
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Imię");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -157,12 +176,12 @@ public class GetClient extends MyJPanel {
                         .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(imieField, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
                             .addComponent(jLabel1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(50, 50, 50)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
-                            .addComponent(TextNazwisko, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(nazwiskoField, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))))
                 .addGap(19, 19, 19))
         );
         layout.setVerticalGroup(
@@ -174,8 +193,8 @@ public class GetClient extends MyJPanel {
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(TextNazwisko, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nazwiskoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(imieField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -202,7 +221,7 @@ public class GetClient extends MyJPanel {
         Statement stmt = null;
         UIManager.put("OptionPane.cancelButtonText", "Anuluj");
         int option = JOptionPane.showConfirmDialog(null, message, "Dodaj klienta", JOptionPane.OK_CANCEL_OPTION);
-        
+
         if (option == JOptionPane.OK_OPTION) {
             try {
                 stmt = DaneSklepu.getConn().createStatement();
@@ -212,14 +231,14 @@ public class GetClient extends MyJPanel {
                 Logger.getLogger(MenuKlienta.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         wyczyscTabele();
         wypelnijTabele();
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void imieFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imieFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_imieFieldActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Integer i = new Integer((String) tabelaGetClient.getValueAt(tabelaGetClient.getSelectedRow(), 0));
@@ -231,16 +250,35 @@ public class GetClient extends MyJPanel {
 // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void imieFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_imieFieldKeyPressed
+        wyczyscTabele();
+        wypelnijTabele();// TODO add your handling code here:
+    }//GEN-LAST:event_imieFieldKeyPressed
+
+    private void nazwiskoFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nazwiskoFieldKeyPressed
+        wyczyscTabele();
+        wypelnijTabele();
+// TODO add your handling code here:
+    }//GEN-LAST:event_nazwiskoFieldKeyPressed
+
+    private void imieFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_imieFieldKeyReleased
+        imieField.setText(imieField.getText().toUpperCase());// TODO add your handling code here:
+    }//GEN-LAST:event_imieFieldKeyReleased
+
+    private void nazwiskoFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nazwiskoFieldKeyReleased
+        nazwiskoField.setText(nazwiskoField.getText().toUpperCase());// TODO add your handling code here:
+    }//GEN-LAST:event_nazwiskoFieldKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField TextNazwisko;
+    private javax.swing.JTextField imieField;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField nazwiskoField;
     private javax.swing.JTable tabelaGetClient;
     // End of variables declaration//GEN-END:variables
 }

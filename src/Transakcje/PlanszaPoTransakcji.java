@@ -155,9 +155,6 @@ public class PlanszaPoTransakcji extends MyJPanel {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 kwotaFieldKeyReleased(evt);
             }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                kwotaFieldKeyTyped(evt);
-            }
         });
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -238,26 +235,9 @@ public class PlanszaPoTransakcji extends MyJPanel {
         jarex.Jarex.przejdz("GetClient");// TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void kwotaFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kwotaFieldKeyTyped
-
-    }//GEN-LAST:event_kwotaFieldKeyTyped
-
     private void kwotaFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kwotaFieldKeyPressed
 
     }//GEN-LAST:event_kwotaFieldKeyPressed
-
-    private void kwotaFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kwotaFieldKeyReleased
-        if (!kwotaField.getText().isEmpty()) {
-
-            Double liczba = Double.valueOf(kwotaField.getText());
-            Double reszta = liczba - doZaplacenia;
-            if (reszta > 0) {
-                ResztaLabel.setText("RESZTA: " + reszta);
-            } else {
-                ResztaLabel.setText("WIĘCEJ!");
-            }
-        }// TODO add your handling code here: // TODO add your handling code here:
-    }//GEN-LAST:event_kwotaFieldKeyReleased
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if ("WIĘCEJ!".equals(ResztaLabel.getText()) && "WYBRANY KLIENT: BRAK".equals(KlientLabel.getText())) {
@@ -343,6 +323,20 @@ public class PlanszaPoTransakcji extends MyJPanel {
             }
         }        // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void kwotaFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kwotaFieldKeyReleased
+         kwotaField.setText(kwotaField.getText().replace(',', '.'));
+        if (!kwotaField.getText().isEmpty()) {
+           
+            Double liczba = Double.valueOf(kwotaField.getText());
+            Double reszta = liczba - doZaplacenia;
+            if (reszta > 0) {
+                ResztaLabel.setText("RESZTA: " + reszta);
+            } else {
+                ResztaLabel.setText("WIĘCEJ!");
+            }
+        }// TODO add your handling code here:
+    }//GEN-LAST:event_kwotaFieldKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

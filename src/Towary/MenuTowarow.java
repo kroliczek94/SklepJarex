@@ -43,15 +43,13 @@ public class MenuTowarow extends MyJPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         TablicaTowar = new javax.swing.JTable();
-
-        jButton2.setText("Przeglądaj listę towarów do zamówienia");
+        zamowCheckBox = new javax.swing.JCheckBox();
 
         jButton3.setText("Przyjmij nową dostawę");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -95,6 +93,15 @@ public class MenuTowarow extends MyJPanel {
         TablicaTowar.setRowHeight(25);
         jScrollPane2.setViewportView(TablicaTowar);
 
+        zamowCheckBox.setBackground(new java.awt.Color(4, 56, 145));
+        zamowCheckBox.setForeground(new java.awt.Color(255, 255, 255));
+        zamowCheckBox.setText("Pokaż towary do zamówienia");
+        zamowCheckBox.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                zamowCheckBoxStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -102,9 +109,11 @@ public class MenuTowarow extends MyJPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(zamowCheckBox)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE)
                     .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -126,8 +135,8 @@ public class MenuTowarow extends MyJPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2)
-                .addGap(19, 19, 19))
+                .addComponent(zamowCheckBox)
+                .addGap(23, 23, 23))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -241,6 +250,11 @@ public class MenuTowarow extends MyJPanel {
 
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    private void zamowCheckBoxStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_zamowCheckBoxStateChanged
+        wyczyscTabele();
+        wypelnijTabele();
+    }//GEN-LAST:event_zamowCheckBoxStateChanged
+
     @Override
     public void wyczyscTabele() {
         DefaultTableModel dm = (DefaultTableModel) TablicaTowar.getModel();
@@ -261,8 +275,13 @@ public class MenuTowarow extends MyJPanel {
             stmt = DaneSklepu.getConn().createStatement();
 
             ResultSet rs;
-            rs = stmt.executeQuery("select kod, nazwa, cena_zakup, cena_zamow, ilosc_w_magazynie, "
-                    + "do_zamowienia, rabat from towary where kod > 0 order by kod");
+            String sql = "";
+            sql += "select kod, nazwa, cena_zakup, cena_zamow, ilosc_w_magazynie, do_zamowienia, rabat from towary where kod > 0";
+            if (zamowCheckBox.isSelected()){
+                sql += " and do_zamowienia = 'TAK' ";
+            }
+            sql += "order by kod";
+            rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
                 model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), String.valueOf(rs.getDouble(3)), String.valueOf(rs.getDouble(4)),
@@ -274,11 +293,11 @@ public class MenuTowarow extends MyJPanel {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TablicaTowar;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JCheckBox zamowCheckBox;
     // End of variables declaration//GEN-END:variables
 }
