@@ -31,9 +31,8 @@ public class GetClient extends MyJPanel {
     public GetClient() {
         initComponents();
     }
-
     
-        @Override
+    @Override
     public void wyczyscTabele() {
         DefaultTableModel dm = (DefaultTableModel) tabelaGetClient.getModel();
         int rowCount = dm.getRowCount();
@@ -42,17 +41,17 @@ public class GetClient extends MyJPanel {
             dm.removeRow(i);
         }
     }
-
+    
     @Override
     public void wypelnijTabele() {
-
+        
         try {
             DefaultTableModel model = (DefaultTableModel) tabelaGetClient.getModel();
             Statement stmt;
             stmt = DaneSklepu.getConn().createStatement();
-
+            
             ResultSet rs;
-            rs = stmt.executeQuery("select k.id, imie, nazwisko, sum(ilosc*cena) from transakcje z right join "
+            rs = stmt.executeQuery("select k.id, imie, nazwisko, sum(z.dozaplaty) from transakcje z right join "
                     + "klienci k on k.id = z.id_klienta left join "
                     + "towary_w_trans t on z.id = t.id_trans group by  nazwisko, k.id, imie");
             
@@ -61,7 +60,7 @@ public class GetClient extends MyJPanel {
             }
         } catch (SQLException ex) {
             Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);
-
+            
         }
 
         //model.removeRow(2);
@@ -194,7 +193,7 @@ public class GetClient extends MyJPanel {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-                JTextField imie = new JTextField();
+        JTextField imie = new JTextField();
         JTextField nazwisko = new JTextField();
         Object[] message = {
             "Imię:", imie,
@@ -203,7 +202,7 @@ public class GetClient extends MyJPanel {
         Statement stmt = null;
         UIManager.put("OptionPane.cancelButtonText", "Anuluj");
         int option = JOptionPane.showConfirmDialog(null, message, "Dodaj klienta", JOptionPane.OK_CANCEL_OPTION);
-
+        
         if (option == JOptionPane.OK_OPTION) {
             try {
                 stmt = DaneSklepu.getConn().createStatement();
@@ -213,7 +212,7 @@ public class GetClient extends MyJPanel {
                 Logger.getLogger(MenuKlienta.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
+        
         wyczyscTabele();
         wypelnijTabele();
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -228,7 +227,7 @@ public class GetClient extends MyJPanel {
                 .setIdKlienta(i);
         DaneSklepu.getStrony().get("PlanszaPoTransakcji").zmienLabela();
         Jarex.przejdz("PlanszaPoTransakcji");
-        
+
 // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 

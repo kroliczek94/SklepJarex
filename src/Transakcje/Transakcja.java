@@ -6,6 +6,7 @@
 package Transakcje;
 
 import Klienci.GetClient;
+import Klienci.MenuKlienta;
 import Towary.MenuTowarow;
 import jarex.DaneSklepu;
 import jarex.Jarex;
@@ -20,7 +21,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
 
@@ -70,11 +73,11 @@ public class Transakcja extends MyJPanel {
             stmt = DaneSklepu.getConn().createStatement();
 
             ResultSet rs;
-            rs = stmt.executeQuery("select nr_kolejny, t.nazwa, t.cena_zakup, ilosc from towary_w_trans x join towary t on "
+            rs = stmt.executeQuery("select nr_kolejny, t.nazwa, cena, ilosc from towary_w_trans x join towary t on "
                     + "t.kod = x.kod_towaru where id_trans =  " + DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID() + " order by nr_kolejny");
 
             while (rs.next()) {
-                model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), Double.valueOf(rs.getString(3)), String.valueOf(rs.getInt(4)), Double.valueOf(rs.getString(3)) * rs.getInt(4)});
+                model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), String.valueOf(rs.getDouble(3)), String.valueOf(rs.getInt(4)), Double.valueOf(rs.getString(3)) * rs.getInt(4)});
             }
 
 //            rs = stmt.executeQuery("select sum(cena*ilosc) from towary_w_dost where id = " + String.valueOf(DaneSklepu.getStrony().get("AddDostawa").getCurrentID()));
@@ -317,7 +320,7 @@ public class Transakcja extends MyJPanel {
             panelTransakcji.setSelectedIndex(0);
         }
 
-        
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -344,7 +347,47 @@ public class Transakcja extends MyJPanel {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-         int i = new Integer((String) TransakcjaTable.getValueAt(TransakcjaTable.getSelectedRow(), 0));// TODO add your handling code here:
+        int i = new Integer((String) TransakcjaTable.getValueAt(TransakcjaTable.getSelectedRow(), 0));
+
+        if (i != -1) {
+            
+            JTextField cena = new JTextField();
+            JTextField ilosc = new JTextField();
+
+            Object[] message = {
+                
+                "Cena sprzedaży:", cena,
+                "Ilość sztuk:", ilosc};
+            
+            
+            String cenaText = (String) TransakcjaTable.getValueAt(TransakcjaTable.getSelectedRow(), 2);
+            String iloscText = (String) TransakcjaTable.getValueAt(TransakcjaTable.getSelectedRow(), 3);
+
+           
+            cena.setText(cenaText);
+            ilosc.setText(iloscText);
+
+            PreparedStatement stmt = null;
+            UIManager.put("OptionPane.cancelButtonText", "Anuluj");
+            int option = JOptionPane.showConfirmDialog(null, message, "Edytuj Pozycję", JOptionPane.OK_CANCEL_OPTION);
+
+            if (option == JOptionPane.OK_OPTION) {
+                try {
+                    stmt = DaneSklepu.getConn().prepareStatement("Update towary_w_trans set cena = ?, ilosc = ? where nr_kolejny = " + i + " and id_trans = ?");
+                    stmt.setDouble(1, Double.valueOf(cena.getText()));
+                    stmt.setDouble(2, Double.valueOf(ilosc.getText()));
+                    stmt.setInt(3, DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID());
+
+                    stmt.executeUpdate();
+                } catch (SQLException ex) {
+                    Logger.getLogger(MenuKlienta.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            wyczyscTabele();
+            wypelnijTabele();
+
+        }// TODO add your handling code here:
     }//GEN-LAST:event_jButton6ActionPerformed
 
 

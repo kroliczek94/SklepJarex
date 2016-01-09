@@ -46,17 +46,19 @@ public class MenuKlienta extends MyJPanel {
     @Override
     public void wypelnijTabele() {
 
+      
         try {
             DefaultTableModel model = (DefaultTableModel) TablicaKlient.getModel();
             Statement stmt;
             stmt = DaneSklepu.getConn().createStatement();
 
             ResultSet rs;
-            rs = stmt.executeQuery("select id, imie, nazwisko, stan_konta, stan_naklejek from klienci order by id");
+            rs = stmt.executeQuery("select k.id, imie, nazwisko, sum(z.dozaplaty) from transakcje z right join "
+                    + "klienci k on k.id = z.id_klienta left join "
+                    + "towary_w_trans t on z.id = t.id_trans group by  nazwisko, k.id, imie");
             
             while (rs.next()) {
-                model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), rs.getString(3), String.valueOf(rs.getInt(4)),
-                    String.valueOf(rs.getInt(5))});
+                model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), rs.getString(3), rs.getInt(4)});
             }
         } catch (SQLException ex) {
             Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);
