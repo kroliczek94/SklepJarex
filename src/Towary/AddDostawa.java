@@ -48,7 +48,7 @@ public class AddDostawa extends MyJPanel {
             stmt = DaneSklepu.getConn().createStatement();
 
             ResultSet rs;
-            rs = stmt.executeQuery("select nr_kolejny, t.nazwa, t.cena_zamow, ilosc from towary_w_dost x join towary t on t.kod = x.kod_towaru where id_dost = ' " + DaneSklepu.getStrony().get("AddDostawa").getCurrentID() + "'order by nr_kolejny");
+            rs = stmt.executeQuery("select nr_kolejny, t.nazwa, TO_CHAR(t.cena_zamow,'99999.99'), ilosc from towary_w_dost x join towary t on t.kod = x.kod_towaru where id_dost = ' " + DaneSklepu.getStrony().get("AddDostawa").getCurrentID() + "'order by nr_kolejny");
 
             while (rs.next()) {
                 model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), Double.valueOf(rs.getString(3)), String.valueOf(rs.getInt(4)), Double.valueOf(rs.getString(3)) * rs.getInt(4)});

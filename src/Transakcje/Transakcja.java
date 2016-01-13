@@ -73,7 +73,7 @@ public class Transakcja extends MyJPanel {
             stmt = DaneSklepu.getConn().createStatement();
 
             ResultSet rs;
-            rs = stmt.executeQuery("select nr_kolejny, t.nazwa, cena, ilosc from towary_w_trans x join towary t on "
+            rs = stmt.executeQuery("select nr_kolejny, t.nazwa, TO_CHAR(cena,'99999.99'), ilosc from towary_w_trans x join towary t on "
                     + "t.kod = x.kod_towaru where id_trans =  " + DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID() + " order by nr_kolejny");
 
             while (rs.next()) {

@@ -57,7 +57,7 @@ public class MenuDostaw extends MyJPanel {
             stmt = DaneSklepu.getConn().createStatement();
 
             ResultSet rs;
-            rs = stmt.executeQuery("select id, TO_CHAR(data, 'DD-MM-YYYY HH24:MI'), dostawca, sum(cena*ilosc) from dostawy d join towary_w_dost t on d.id = t.id_dost group by id, data, dostawca order by data desc");
+            rs = stmt.executeQuery("select id, TO_CHAR(data, 'DD-MM-YYYY HH24:MI'), dostawca, TO_CHAR(sum(cena*ilosc),'99999.99') from dostawy d join towary_w_dost t on d.id = t.id_dost group by id, data, dostawca order by data desc");
 
             while (rs.next()) {
                 model.addRow(new Object[]{String.valueOf(rs.getInt(1)),rs.getString(2), rs.getString(3), rs.getDouble(4)});

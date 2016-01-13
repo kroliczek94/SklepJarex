@@ -46,7 +46,7 @@ public class HistorycznaTransakcja extends MyJPanel {
             stmt = DaneSklepu.getConn().createStatement();
 
             ResultSet rs;
-            rs = stmt.executeQuery("select nr_kolejny, nazwa, cena, ilosc, cena*ilosc from towary_w_trans t join towary x on t.kod_towaru = x.kod where t.id_trans = " + DaneSklepu.getStrony().get("MenuTransakcji").getCurrentID());
+            rs = stmt.executeQuery("select nr_kolejny, nazwa, TO_CHAR(cena,'99999.99'), ilosc, TO_CHAR(cena*ilosc,'99999.99') from towary_w_trans t join towary x on t.kod_towaru = x.kod where t.id_trans = " + DaneSklepu.getStrony().get("MenuTransakcji").getCurrentID());
 
             while (rs.next()) {
                 model.addRow(new Object[]{rs.getInt(1), String.valueOf(rs.getString(2)), rs.getDouble(3), rs.getInt(4), rs.getDouble(5)});

@@ -53,16 +53,16 @@ public class MenuKlienta extends MyJPanel {
             stmt = DaneSklepu.getConn().createStatement();
 
             ResultSet rs;
-            rs = stmt.executeQuery("select k.id, imie, nazwisko, sum(z.dozaplaty) from transakcje z right join "
+            rs = stmt.executeQuery("select k.id, imie, nazwisko, TO_CHAR(sum(z.dozaplaty),'99999.99') from transakcje z right join "
                     + "klienci k on k.id = z.id_klienta left join "
                     + "towary_w_trans t on z.id = t.id_trans group by  nazwisko, k.id, imie");
 
             while (rs.next()) {
-                model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), rs.getString(3), rs.getInt(4)});
+                model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), rs.getString(3), rs.getDouble(4)});
             }
         } catch (SQLException ex) {
             Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);
-
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
 
         //model.removeRow(2);
@@ -82,7 +82,6 @@ public class MenuKlienta extends MyJPanel {
         TablicaKlient = new javax.swing.JTable();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
 
         jButton2.setText("Przyjmij zwrot długu");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -120,13 +119,6 @@ public class MenuKlienta extends MyJPanel {
             }
         });
 
-        jButton1.setText("Usuń klienta");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -138,10 +130,8 @@ public class MenuKlienta extends MyJPanel {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -152,8 +142,7 @@ public class MenuKlienta extends MyJPanel {
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
-                    .addComponent(jButton4)
-                    .addComponent(jButton1))
+                    .addComponent(jButton4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton2)
                 .addContainerGap())
@@ -174,7 +163,7 @@ public class MenuKlienta extends MyJPanel {
         if (option == JOptionPane.OK_OPTION) {
             try {
                 stmt = DaneSklepu.getConn().createStatement();
-                String sql = "INSERT INTO KLIENCI(ID, IMIE, NAZWISKO) VALUES(idKlienta.NEXTVAL, '" + imie.getText() + "' , '" + nazwisko.getText() + "')";
+                String sql = "INSERT INTO KLIENCI(ID, IMIE, NAZWISKO) VALUES(idKlienta.NEXTVAL, '" + imie.getText().toUpperCase() + "' , '" + nazwisko.getText().toUpperCase() + "')";
                 stmt.executeUpdate(sql);
             } catch (SQLException ex) {
                 Logger.getLogger(MenuKlienta.class.getName()).log(Level.SEVERE, null, ex);
@@ -221,28 +210,6 @@ public class MenuKlienta extends MyJPanel {
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String imie = (String) TablicaKlient.getValueAt(TablicaKlient.getSelectedRow(), 1);
-        String nazwisko = ((String) TablicaKlient.getValueAt(TablicaKlient.getSelectedRow(), 2));
-        String id = (String) TablicaKlient.getValueAt(TablicaKlient.getSelectedRow(), 0);
-
-        int option = JOptionPane.showConfirmDialog(null, "Czy usunąć klienta : " + imie + ' ' + nazwisko);
-
-        Statement stmt = null;
-        if (option == JOptionPane.OK_OPTION) {
-            try {
-                stmt = DaneSklepu.getConn().createStatement();
-                String sql = "DELETE FROM KLIENCI WHERE ID = " + id;
-                stmt.executeUpdate(sql);
-            } catch (SQLException ex) {
-                Logger.getLogger(MenuKlienta.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        wyczyscTabele();
-        wypelnijTabele();
-// TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
@@ -296,7 +263,6 @@ public class MenuKlienta extends MyJPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TablicaKlient;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

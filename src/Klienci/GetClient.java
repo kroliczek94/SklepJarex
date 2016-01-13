@@ -24,7 +24,8 @@ import javax.swing.table.DefaultTableModel;
  * @author Łukasz Królik
  */
 public class GetClient extends MyJPanel {
-
+    String imie1 = "";
+    String nazwisko1 = "";
     /**
      * Creates new form GetClient
      */
@@ -51,13 +52,13 @@ public class GetClient extends MyJPanel {
             stmt = DaneSklepu.getConn().createStatement();
 
             ResultSet rs;
-
-            rs = stmt.executeQuery("select k.id, imie, nazwisko, sum(z.dozaplaty) from transakcje z right join "
+            System.out.println(imie1 + " "+ nazwisko1);
+            rs = stmt.executeQuery("select k.id, imie, nazwisko, TO_CHAR(sum(z.dozaplaty),'99999.99') from transakcje z right join "
                     + "klienci k on k.id = z.id_klienta left join "
-                    + "towary_w_trans t on z.id = t.id_trans where imie like '%" + imieField.getText() + "%' and nazwisko like '%" + nazwiskoField.getText() + "%' group by nazwisko, k.id, imie");
+                    + "towary_w_trans t on z.id = t.id_trans where imie like '%" + imie1.toUpperCase() + "%' and nazwisko like '%" + nazwisko1.toUpperCase() + "%' group by nazwisko, k.id, imie");
 
             while (rs.next()) {
-                model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), rs.getString(3), rs.getInt(4)});
+                model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), rs.getString(3), rs.getDouble(4)});
             }
         } catch (SQLException ex) {
             Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);
@@ -251,22 +252,26 @@ public class GetClient extends MyJPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void imieFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_imieFieldKeyPressed
-        wyczyscTabele();
-        wypelnijTabele();// TODO add your handling code here:
+        
     }//GEN-LAST:event_imieFieldKeyPressed
 
     private void nazwiskoFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nazwiskoFieldKeyPressed
-        wyczyscTabele();
-        wypelnijTabele();
+        
 // TODO add your handling code here:
     }//GEN-LAST:event_nazwiskoFieldKeyPressed
 
     private void imieFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_imieFieldKeyReleased
-        imieField.setText(imieField.getText().toUpperCase());// TODO add your handling code here:
+        this.imie1 = imieField.getText();
+        wyczyscTabele();
+        wypelnijTabele();
+// TODO add your handling code here:
     }//GEN-LAST:event_imieFieldKeyReleased
 
     private void nazwiskoFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nazwiskoFieldKeyReleased
-        nazwiskoField.setText(nazwiskoField.getText().toUpperCase());// TODO add your handling code here:
+        this.nazwisko1 = nazwiskoField.getText();
+        wyczyscTabele();
+        wypelnijTabele();
+        
     }//GEN-LAST:event_nazwiskoFieldKeyReleased
 
 

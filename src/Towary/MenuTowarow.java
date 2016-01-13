@@ -205,9 +205,9 @@ public class MenuTowarow extends MyJPanel {
         if (option == JOptionPane.OK_OPTION) {
             try {
                 stmt = DaneSklepu.getConn().prepareStatement("Insert into towary(kod, nazwa, cena_zakup, cena_zamow, DO_ZAMOWIENIA) values (idtowar.NEXTVAL , ? , ? , ?, 'TAK')");
-                stmt.setString(1, nazwa.getText());
-                stmt.setDouble(2, Double.valueOf(cena.getText()));
-                stmt.setDouble(3, Double.valueOf(cena_dost.getText()));
+                stmt.setString(1, nazwa.getText().toUpperCase());
+                stmt.setDouble(2, Double.valueOf(cena.getText().replace(",", ".")));
+                stmt.setDouble(3, Double.valueOf(cena_dost.getText().replace(",", ".")));
 
                 stmt.executeUpdate();
             } catch (SQLException ex) {
@@ -276,7 +276,7 @@ public class MenuTowarow extends MyJPanel {
 
             ResultSet rs;
             String sql = "";
-            sql += "select kod, nazwa, cena_zakup, cena_zamow, ilosc_w_magazynie, do_zamowienia, rabat from towary where kod > 0";
+            sql += "select kod, nazwa, TO_CHAR(cena_zakup,'99999.99'), TO_CHAR(cena_zamow,'99999.99'), ilosc_w_magazynie, do_zamowienia, rabat from towary where kod > 0";
             if (zamowCheckBox.isSelected()){
                 sql += " and do_zamowienia = 'TAK' ";
             }

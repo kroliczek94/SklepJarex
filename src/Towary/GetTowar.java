@@ -24,7 +24,8 @@ import javax.swing.table.DefaultTableModel;
  * @author Łukasz Królik
  */
 public class GetTowar extends MyJPanel {
-
+    String kodText = "";
+    String nazwaText = "";
     /**
      * Creates new form GetTowarTrans
      */
@@ -55,13 +56,13 @@ public class GetTowar extends MyJPanel {
 
             ResultSet rs;
             if (transakcja) {
-                rs = stmt.executeQuery("select kod, nazwa, cena_zakup from towary where kod > 0 and kod like '%" + kodField.getText() + "%' and nazwa like '%" + NazwaField.getText() + "%' order by kod");
+                rs = stmt.executeQuery("select kod, nazwa, TO_CHAR(cena_zakup,'99999.99') from towary where kod > 0 and kod like '%" + kodText.toUpperCase() + "%' and nazwa like '%" + nazwaText.toUpperCase() + "%' order by kod");
                 while (rs.next()) {
                     model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), String.valueOf(rs.getDouble(3))});
                 }
             } else {
                 model.setColumnIdentifiers(new Object[]{"Kod", "Nazwa", "Cena w dostawie"});
-                rs = stmt.executeQuery("select kod, nazwa, cena_zamow from towary where kod > 0 order by kod");
+                rs = stmt.executeQuery("select kod, nazwa, TO_CHAR(cena_zamow,'99999.99') from towary where kod > 0 and kod like '%" + kodText.toUpperCase() + "%' and nazwa like '%" + nazwaText.toUpperCase() + "%' order by kod");
                 while (rs.next()) {
                     model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), String.valueOf(rs.getDouble(3))});
                 }
@@ -201,7 +202,7 @@ public class GetTowar extends MyJPanel {
             "Podaj ilosc wzietego towaru:", ilosc
         };
         UIManager.put("OptionPane.cancelButtonText", "Anuluj");
-        int option = JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
+        int option = JOptionPane.showConfirmDialog(null, message, "", JOptionPane.OK_CANCEL_OPTION);
 
         if (GetTowarTable.getSelectedRow() != -1) {
             boolean transakcja = DaneSklepu.getStrony().get("GetTowar").isTransakcja();
@@ -288,14 +289,14 @@ public class GetTowar extends MyJPanel {
     }//GEN-LAST:event_NazwaFieldKeyPressed
 
     private void kodFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kodFieldKeyReleased
-        kodField.setText(kodField.getText().toUpperCase());
+        kodText = kodField.getText();
         wyczyscTabele();
         wypelnijTabele();
 // TODO add your handling code here:
     }//GEN-LAST:event_kodFieldKeyReleased
 
     private void NazwaFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NazwaFieldKeyReleased
-        NazwaField.setText(NazwaField.getText().toUpperCase());
+        nazwaText = NazwaField.getText();
         wyczyscTabele();
         wypelnijTabele();
 // TODO add your handling code here:
