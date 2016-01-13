@@ -70,7 +70,7 @@ public class PlanszaPoTransakcji extends MyJPanel {
             Double doZaplaty = null;
             while (rs1.next()) {
 
-                doZaplaty = Double.valueOf(rs1.getString(1));
+                doZaplaty = rs1.getDouble(1);
                 this.doZaplacenia = doZaplaty;
             }
             jLabel2.setText("DO ZAPŁACENIA:" + doZaplaty);

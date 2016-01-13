@@ -225,7 +225,7 @@ public class GetTowar extends MyJPanel {
                     stmt1.setInt(2, i);
                     int x = stmt1.executeUpdate();
 
-                    System.out.println(x);
+                    Jarex.przejdz("AddDostawa");
 
                 } catch (SQLException ex) {
                     Logger.getLogger(GetTowar.class.getName()).log(Level.SEVERE, null, ex);
@@ -266,6 +266,7 @@ public class GetTowar extends MyJPanel {
 
                     stmt1.setInt(3, i);
                     stmt1.executeUpdate();
+                    Jarex.przejdz("PanelTransakcji");
 
                 } catch (SQLException ex) {
                     Logger.getLogger(GetTowar.class.getName()).log(Level.SEVERE, null, ex);
@@ -274,7 +275,7 @@ public class GetTowar extends MyJPanel {
         }
 
         //DaneSklepu.getStrony().get(DaneSklepu.getStos().peekLast()).setCurrentID(i);
-        Jarex.przejdz((String) DaneSklepu.getStos().pollLast());// TODO add your handling code here:
+        // TODO add your handling code here:
 
 
     }//GEN-LAST:event_jButton1ActionPerformed

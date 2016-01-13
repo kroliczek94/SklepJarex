@@ -9,6 +9,7 @@ import java.awt.BorderLayout;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -58,36 +59,62 @@ public class MainWindow extends javax.swing.JPanel {
     }
 
     public void dodajElement(String str) {
+        int wynik = -1;
         try {
             //String str = DaneSklepu.getStrony().
-            
+
             DaneSklepu.getConn().setAutoCommit(true);
-            
+
             if (current != null) {
                 this.remove(DaneSklepu.getStrony().get(current));
             }
-            
-            if (str == "PanelTransakcji"){
+            if (current == "PanelTransakcji") {
+                wynik = JOptionPane.showConfirmDialog(null, "Przerywasz Transakcję, czy chcesz ją dokończyć?");
+                if (wynik == 1) {
+                   // str = "PanelTransakcji";
+                } else if (wynik == 0) {
+                    DaneSklepu.getConn().rollback();
+                }
+            }
+            if (str == "PanelTransakcji") {
                 DaneSklepu.getConn().setAutoCommit(false);
             }
-            
-            } catch (SQLException ex) {
+
+        } catch (SQLException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
+        if (wynik != 0) {
             this.add(DaneSklepu.getStrony().get(str), BorderLayout.CENTER);
             DaneSklepu.wybierzTytulDlaNazwy(str);
             DaneSklepu.getStrony().get(str).wyczyscTabele();
             DaneSklepu.getStrony().get(str).wypelnijTabele();
             previous = current;
             if (previous != null && !DaneSklepu.isWsteczButton()) {
-                
+
                 DaneSklepu.getStos().add(previous);
                 DaneSklepu.setWsteczButton(false);
             }
             current = str;
             validate();
             repaint();
-        
+        } else {
+            
+            this.add(DaneSklepu.getStrony().get("PanelTransakcji"), BorderLayout.CENTER);
+            DaneSklepu.wybierzTytulDlaNazwy("PanelTransakcji");
+            DaneSklepu.getStrony().get("PanelTransakcji").wyczyscTabele();
+            DaneSklepu.getStrony().get("PanelTransakcji").wypelnijTabele();
+            previous = current;
+            if (previous != null && !DaneSklepu.isWsteczButton()) {
+
+                DaneSklepu.getStos().add(previous);
+                DaneSklepu.setWsteczButton(false);
+            }
+            current = "PanelTransakcji";
+            validate();
+            repaint();
+
+        }
+
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

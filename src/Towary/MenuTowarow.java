@@ -46,7 +46,6 @@ public class MenuTowarow extends MyJPanel {
         jButton3 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         TablicaTowar = new javax.swing.JTable();
         zamowCheckBox = new javax.swing.JCheckBox();
@@ -69,13 +68,6 @@ public class MenuTowarow extends MyJPanel {
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
-            }
-        });
-
-        jButton6.setText("Usuń towar");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
             }
         });
 
@@ -109,17 +101,15 @@ public class MenuTowarow extends MyJPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(zamowCheckBox)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE)
                     .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(zamowCheckBox)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -130,8 +120,7 @@ public class MenuTowarow extends MyJPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton5)
-                    .addComponent(jButton4)
-                    .addComponent(jButton6))
+                    .addComponent(jButton4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -219,37 +208,6 @@ public class MenuTowarow extends MyJPanel {
         wypelnijTabele();
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-       
-        if (TablicaTowar.getSelectedRow() > 0) {
-            
-            String idText = (String) TablicaTowar.getValueAt(TablicaTowar.getSelectedRow(), 0);
-            String nazwaText = (String) TablicaTowar.getValueAt(TablicaTowar.getSelectedRow(), 1);
-            String cenaText = (String) TablicaTowar.getValueAt(TablicaTowar.getSelectedRow(), 2);
-            String cenaDostText = (String) TablicaTowar.getValueAt(TablicaTowar.getSelectedRow(), 3);
-
-            
-            PreparedStatement stmt = null;
-            UIManager.put("OptionPane.cancelButtonText", "Anuluj");
-            int option = JOptionPane.showConfirmDialog(null, "Czy usunąć towar: " + nazwaText, "Potwierdzenie", JOptionPane.OK_CANCEL_OPTION);
-
-            if (option == JOptionPane.OK_OPTION) {
-                try {
-                    stmt = DaneSklepu.getConn().prepareStatement("Delete from towary where kod = " + idText);
-                    
-                    stmt.executeUpdate();
-                } catch (SQLException ex) {
-                    Logger.getLogger(MenuKlienta.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-
-            wyczyscTabele();
-            wypelnijTabele();
-
-        }
-
-    }//GEN-LAST:event_jButton6ActionPerformed
-
     private void zamowCheckBoxStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_zamowCheckBoxStateChanged
         wyczyscTabele();
         wypelnijTabele();
@@ -296,7 +254,6 @@ public class MenuTowarow extends MyJPanel {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JCheckBox zamowCheckBox;
     // End of variables declaration//GEN-END:variables

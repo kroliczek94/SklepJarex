@@ -80,7 +80,6 @@ public class MenuTransakcji extends MyJPanel {
         jButton3 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         TransakcjeTable = new javax.swing.JTable();
-        jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
 
         jButton2.setText("Wyświetl transakcje");
@@ -111,13 +110,6 @@ public class MenuTransakcji extends MyJPanel {
         TransakcjeTable.setRowHeight(25);
         jScrollPane1.setViewportView(TransakcjeTable);
 
-        jButton4.setText("Usuń transakcję");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-
         jButton5.setText("Okno sprzedaży");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -135,10 +127,8 @@ public class MenuTransakcji extends MyJPanel {
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(178, 178, 178)
+                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jScrollPane1))
                 .addContainerGap())
         );
@@ -150,7 +140,6 @@ public class MenuTransakcji extends MyJPanel {
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton3)
@@ -171,29 +160,6 @@ public class MenuTransakcji extends MyJPanel {
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        int i = new Integer((String) TransakcjeTable.getValueAt(TransakcjeTable.getSelectedRow(), 0));
-        System.out.println(i);
-        if (i > 0) {
-            try {
-                PreparedStatement stmt = null;
-                stmt = DaneSklepu.getConn().prepareStatement("Delete from towary_w_trans where id_trans = ?");
-                stmt.setInt(1, i);
-                stmt.executeUpdate();
-
-                stmt = DaneSklepu.getConn().prepareStatement("Delete from transakcje where id = ?");
-                stmt.setInt(1, i);
-                stmt.executeUpdate();
-
-            } catch (SQLException ex) {
-                Logger.getLogger(Transakcja.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        wyczyscTabele();
-        wypelnijTabele();
-
-    }//GEN-LAST:event_jButton4ActionPerformed
-
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         JOptionPane.showMessageDialog(null, "Drukowanie raportu dziennego...");
         
@@ -204,7 +170,6 @@ public class MenuTransakcji extends MyJPanel {
     private javax.swing.JTable TransakcjeTable;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
