@@ -235,39 +235,17 @@ public class GetTowar extends MyJPanel {
                 try {
                     PreparedStatement stmt = null;
 
-                    stmt = DaneSklepu.getConn().prepareStatement("insert into towary_w_trans(nr_kolejny, ilosc, rabat, kod_towaru, id_trans, cena) values(?,?,3,?,?,(select cena_zakup from towary where kod = " + i + "))");
+                    stmt =  DaneSklepu.getTransakcje().get(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()).prepareStatement("insert into towary_w_trans(nr_kolejny, ilosc, rabat, kod_towaru, id_trans, cena) values(?,?,3,?,?,(select cena_zakup from towary where kod = " + i + "))");
 
                     stmt.setInt(1, DaneSklepu.getStrony().get("PanelTransakcji").getNrKolejny());
                     stmt.setInt(2, new Integer(ilosc.getText()));
                     stmt.setInt(3, i);
                     stmt.setInt(4, DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID());
                     stmt.executeUpdate();
-
-                    PreparedStatement stmt1 = null;
-
-                    Integer wynik = null;
-                    Statement stmt2 = null;
-                    stmt2 = DaneSklepu.getConn().createStatement();
-                    ResultSet rs = stmt2.executeQuery("select ilosc_w_magazynie from towary where kod = " + i);
-                    if (rs.next()) {
-                        wynik = rs.getInt(1);
-                    }
-
-                    stmt1 = DaneSklepu.getConn().prepareStatement("update towary set ilosc_w_magazynie = ?, do_zamowienia = ? where kod = ?");
-                    Integer reszta = wynik - Integer.valueOf(ilosc.getText());
-                    if (reszta > 0) {
-                        stmt1.setInt(1, reszta);
-                        stmt1.setString(2, "NIE");
-                    } else {
-                        stmt1.setInt(1, 0);
-                        stmt1.setString(2, "TAK");
-                        JOptionPane.showMessageDialog(null, "Stan w magazynie mniejszy od zera!");
-                    }
-
-                    stmt1.setInt(3, i);
-                    stmt1.executeUpdate();
+                    
+                    stmt.close();
+                    
                     Jarex.przejdz("PanelTransakcji");
-
                 } catch (SQLException ex) {
                     Logger.getLogger(GetTowar.class.getName()).log(Level.SEVERE, null, ex);
                 }

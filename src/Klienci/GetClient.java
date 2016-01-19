@@ -106,7 +106,7 @@ public class GetClient extends MyJPanel {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Imię", "Nazwisko", "Stan Konta"
             }
         ) {
             Class[] types = new Class [] {
@@ -119,6 +119,10 @@ public class GetClient extends MyJPanel {
         });
         tabelaGetClient.setRowHeight(25);
         jScrollPane1.setViewportView(tabelaGetClient);
+        if (tabelaGetClient.getColumnModel().getColumnCount() > 0) {
+            tabelaGetClient.getColumnModel().getColumn(0).setMinWidth(0);
+            tabelaGetClient.getColumnModel().getColumn(0).setMaxWidth(0);
+        }
 
         jButton1.setText("Wybierz klienta");
         jButton1.addActionListener(new java.awt.event.ActionListener() {

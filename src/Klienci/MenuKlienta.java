@@ -198,7 +198,7 @@ public class MenuKlienta extends MyJPanel {
             if (option == JOptionPane.OK_OPTION) {
                 try {
                     stmt = DaneSklepu.getConn().createStatement();
-                    String sql = "UPDATE KLIENCI SET IMIE = '" + imie.getText() + "' , NAZWISKO = '" + nazwisko.getText() + "' where id = " + id;
+                    String sql = "UPDATE KLIENCI SET IMIE = '" + imie.getText().toUpperCase() + "' , NAZWISKO = '" + nazwisko.getText().toUpperCase() + "' where id = " + id;
                     stmt.executeUpdate(sql);
                 } catch (SQLException ex) {
                     Logger.getLogger(MenuKlienta.class.getName()).log(Level.SEVERE, null, ex);

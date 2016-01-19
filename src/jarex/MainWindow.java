@@ -68,8 +68,8 @@ public class MainWindow extends javax.swing.JPanel {
             if (current != null) {
                 this.remove(DaneSklepu.getStrony().get(current));
             }
-            if (current == "PanelTransakcji") {
-                wynik = JOptionPane.showConfirmDialog(null, "Przerywasz Transakcję, czy chcesz ją dokończyć?");
+            if (current == "PanelTransakcji" && str != "GetTowar") {
+                //wynik = JOptionPane.showConfirmDialog(null, "Przerywasz Transakcję, czy chcesz ją dokończyć?");
                 if (wynik == 1) {
                    // str = "PanelTransakcji";
                 } else if (wynik == 0) {

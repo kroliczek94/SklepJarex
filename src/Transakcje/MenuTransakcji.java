@@ -104,11 +104,15 @@ public class MenuTransakcji extends MyJPanel {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Title 1", "Data", "Dłużnik (kwota do zapłacenia)", "Łączna wartość"
             }
         ));
         TransakcjeTable.setRowHeight(25);
         jScrollPane1.setViewportView(TransakcjeTable);
+        if (TransakcjeTable.getColumnModel().getColumnCount() > 0) {
+            TransakcjeTable.getColumnModel().getColumn(0).setMinWidth(0);
+            TransakcjeTable.getColumnModel().getColumn(0).setMaxWidth(0);
+        }
 
         jButton5.setText("Okno sprzedaży");
         jButton5.addActionListener(new java.awt.event.ActionListener() {

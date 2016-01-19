@@ -93,7 +93,7 @@ public class MenuDostaw extends MyJPanel {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Title 1", "Data", "Dostawca", "Łączna wartość"
             }
         ));
         DostawyTable.setRowHeight(25);

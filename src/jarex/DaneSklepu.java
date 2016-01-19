@@ -32,6 +32,7 @@ public class DaneSklepu {
     private static HashMap<String, MyJPanel> strony = new HashMap<>();
     private static boolean managerMode = false;
     private static ConcurrentLinkedDeque<String> stos = new ConcurrentLinkedDeque<>();
+    private static HashMap<Integer, Connection> transakcje = new HashMap<>();
     private static boolean wsteczButton = false;
 
     private static Connection conn = null;
@@ -108,6 +109,20 @@ public class DaneSklepu {
      */
     public static void setTytul(String aTytul) {
         tytul = aTytul;
+    }
+
+    /**
+     * @return the transakcje
+     */
+    public static HashMap<Integer, Connection> getTransakcje() {
+        return transakcje;
+    }
+
+    /**
+     * @param aTransakcje the transakcje to set
+     */
+    public static void setTransakcje(HashMap<Integer, Connection> aTransakcje) {
+        transakcje = aTransakcje;
     }
 
     public DaneSklepu() {

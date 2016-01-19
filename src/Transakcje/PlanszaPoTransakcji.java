@@ -52,7 +52,7 @@ public class PlanszaPoTransakcji extends MyJPanel {
         try {
             DefaultTableModel model = (DefaultTableModel) TablicaTowarow.getModel();
             Statement stmt;
-            stmt = DaneSklepu.getConn().createStatement();
+            stmt = DaneSklepu.getTransakcje().get(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()).createStatement();
 
             ResultSet rs;
             rs = stmt.executeQuery("select nr_kolejny, t.nazwa, TO_CHAR(cena,'99999.99'), ilosc from towary_w_trans x join towary t on "
@@ -63,7 +63,7 @@ public class PlanszaPoTransakcji extends MyJPanel {
             }
 
             Statement stmt1 = null;
-            stmt1 = DaneSklepu.getConn().createStatement();
+            stmt1 = DaneSklepu.getTransakcje().get(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()).createStatement();
 
             ResultSet rs1 = stmt1.executeQuery("Select sum(ilosc * cena) from towary_w_trans where id_trans = " + DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID());
 
@@ -75,7 +75,7 @@ public class PlanszaPoTransakcji extends MyJPanel {
             }
             jLabel2.setText("DO ZAPŁACENIA:" + doZaplaty);
 
-            stmt1 = DaneSklepu.getConn().createStatement();
+            stmt1 = DaneSklepu.getTransakcje().get(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()).createStatement();
 
         } catch (SQLException ex) {
             Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);
@@ -90,7 +90,7 @@ public class PlanszaPoTransakcji extends MyJPanel {
             PreparedStatement stmt = null;
             ResultSet rs = null;
 
-            stmt = DaneSklepu.getConn().prepareStatement("Select imie, nazwisko from klienci where id = ?");
+            stmt = DaneSklepu.getTransakcje().get(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()).prepareStatement("Select imie, nazwisko from klienci where id = ?");
             stmt.setInt(1, DaneSklepu.getStrony().get("GetClient").getIdKlienta());
 
             rs = stmt.executeQuery();
@@ -239,27 +239,76 @@ public class PlanszaPoTransakcji extends MyJPanel {
 
     }//GEN-LAST:event_kwotaFieldKeyPressed
 
+    private void obnizIlosc() {
+        Integer wynik = null;
+        try {
+
+            PreparedStatement stmt = null;
+            stmt = DaneSklepu.getTransakcje().get(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()).prepareStatement("select ilosc, kod_towaru from towary_w_trans where id_trans = ?");
+            stmt.setInt(1, DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID());
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Statement stmt2 = DaneSklepu.getTransakcje().get(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()).createStatement();
+                ResultSet rs1 = stmt2.executeQuery("select ilosc_w_magazynie from towary where kod = " + rs.getString(2));
+                if (rs1.next()) {
+                    wynik = rs1.getInt(1);
+                }
+
+                PreparedStatement stmt1 = null;
+               
+                stmt1 = DaneSklepu.getTransakcje().get(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()).prepareStatement("update towary set ilosc_w_magazynie = ?, do_zamowienia = ? where kod = ?");
+                Integer reszta = wynik - Integer.valueOf(rs.getString(1));
+                if (reszta > 0) {
+                    stmt1.setInt(1, reszta);
+                    stmt1.setString(2, "NIE");
+                } else {
+                    stmt1.setInt(1, 0);
+                    stmt1.setString(2, "TAK");
+
+                }
+                stmt1.setInt(3, rs.getInt(2));
+                stmt1.executeUpdate();
+            }
+
+            jarex.Jarex.przejdz("PanelTransakcji");
+        } catch (SQLException ex) {
+            Logger.getLogger(PlanszaPoTransakcji.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if ("WIĘCEJ!".equals(ResztaLabel.getText()) && "WYBRANY KLIENT: BRAK".equals(KlientLabel.getText())) {
             JOptionPane.showMessageDialog(null, "Podaj wyższą kwotę wpłaty, albo wybierz dłużnika do obciążenia");
         } else {
             if (!"WIĘCEJ!".equals(ResztaLabel.getText())) {
+
+                try {
+                    DaneSklepu.getTransakcje().get(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()).commit();
+                    DaneSklepu.getTransakcje().get(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()).close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(PlanszaPoTransakcji.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
             } else {
                 try {
                     Statement stmt = null;
-                    stmt = DaneSklepu.getConn().createStatement();
+                    stmt = DaneSklepu.getTransakcje().get(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()).createStatement();
                     Double kasa = 0.0;
                     if (!kwotaField.getText().isEmpty()) {
                         kasa = Double.valueOf(kwotaField.getText());
                     }
                     Double wynik = doZaplacenia - kasa;
-                    stmt.executeUpdate("Update transakcje set dozaplaty = " + wynik + " ,id_klienta = " + DaneSklepu.getStrony().get("GetClient").getIdKlienta() + " where id = " + DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID());
+                    if (wynik > 0) {
+                        stmt.executeUpdate("Update transakcje set dozaplaty = " + wynik + " ,id_klienta = " + DaneSklepu.getStrony().get("GetClient").getIdKlienta() + " where id = " + DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID());
+                    }
 
+                    DaneSklepu.getTransakcje().get(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()).commit();
+                    DaneSklepu.getTransakcje().get(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()).close();
 // TODO add your handling code here:
                 } catch (SQLException ex) {
                     Logger.getLogger(PlanszaPoTransakcji.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+
             KlientLabel.setText("WYBRANY KLIENT: BRAK");
             DaneSklepu.getStrony().get("GetClient").setIdKlienta(-1);
             kwotaField.setText(null);
@@ -290,9 +339,9 @@ public class PlanszaPoTransakcji extends MyJPanel {
                 Statement stmt1 = null;
                 PreparedStatement stmt2 = null;
 
-                stmt = DaneSklepu.getConn().createStatement();
-                stmt1 = DaneSklepu.getConn().createStatement();
-                stmt2 = DaneSklepu.getConn().prepareStatement("insert into towary_w_trans(nr_kolejny, ilosc, kod_towaru,id_trans, cena, rabat) values (0, 1, 0, ?, ?, 5)");
+                stmt = DaneSklepu.getTransakcje().get(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()).createStatement();
+                stmt1 = DaneSklepu.getTransakcje().get(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()).createStatement();
+                stmt2 = DaneSklepu.getTransakcje().get(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()).prepareStatement("insert into towary_w_trans(nr_kolejny, ilosc, kod_towaru,id_trans, cena, rabat) values (0, 1, 0, ?, ?, 5)");
 
                 ResultSet rs = stmt.executeQuery("Select id, dozaplaty from transakcje where id_klienta = " + id + " order by data");
                 Double suma = 0.0;
@@ -325,9 +374,9 @@ public class PlanszaPoTransakcji extends MyJPanel {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void kwotaFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kwotaFieldKeyReleased
-         kwotaField.setText(kwotaField.getText().replace(',', '.'));
+        kwotaField.setText(kwotaField.getText().replace(',', '.'));
         if (!kwotaField.getText().isEmpty()) {
-           
+
             Double liczba = Double.valueOf(kwotaField.getText());
             Double reszta = liczba - doZaplacenia;
             if (reszta > 0) {

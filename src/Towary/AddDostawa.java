@@ -90,11 +90,15 @@ public class AddDostawa extends MyJPanel {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
+                "Title 1", "Nazwa", "Cena", "Ilość", "Łącznie"
             }
         ));
         AddDostawaTable.setRowHeight(25);
         jScrollPane1.setViewportView(AddDostawaTable);
+        if (AddDostawaTable.getColumnModel().getColumnCount() > 0) {
+            AddDostawaTable.getColumnModel().getColumn(0).setMinWidth(0);
+            AddDostawaTable.getColumnModel().getColumn(0).setMaxWidth(0);
+        }
 
         WybierzTowarButton.setText("Dodaj pozycję");
         WybierzTowarButton.addActionListener(new java.awt.event.ActionListener() {

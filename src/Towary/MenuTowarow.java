@@ -79,7 +79,7 @@ public class MenuTowarow extends MyJPanel {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6"
+                "Kod", "Nazwa", "Cena kupna", "Cena zamowienia", "Ilość w magazynie", "Do zamówienia"
             }
         ));
         TablicaTowar.setRowHeight(25);
@@ -156,9 +156,9 @@ public class MenuTowarow extends MyJPanel {
             if (option == JOptionPane.OK_OPTION) {
                 try {
                     stmt = DaneSklepu.getConn().prepareStatement("Update towary set nazwa = ?, cena_zakup = ?, cena_zamow = ? where kod = " + idText);
-                    stmt.setString(1, nazwa.getText());
-                    stmt.setDouble(2, Double.valueOf(cena.getText()));
-                    stmt.setDouble(3, Double.valueOf(cena_dost.getText()));
+                    stmt.setString(1, nazwa.getText().toUpperCase());
+                    stmt.setDouble(2, Double.valueOf(cena.getText().replace(",", ".")));
+                    stmt.setDouble(3, Double.valueOf(cena_dost.getText().replace(",", ".")));
 
                     stmt.executeUpdate();
                 } catch (SQLException ex) {

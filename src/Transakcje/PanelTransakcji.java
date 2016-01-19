@@ -35,21 +35,19 @@ public class PanelTransakcji extends MyJPanel {
         zestawLiczb.add(1);
         initComponents();
 
-        TablicaTransakcji.addTab("Transakcja: " + String.valueOf(zestawLiczb.get(zestawLiczb.size() - 1)), new Transakcja());
-
     }
 
     @Override
     public void wyczyscTabele() {
         if (DaneSklepu.getStrony().get("PanelTransakcji").isPoTransakcji()) {
-            if (TablicaTransakcji.getComponentCount()== 1) {
+            if (TablicaTransakcji.getComponentCount() == 1) {
 
                 try {
                     int index = TablicaTransakcji.getSelectedIndex();
                     TablicaTransakcji.remove(index);
-                    
+
                     DaneSklepu.getConn().commit();
-                    
+
                     Integer ID = DodajTransakcje();
                     TablicaTransakcji.addTab("Transakcja: " + (index + 1), new Transakcja(index, ID));
                 } catch (SQLException ex) {
@@ -68,10 +66,16 @@ public class PanelTransakcji extends MyJPanel {
     @Override
     public void wypelnijTabele() {
         DaneSklepu.getStrony().get("PanelTransakcji").setPoTransakcji(false);
+        
+        if (TablicaTransakcji.getComponentCount() == 0) {
+            TablicaTransakcji.addTab("Transakcja: " + String.valueOf(zestawLiczb.get(zestawLiczb.size() - 1)), new Transakcja());
+             TablicaTransakcji.setSelectedIndex(TablicaTransakcji.getComponentCount() - 1);
+        } else {
+
+        }
         MyJPanel tab = (MyJPanel) TablicaTransakcji.getSelectedComponent();
         tab.wyczyscTabele();
         tab.wypelnijTabele();
-
     }
 
     /**
@@ -88,7 +92,7 @@ public class PanelTransakcji extends MyJPanel {
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        jButton1.setText("Wciśnij Ctrl + '+' by utworzyć kolejna transakcje");
+        jButton1.setText("Nowa transakcja");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -152,9 +156,9 @@ public class PanelTransakcji extends MyJPanel {
         return ID;
     }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int index = DaneSklepu.getStrony().get("PanelTransakcji").getInterrupt() -1;
+        int index = DaneSklepu.getStrony().get("PanelTransakcji").getInterrupt() - 1;
         DaneSklepu.getStrony().get("PanelTransakcji").setInterrupt(-1);
-        if (index > 0){
+        if (index > 0) {
             zestawLiczb.remove(index);
         }
         Integer ID = DodajTransakcje();
@@ -173,7 +177,7 @@ public class PanelTransakcji extends MyJPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void TablicaTransakcjiComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_TablicaTransakcjiComponentShown
-
+        System.out.println("To sie moze przydac :P ");
     }//GEN-LAST:event_TablicaTransakcjiComponentShown
 
     private void TablicaTransakcjiStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_TablicaTransakcjiStateChanged
