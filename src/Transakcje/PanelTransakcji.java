@@ -40,40 +40,41 @@ public class PanelTransakcji extends MyJPanel {
     @Override
     public void wyczyscTabele() {
         if (DaneSklepu.getStrony().get("PanelTransakcji").isPoTransakcji()) {
-            if (TablicaTransakcji.getComponentCount() == 1) {
+           // zmienLabela();
+            
+            //TablicaTransakcji.setSelectedIndex(0);
 
-                try {
-                    int index = TablicaTransakcji.getSelectedIndex();
-                    TablicaTransakcji.remove(index);
-
-                    DaneSklepu.getConn().commit();
-
-                    Integer ID = DodajTransakcje();
-                    TablicaTransakcji.addTab("Transakcja: " + (index + 1), new Transakcja(index, ID));
-                } catch (SQLException ex) {
-                    Logger.getLogger(PanelTransakcji.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-            } else {
-                int index = TablicaTransakcji.getSelectedIndex();
-                TablicaTransakcji.remove(index);
-                TablicaTransakcji.setSelectedIndex(0);
-            }
         }
 
     }
 
+    public void zmienLabela(){
+        DaneSklepu.getStrony().get("PanelTransakcji").setCurrentID(-1);
+        int index = TablicaTransakcji.getSelectedIndex();
+            TablicaTransakcji.remove(index);
+            if (TablicaTransakcji.getComponentCount() == 0){
+            TablicaTransakcji.addTab("Transakcja: " + String.valueOf(zestawLiczb.get(zestawLiczb.size() - 1)), new Transakcja());
+             TablicaTransakcji.setSelectedIndex(TablicaTransakcji.getComponentCount() - 1);
+            }else{
+                TablicaTransakcji.setSelectedIndex(TablicaTransakcji.getComponentCount() - 1);
+            }
+    }
+    
     @Override
     public void wypelnijTabele() {
         DaneSklepu.getStrony().get("PanelTransakcji").setPoTransakcji(false);
         
         if (TablicaTransakcji.getComponentCount() == 0) {
+            System.out.println("A");
             TablicaTransakcji.addTab("Transakcja: " + String.valueOf(zestawLiczb.get(zestawLiczb.size() - 1)), new Transakcja());
-             TablicaTransakcji.setSelectedIndex(TablicaTransakcji.getComponentCount() - 1);
-        } else {
-
+            TablicaTransakcji.setSelectedIndex(TablicaTransakcji.getComponentCount() - 1);
+        }else{
+            //System.out.println(TablicaTransakcji.getComponentCount());
+            //TablicaTransakcji.setSelectedIndex(0);
         }
+        
         MyJPanel tab = (MyJPanel) TablicaTransakcji.getSelectedComponent();
+        System.out.println("2");
         tab.wyczyscTabele();
         tab.wypelnijTabele();
     }

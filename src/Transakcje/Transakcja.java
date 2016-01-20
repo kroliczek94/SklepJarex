@@ -46,39 +46,34 @@ public class Transakcja extends MyJPanel {
         initComponents();
 
         this.conn = polacz(conn);
-
+        Integer curr = null;
         tworzNowaTransakcje();
         try {
-            
-            
-                conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-                
 
-            
-            
+            conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 
             ResultSet rs = conn.createStatement().executeQuery("Select max(id) from transakcje");
+            //System.out.println(rs.next());
             if (rs.next()) {
+
                 this.IdTransakcji = rs.getInt(1);
                 DaneSklepu.getTransakcje().put(this.IdTransakcji, conn);
+                curr = DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID();
                 DaneSklepu.getStrony().get("PanelTransakcji").setCurrentID(this.IdTransakcji);
                 DaneSklepu.getTransakcje().get(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()).setAutoCommit(false);
             }
-
+            System.out.println("curr : " + curr + " now: " + DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID());
         } catch (SQLException ex) {
             Logger.getLogger(Transakcja.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        System.out.println("1");
     }
 
     public void tworzNowaTransakcje() {
         try {
-            
-            //DaneSklepu.getStrony().get("GetTowar").setTransakcja(true);
+
             Statement stmt = null;
-
             stmt = conn.createStatement();
-
             stmt.executeUpdate("Insert into transakcje(id) values (idtrans.NEXTVAL)");
 
         } catch (SQLException ex) {
@@ -90,7 +85,7 @@ public class Transakcja extends MyJPanel {
     public void wyczyscTabele() {
         DefaultTableModel dm = (DefaultTableModel) TransakcjaTable.getModel();
         int rowCount = dm.getRowCount();
-//Remove rows one by one from the end of the table
+
         for (int i1 = rowCount - 1; i1 >= 0; i1--) {
             dm.removeRow(i1);
         }
@@ -99,29 +94,33 @@ public class Transakcja extends MyJPanel {
     @Override
     public void wypelnijTabele() {
 
-        try {
-            DefaultTableModel model = (DefaultTableModel) TransakcjaTable.getModel();
-            Statement stmt;
-            stmt = conn.createStatement();
+        int id = DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID();
 
-            ResultSet rs;
-            rs = stmt.executeQuery("select nr_kolejny, t.nazwa, TO_CHAR(cena,'99999.99'), ilosc from towary_w_trans x join towary t on "
-                    + "t.kod = x.kod_towaru where id_trans =  " + IdTransakcji + " order by nr_kolejny");
+        if (id > 0) {
+            try {
+                DefaultTableModel model = (DefaultTableModel) TransakcjaTable.getModel();
+                Statement stmt;
+                stmt = conn.createStatement();
 
-            while (rs.next()) {
-                model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), String.valueOf(rs.getDouble(3)), String.valueOf(rs.getInt(4)), Double.valueOf(rs.getString(3)) * rs.getInt(4)});
+                ResultSet rs;
+                rs = stmt.executeQuery("select nr_kolejny, t.nazwa, TO_CHAR(cena,'99999.99'), ilosc from towary_w_trans x join towary t on "
+                        + "t.kod = x.kod_towaru where id_trans =  " + DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID() + " order by nr_kolejny");
+
+                while (rs.next()) {
+                    model.addRow(new Object[]{String.valueOf(rs.getInt(1)), rs.getString(2), String.valueOf(rs.getDouble(3)), String.valueOf(rs.getInt(4)), Double.valueOf(rs.getString(3)) * rs.getInt(4)});
+                }
+
+                stmt = conn.createStatement();
+
+                rs = stmt.executeQuery("select TO_CHAR(nvl(sum(cena*ilosc),''),'99999.99') from towary_w_trans where id_trans = " + this.getIdTransakcji());
+                if (rs.next()) {
+                    LacznieButton.setText(rs.getString(1));
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);
+
             }
-
-            stmt = conn.createStatement();
-
-            rs = stmt.executeQuery("select TO_CHAR(nvl(sum(cena*ilosc),''),'99999.99') from towary_w_trans where id_trans = " + this.getIdTransakcji());
-            if (rs.next()) {
-                LacznieButton.setText(rs.getString(1));
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(MenuTowarow.class.getName()).log(Level.SEVERE, null, ex);
-
         }
 
     }
@@ -150,7 +149,7 @@ public class Transakcja extends MyJPanel {
 
         this.conn = polacz(conn);
         tworzNowaTransakcje();
-         
+
         try {
             conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
             ResultSet rs = conn.createStatement().executeQuery("Select max(id) from transakcje");

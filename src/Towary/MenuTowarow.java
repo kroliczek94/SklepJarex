@@ -148,7 +148,7 @@ public class MenuTowarow extends MyJPanel {
             nazwa.setText(nazwaText);
             cena.setText(cenaText);
             cena_dost.setText(cenaDostText);
-
+           
             PreparedStatement stmt = null;
             UIManager.put("OptionPane.cancelButtonText", "Anuluj");
             int option = JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);

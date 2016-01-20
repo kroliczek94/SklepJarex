@@ -240,22 +240,22 @@ public class PlanszaPoTransakcji extends MyJPanel {
     }//GEN-LAST:event_kwotaFieldKeyPressed
 
     private void obnizIlosc() {
+        System.out.println("Chociaz tu");
         Integer wynik = null;
         try {
-
+            PreparedStatement stmt1 = null;
             PreparedStatement stmt = null;
             stmt = DaneSklepu.getTransakcje().get(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()).prepareStatement("select ilosc, kod_towaru from towary_w_trans where id_trans = ?");
             stmt.setInt(1, DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID());
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
+                System.out.println("MOZE TU");
                 Statement stmt2 = DaneSklepu.getTransakcje().get(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()).createStatement();
                 ResultSet rs1 = stmt2.executeQuery("select ilosc_w_magazynie from towary where kod = " + rs.getString(2));
                 if (rs1.next()) {
                     wynik = rs1.getInt(1);
                 }
-
-                PreparedStatement stmt1 = null;
-               
+                
                 stmt1 = DaneSklepu.getTransakcje().get(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()).prepareStatement("update towary set ilosc_w_magazynie = ?, do_zamowienia = ? where kod = ?");
                 Integer reszta = wynik - Integer.valueOf(rs.getString(1));
                 if (reszta > 0) {
@@ -267,6 +267,7 @@ public class PlanszaPoTransakcji extends MyJPanel {
 
                 }
                 stmt1.setInt(3, rs.getInt(2));
+                
                 stmt1.executeUpdate();
             }
 
@@ -282,6 +283,7 @@ public class PlanszaPoTransakcji extends MyJPanel {
             if (!"WIĘCEJ!".equals(ResztaLabel.getText())) {
 
                 try {
+                    obnizIlosc();
                     DaneSklepu.getTransakcje().get(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()).commit();
                     DaneSklepu.getTransakcje().get(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()).close();
                 } catch (SQLException ex) {
@@ -297,10 +299,10 @@ public class PlanszaPoTransakcji extends MyJPanel {
                         kasa = Double.valueOf(kwotaField.getText());
                     }
                     Double wynik = doZaplacenia - kasa;
-                    if (wynik > 0) {
+                    if (wynik >= 0) {
                         stmt.executeUpdate("Update transakcje set dozaplaty = " + wynik + " ,id_klienta = " + DaneSklepu.getStrony().get("GetClient").getIdKlienta() + " where id = " + DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID());
                     }
-
+                    obnizIlosc();
                     DaneSklepu.getTransakcje().get(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()).commit();
                     DaneSklepu.getTransakcje().get(DaneSklepu.getStrony().get("PanelTransakcji").getCurrentID()).close();
 // TODO add your handling code here:
@@ -313,6 +315,7 @@ public class PlanszaPoTransakcji extends MyJPanel {
             DaneSklepu.getStrony().get("GetClient").setIdKlienta(-1);
             kwotaField.setText(null);
             DaneSklepu.getStrony().get("PanelTransakcji").setPoTransakcji(true);
+            DaneSklepu.getStrony().get("PanelTransakcji").zmienLabela();
             jarex.Jarex.przejdz("PanelTransakcji");
         }
 
@@ -379,7 +382,7 @@ public class PlanszaPoTransakcji extends MyJPanel {
 
             Double liczba = Double.valueOf(kwotaField.getText());
             Double reszta = liczba - doZaplacenia;
-            if (reszta > 0) {
+            if (reszta >= 0) {
                 ResztaLabel.setText("RESZTA: " + reszta);
             } else {
                 ResztaLabel.setText("WIĘCEJ!");
